@@ -9,6 +9,7 @@ namespace MDLibrary.Domain
         public int ID { get; set; }
         public string Name { get; set; }
 
-        public IEnumerable<Book> Books { get; set; }
+        //Join query to fill this list using code. Not on DB.
+        //public IEnumerable<Book> Books { get; set; }
     }
 }

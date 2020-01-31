@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MDLibrary.Domain
 {
-    class Loan
+    public class Loan
     {
         public int ID { get; set; }
         public DateTime TimeOfLoan { get; set; }

@@ -7,6 +7,6 @@ namespace MDLibrary.Domain
     public class Book
     {
         public int ID { get; set; }
-        public BookDetails BookDetails;
+        public BookDetails BookDetails { get; set; }
     }
 }

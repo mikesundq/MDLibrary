@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MDLibrary.Domain
 {
-    class Member
+    public class Member
     {
         public int ID { get; set; }
         public string SSN { get; set; }
