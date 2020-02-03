@@ -9,7 +9,6 @@ namespace MDLibrary.Domain
         public int ID { get; set; }
         public int ISBN { get; set; }
         public string Titel { get; set; }
-        
         public int AuthorID { get; set; } //Foreign key
         public Author Author { get; set; }
         public string Details { get; set; }

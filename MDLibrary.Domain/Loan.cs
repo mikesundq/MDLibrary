@@ -11,6 +11,5 @@ namespace MDLibrary.Domain
         public DateTime TimeToReturnBook { get; set; }
         public int BookID { get; set; }
         public int MemberID { get; set; }
-
     }
 }
