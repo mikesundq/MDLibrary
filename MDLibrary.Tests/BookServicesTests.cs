@@ -5,7 +5,17 @@ using Xunit;
 
 namespace MDLibrary.Tests
 {
-    class BookServicesTests
+    public class BookServicesTests
     {
+        [Fact]
+        public void AddNewBookDetails_AddBookDetailsForRecerence_AddOneBookToList()
+        {
+            //Act
+
+            //Arrange
+
+            //Assert
+        }
+
     }
 }
