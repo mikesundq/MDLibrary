@@ -37,6 +37,11 @@ namespace MDLibrary.Infrastructure.Service
             throw new NotImplementedException();
         }
 
+        public IList<BookDetails> ShowAllBookDetails()
+        {
+            return ListOfBookDetails;
+        }
+
         public IList<BookDetails> ShowAllBooksByAuthor(int id)
         {
             return ListOfBookDetails.FindAll(b => b.AuthorID == id);
@@ -44,7 +49,8 @@ namespace MDLibrary.Infrastructure.Service
 
         public int ShowNumberOfBooks(int id)
         {
-            throw new NotImplementedException();
+            var listOfBooksWithCorrectId = ListOfBooks.FindAll(b => b.BookDetailsID == id);
+            return listOfBooksWithCorrectId.Count;
         }
     }
 }

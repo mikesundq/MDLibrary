@@ -61,7 +61,6 @@ namespace MDLibrary.Tests
         public void ShowAllBooksByAuthor_AddAListOfBooksByAuthorsAndTryToGeTTheCorrectBack_ReturnsCountOfTwo()
         {
             //Arrange
-            //var booksByAuthor = new List<BookDetails>();
             var testBookService = new BookService();
             var testBookDetails1 = new BookDetails()
             { 
@@ -97,6 +96,66 @@ namespace MDLibrary.Tests
             var actualResult = booksByAuthor.Count;
             //Assert
             Assert.Equal(expectedResult, actualResult);
+        }
+        [Fact]
+        public void ShowNumberOfBooks_ListWithTwoBooksOfCorrectId_CountNumberTwo()
+        {
+            var testBookService = new BookService()
+            {
+                ListOfBooks =
+                {
+                    new Book() {BookDetailsID = 2},
+                    new Book() {BookDetailsID = 2},
+                    new Book() {BookDetailsID = 3},
+                }
+            };
+
+            var expectedCountNr = 2;
+
+            var actualCountNr = testBookService.ShowNumberOfBooks(2);
+
+            Assert.Equal(expectedCountNr, actualCountNr);
+            
+        }
+
+        [Fact]
+        public void ShowAllBookDetails_ListOfAllBooksDetals_CountNrThree()
+        {
+            //Arrange
+            var testBookService = new BookService();
+            var testBookDetails1 = new BookDetails()
+            {
+                ID = 1,
+                Titel = "C# for dummies",
+                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
+                AuthorID = 1,
+                ISBN = 123456
+            };
+            testBookService.ListOfBookDetails.Add(testBookDetails1);
+            var testBookDetails2 = new BookDetails()
+            {
+                ID = 2,
+                Titel = "C# for dummies",
+                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
+                AuthorID = 1,
+                ISBN = 123456
+            };
+            testBookService.ListOfBookDetails.Add(testBookDetails2);
+            var testBookDetails3 = new BookDetails()
+            {
+                ID = 3,
+                Titel = "C# for dummies",
+                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
+                AuthorID = 2,
+                ISBN = 123456
+            };
+            testBookService.ListOfBookDetails.Add(testBookDetails3);
+            var expectedCountNr = 3;
+            //Act
+            var actualCountNr = testBookService.ShowAllBookDetails().Count;
+
+            //Assert
+            Assert.Equal(expectedCountNr, actualCountNr);
         }
     }
 }
