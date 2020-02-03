@@ -49,7 +49,7 @@ namespace MDLibrary.Infrastructure.Persistence
 
         private void ConfigureBook(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>()()
+            modelBuilder.Entity<Book>();
         }
 
         private void ConfigureBookDetails(ModelBuilder modelBuilder)
