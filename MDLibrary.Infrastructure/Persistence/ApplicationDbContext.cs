@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MDLibrary.Infrastructure.Persistence
 {
-    class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -27,7 +27,7 @@ namespace MDLibrary.Infrastructure.Persistence
             ConfigureMember(modelBuilder);
             ConfigureLoan(modelBuilder);
 
-            SeedDatabase(modelBuilder);
+            //SeedDatabase(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }

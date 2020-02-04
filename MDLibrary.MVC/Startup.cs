@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MDLibrary.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace MDLibrary.MVC
 {
@@ -24,6 +26,11 @@ namespace MDLibrary.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MDLibrary"),
+                x => x.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+                ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
