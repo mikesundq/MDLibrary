@@ -10,6 +10,6 @@ namespace MDLibrary.Domain
         public string Name { get; set; }
 
         //Join query to fill this list using code. Not on DB.
-        //public IEnumerable<Book> Books { get; set; }
+        public IEnumerable<Book> Books { get; set; }
     }
 }
