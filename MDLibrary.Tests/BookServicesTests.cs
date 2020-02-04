@@ -19,7 +19,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 0,
-                ISBN = 123456
+                ISBN = "123456"
             };
             
             var expectedResult = 1;
@@ -41,9 +41,9 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 0,
-                ISBN = 123456
+                ISBN = "123456"
             };
-            var testBook = new Book()
+            var testBook = new BookCopy()
             {
                 BookDetailsID = 1
             };
@@ -68,7 +68,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 1,
-                ISBN = 123456
+                ISBN = "123456"
             };
             testBookService.ListOfBookDetails.Add(testBookDetails1);
             var testBookDetails2 = new BookDetails()
@@ -77,7 +77,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 1,
-                ISBN = 123456
+                ISBN = "123456"
             };
             testBookService.ListOfBookDetails.Add(testBookDetails2);
             var testBookDetails3 = new BookDetails()
@@ -86,7 +86,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 2,
-                ISBN = 123456
+                ISBN = "123456"
             };
             testBookService.ListOfBookDetails.Add(testBookDetails3);
             var expectedResult = 2;
@@ -104,9 +104,9 @@ namespace MDLibrary.Tests
             {
                 ListOfBooks =
                 {
-                    new Book() {BookDetailsID = 2},
-                    new Book() {BookDetailsID = 2},
-                    new Book() {BookDetailsID = 3},
+                    new BookCopy() {BookDetailsID = 2},
+                    new BookCopy() {BookDetailsID = 2},
+                    new BookCopy() {BookDetailsID = 3},
                 }
             };
 
@@ -129,7 +129,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 1,
-                ISBN = 123456
+                ISBN = "123456"
             };
             testBookService.ListOfBookDetails.Add(testBookDetails1);
             var testBookDetails2 = new BookDetails()
@@ -138,7 +138,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 1,
-                ISBN = 123456
+                ISBN = "123456"
             };
             testBookService.ListOfBookDetails.Add(testBookDetails2);
             var testBookDetails3 = new BookDetails()
@@ -147,7 +147,7 @@ namespace MDLibrary.Tests
                 Titel = "C# for dummies",
                 Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
                 AuthorID = 2,
-                ISBN = 123456
+                ISBN = "123456"
             };
             testBookService.ListOfBookDetails.Add(testBookDetails3);
             var expectedCountNr = 3;

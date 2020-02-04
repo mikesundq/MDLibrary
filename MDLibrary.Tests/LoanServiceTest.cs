@@ -53,9 +53,9 @@ namespace MDLibrary.Tests
             //{
             //    ListOfBooks =
             //    {
-            //        new Book() {ID = 23},
-            //        new Book() {ID = 12},
-            //        new Book() {ID = 20},
+            //        new BookCopy() {ID = 23},
+            //        new BookCopy() {ID = 12},
+            //        new BookCopy() {ID = 20},
             //    }
             //};
             var testLoanService = new LoanService()

@@ -9,7 +9,7 @@ namespace MDLibrary.Application.Interfaces
     {
         public void AddNewBookDetails(BookDetails bookdetails);
 
-        public void AddMoreCopiesOfBook(Book book);
+        public void AddMoreCopiesOfBook(BookCopy book);
         public int ShowNumberOfBooks(int id);
         public IList<BookDetails> ShowAllAvailableBooks();
 

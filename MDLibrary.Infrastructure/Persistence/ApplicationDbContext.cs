@@ -15,7 +15,7 @@ namespace MDLibrary.Infrastructure.Persistence
 
         public DbSet<Author> Author { get; set; }
         public DbSet<BookDetails> BookDetails { get; set; }
-        public DbSet<Book> Book { get; set; }
+        public DbSet<BookCopy> Book { get; set; }
         public DbSet<Member> Member { get; set; }
         public DbSet<Loan> Loan { get; set; }
 
@@ -23,7 +23,7 @@ namespace MDLibrary.Infrastructure.Persistence
         {
             ConfigureAuthor(modelBuilder);
             ConfigureBookDetails(modelBuilder);
-            ConfigureBook(modelBuilder);
+            ConfigureBookCopy(modelBuilder);
             ConfigureMember(modelBuilder);
             ConfigureLoan(modelBuilder);
 
@@ -34,27 +34,41 @@ namespace MDLibrary.Infrastructure.Persistence
 
         private void SeedDatabase(ModelBuilder modelBuilder)
         {
-            throw new NotImplementedException();
         }
 
         private void ConfigureLoan(ModelBuilder modelBuilder)
         {
-            throw new NotImplementedException();
+            modelBuilder.Entity<Loan>()
+                .HasOne(l => l.BookCopy)
+                .WithMany(b => b.Loans)
+                .HasForeignKey(l => l.BookCopyID);
+            modelBuilder.Entity<Loan>()
+                .HasOne(l => l.Member)
+                .WithMany(m => m.Loans)
+                .HasForeignKey(l => l.MemberID);
         }
 
         private void ConfigureMember(ModelBuilder modelBuilder)
         {
-            throw new NotImplementedException();
+            modelBuilder.Entity<Member>().Property(x => x.SSN).HasMaxLength(12);
         }
 
-        private void ConfigureBook(ModelBuilder modelBuilder)
+        private void ConfigureBookCopy(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>();
+            modelBuilder.Entity<BookCopy>()
+                .HasOne(b => b.BookDetails)
+                .WithMany(b => b.BookCopies)
+                .HasForeignKey(b => b.BookDetailsID);
         }
 
         private void ConfigureBookDetails(ModelBuilder modelBuilder)
         {
-            throw new NotImplementedException();
+            modelBuilder.Entity<BookDetails>().HasKey(x => x.ID);
+            modelBuilder.Entity<BookDetails>()
+                .HasOne(b => b.Author)
+                .WithMany(a => a.WrittenBooks)
+                .HasForeignKey(b => b.AuthorID);
+            modelBuilder.Entity<BookDetails>().Property(x => x.ISBN).HasMaxLength(13);
         }
 
         private void ConfigureAuthor(ModelBuilder modelBuilder)

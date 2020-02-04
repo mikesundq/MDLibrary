@@ -9,9 +9,9 @@ namespace MDLibrary.Infrastructure.Service
     public class BookService : IBookServices
     {
         public List<BookDetails> ListOfBookDetails = new List<BookDetails>();
-        public List<Book> ListOfBooks = new List<Book>();
+        public List<BookCopy> ListOfBooks = new List<BookCopy>();
 
-        public void AddMoreCopiesOfBook(Book book)
+        public void AddMoreCopiesOfBook(BookCopy book)
         {
             bool excists = false;
 

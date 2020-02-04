@@ -36,12 +36,12 @@ namespace MDLibrary.Infrastructure.Service
             return listOfBookIDsToReturn;
         }
 
-        public IList<Book> ShowAllBooksNotOnLoan()
+        public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
             throw new NotImplementedException();
         }
 
-        public IList<Book> ShowAllBooksOnLoan()
+        public IList<BookCopy> ShowAllBooksOnLoan()
         {
             throw new NotImplementedException();
         }

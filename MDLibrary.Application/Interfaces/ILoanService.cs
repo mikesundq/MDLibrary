@@ -9,9 +9,9 @@ namespace MDLibrary.Application.Interfaces
     {
         public void LoanOutBook(Loan loan);
         public void ReturnBook(int loanID);
-        public IList<Book> ShowAllBooksOnLoan();
+        public IList<BookCopy> ShowAllBooksOnLoan();
         public IList<int> ShowAllBooksLoanedByMember(int memberID);
-        public IList<Book> ShowAllBooksNotOnLoan();
+        public IList<BookCopy> ShowAllBooksNotOnLoan();
         
     }
 }

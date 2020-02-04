@@ -9,7 +9,9 @@ namespace MDLibrary.Domain
         public int ID { get; set; }
         public DateTime TimeOfLoan { get; set; }
         public DateTime TimeToReturnBook { get; set; }
-        public int BookID { get; set; }
+        public int BookCopyID { get; set; }
+        public BookCopy BookCopy { get; set; }
         public int MemberID { get; set; }
+        public Member Member { get; set; }
     }
 }
