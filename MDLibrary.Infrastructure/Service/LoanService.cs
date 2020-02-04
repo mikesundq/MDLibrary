@@ -29,7 +29,7 @@ namespace MDLibrary.Infrastructure.Service
             List<int> listOfBookIDsToReturn = new List<int>();
             foreach(var loan in listOfLoanWithCorrectBooks)
             {
-                listOfBookIDsToReturn.Add(loan.BookID);
+                listOfBookIDsToReturn.Add(loan.BookCopyID);
             }
 
             //Return list of IDs

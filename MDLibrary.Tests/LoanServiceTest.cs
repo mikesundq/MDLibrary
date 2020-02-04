@@ -62,9 +62,9 @@ namespace MDLibrary.Tests
             {
                 Loans =
                 {
-                    new Loan() {MemberID = 1, ID = 1, BookID = 23},
-                    new Loan() {MemberID = 2, ID = 2, BookID = 12},
-                    new Loan() {MemberID = 2, ID = 3, BookID = 20},
+                    new Loan() {MemberID = 1, ID = 1, BookCopyID = 23},
+                    new Loan() {MemberID = 2, ID = 2, BookCopyID = 12},
+                    new Loan() {MemberID = 2, ID = 3, BookCopyID = 20},
                 }
             };
 
