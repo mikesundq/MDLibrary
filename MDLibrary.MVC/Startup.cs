@@ -28,7 +28,7 @@ namespace MDLibrary.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<IBookServices, BookService>();
+            services.AddScoped<IBookServices, BookServices>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<ILoanService, LoanService>();
             services.AddScoped<IMemberService, MemberService>();

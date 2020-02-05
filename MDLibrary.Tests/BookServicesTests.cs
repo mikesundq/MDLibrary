@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using MDLibrary.Domain;
-
+using Microsoft.EntityFrameworkCore;
+using MDLibrary.Infrastructure.Persistence;
+using System.Linq;
 
 namespace MDLibrary.Tests
 {
@@ -14,53 +16,58 @@ namespace MDLibrary.Tests
         public void AddNewBookDetails_AddBookDetailsForReference_ReturnCountOne()
         {
             //Arrange
-            
-            //Act
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "MDLibrary_AddNewBookDetails")
+                .Options;
 
-            //Assert
+            var context = new ApplicationDbContext(options);
 
+            var testBookService = new BookServices(context);
 
-            /*//Arrange
-            var testBookService = new BookService(null);
-            var testBookDetails = new BookDetails() {
-                Titel = "C# for dummies",
-                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                AuthorID = 0,
-                ISBN = "123456"
-            };
-            
             var expectedResult = 1;
+
+            var testBook = new BookDetails()
+            {
+                ID = 1,
+                Titel = "En testboks historia",
+                ISBN = "1234567891012",
+                AuthorID = 1
+            };
+
             //Act
-            testBookService.AddNewBookDetails(testBookDetails);
-            var actualResult = 2; //testBookService.ListOfBookDetails.Count;
+            testBookService.AddNewBookDetails(testBook);
+            var actualResult = context.BookDetails.ToList().Count;
+
             //Assert
-            Assert.Equal(expectedResult, actualResult); */
+            Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
         public void AddMoreCopiesOfBook_AddOneBookToEmptyList_ReturnCountNrOne()
         {
-            //Arrange
-            var testBookService = new BookService(null);
-            var testBookDetails = new BookDetails()
-            {
-                ID = 1,
-                Titel = "C# for dummies",
-                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                AuthorID = 0,
-                ISBN = "123456"
-            };
-            var testBook = new BookCopy()
-            {
-                BookDetailsID = 1
-            };
+            ////Arrange
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_AddMoreCopies")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
 
             var expectedResult = 1;
+
+            var testBook = new BookCopy()
+            {
+                ID = 1,
+                BookDetailsID = 2
+            };
+
+            var testBookService = new BookServices(context);
             //Act
-            testBookService.AddNewBookDetails(testBookDetails);
+
             testBookService.AddMoreCopiesOfBook(testBook);
 
-            var actualResult = 1; //testBookService.ListOfBooks.Count;
+            var actualResult = context.Book.ToList().Count;
+
             //Assert
             Assert.Equal(expectedResult, actualResult);
         }
@@ -68,7 +75,7 @@ namespace MDLibrary.Tests
         public void ShowAllBooksByAuthor_AddAListOfBooksByAuthorsAndTryToGeTTheCorrectBack_ReturnsCountOfTwo()
         {
             //Arrange
-            var testBookService = new BookService(null);
+            var testBookService = new BookServices(null);
             /*  var testBookDetails1 = new BookDetails()
               { 
                   ID = 1,
@@ -129,7 +136,7 @@ namespace MDLibrary.Tests
         public void ShowAllBookDetails_ListOfAllBooksDetals_CountNrThree()
         {
             //Arrange
-            var testBookService = new BookService(null);
+            var testBookService = new BookServices(null);
             /*var testBookDetails1 = new BookDetails()
             {
                 ID = 1,
@@ -163,6 +170,32 @@ namespace MDLibrary.Tests
 
             //Assert
             Assert.Equal(expectedCountNr, actualCountNr);
+        }
+
+        private void Seed(ApplicationDbContext context)
+        {
+            var authors = new[]
+            {
+                new Author { ID = 1, Name = "Test Author 1"},
+                new Author { ID = 2, Name = "Test Author 2"}
+            };
+            var bookDetails = new[]
+            {
+                new BookDetails { ID = 1, AuthorID = 1, ISBN = "1234567891012", Titel = "Bok Titel 1"},
+                new BookDetails { ID = 2, AuthorID = 1, ISBN = "1234567891013", Titel = "Bok Titel 2"},
+                new BookDetails { ID = 3, AuthorID = 2, ISBN = "1234567891014", Titel = "Bok Titel 3"}
+            };
+            var books = new[]
+            {
+                new BookCopy { ID = 1, BookDetailsID = 1},
+                new BookCopy { ID = 2, BookDetailsID = 1},
+                new BookCopy { ID = 3, BookDetailsID = 2},
+                new BookCopy { ID = 4, BookDetailsID = 3}
+            };
+            context.AddRange(authors);
+            context.AddRange(bookDetails);
+            context.AddRange(books);
+            context.SaveChanges();
         }
     }
 }

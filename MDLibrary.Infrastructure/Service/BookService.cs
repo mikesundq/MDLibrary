@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MDLibrary.Infrastructure.Service
 {
-    public class BookService : IBookServices
+    public class BookServices : IBookServices
     {
         private readonly ApplicationDbContext context;
 
         //public List<BookDetails> ListOfBookDetails = new List<BookDetails>();
         //public List<BookCopy> ListOfBooks = new List<BookCopy>();
 
-        public BookService(ApplicationDbContext context)
+        public BookServices(ApplicationDbContext context)
         {
             this.context = context;
         }
