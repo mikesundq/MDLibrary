@@ -27,13 +27,37 @@ namespace MDLibrary.Infrastructure.Persistence
             ConfigureMember(modelBuilder);
             ConfigureLoan(modelBuilder);
 
-            //SeedDatabase(modelBuilder);
+            SeedDatabase(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
 
         private void SeedDatabase(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Author>().HasData
+            (
+                new Author { ID = 1, Name = "Thomas Årnfelt" },
+                new Author { ID = 2, Name = "Johan Hagesund" }
+            );
+            modelBuilder.Entity<BookDetails>().HasData
+            (
+                new BookDetails { ID = 1, Titel = "Incidenten i Böhmen", AuthorID = 1, ISBN = "9789198138795", Details = "Incidenten i Böhmen är Linköpingsförfattaren Thomas Årnfelts debutroman. I den blandas historia med vidskepelse och ockultism på ett sätt som passar den tidigmoderna världen före upplysningen." },
+                new BookDetails { ID = 2, Titel = "Linköpings Hockey Club och den förändrade självbilden", AuthorID = 2, ISBN = "9789198075526", Details = "Historien om Linköpings Hockey Club börjar inte den 4 augusti 1976. LHC bildades visserligen den dagen men spelartruppen, utrustningen, platsen i seriesystemet och traditionen var densamma som i BK Kenty som man bröt sig ut från." },
+                new BookDetails { ID = 3, Titel = "Den som söker", AuthorID = 1, ISBN = "9789198428506", Details = "Den som söker är en psykologisk spänningsroman där Johan följer tips som leder honom till makabra brottsplatser och ger hans karriär en skjuts framåt. Men vad är det egentligen som händer och vem är det som tipsar? Vilka mörka krafter är det som har satts i rörelse? Är det verkligen ok att gå över lik för att nå sina drömmars mål?" }
+            );
+            modelBuilder.Entity<BookCopy>().HasData
+            (
+                new BookCopy { ID = 1, BookDetailsID = 1 },
+                new BookCopy { ID = 2, BookDetailsID = 1 },
+                new BookCopy { ID = 3, BookDetailsID = 2 },
+                new BookCopy { ID = 4, BookDetailsID = 3 }
+
+            );
+            modelBuilder.Entity<Member>().HasData
+            (
+                new Member { ID = 1, Name = "Mikael Sundqvist", SSN = "800424-1234" },
+                new Member { ID = 2, Name = "Daniel Ny", SSN = "800419-1234"}
+            );
         }
 
         private void ConfigureLoan(ModelBuilder modelBuilder)
