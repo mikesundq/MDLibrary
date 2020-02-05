@@ -11,6 +11,7 @@ namespace MDLibrary.MVC.Models.BooksVM
     {
         [Required]
         [MaxLength(13)]
+        [MinLength(13)]
         public string ISBN { get; set; }
         [Required]
         public string Title { get; set; }

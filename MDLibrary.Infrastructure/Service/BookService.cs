@@ -1,34 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MDLibrary.Application.Interfaces;
 using MDLibrary.Domain;
+using MDLibrary.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace MDLibrary.Infrastructure.Service
 {
     public class BookService : IBookServices
     {
-        public List<BookDetails> ListOfBookDetails = new List<BookDetails>();
-        public List<BookCopy> ListOfBooks = new List<BookCopy>();
+        private readonly ApplicationDbContext context;
 
+        //public List<BookDetails> ListOfBookDetails = new List<BookDetails>();
+        //public List<BookCopy> ListOfBooks = new List<BookCopy>();
+
+        public BookService(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
         public void AddMoreCopiesOfBook(BookCopy book)
         {
-            bool excists = false;
-
-            foreach(var bookdetail in ListOfBookDetails)
-            {
-                if(book.BookDetailsID == bookdetail.ID)
-                {
-                    excists = true;
-                }
-            }
-            if(excists)
-                ListOfBooks.Add(book);
+            context.Book.Add(book);
+            context.SaveChanges();
         }
 
         public void AddNewBookDetails(BookDetails bookdetails)
         {
-            ListOfBookDetails.Add(bookdetails);
+            context.Add(bookdetails);
+            context.SaveChanges();
         }
 
 
@@ -39,18 +40,18 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<BookDetails> ShowAllBookDetails()
         {
-            return ListOfBookDetails;
+            return context.BookDetails.Include(x => x.Author).OrderBy(x => x.Titel).ToList();
         }
 
         public IList<BookDetails> ShowAllBooksByAuthor(int id)
         {
-            return ListOfBookDetails.FindAll(b => b.AuthorID == id);
-        }
+            return null; //context.BookDetails.Include(x => x.AuthorID == id);//FindAll(b => b.AuthorID == id);
+        } 
 
         public int ShowNumberOfBooks(int id)
         {
-            var listOfBooksWithCorrectId = ListOfBooks.FindAll(b => b.BookDetailsID == id);
-            return listOfBooksWithCorrectId.Count;
+            //var listOfBooksWithCorrectId = context.Book.Include(x => x.BookDetailsID).FindAll(b => b.BookDetailsID == id);
+            return 1; //listOfBooksWithCorrectId.Count;
         }
     }
 }

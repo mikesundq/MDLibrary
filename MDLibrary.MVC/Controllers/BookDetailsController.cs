@@ -7,26 +7,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MDLibrary.Domain;
 using MDLibrary.Infrastructure.Persistence;
+using MDLibrary.Application.Interfaces;
+using MDLibrary.MVC.Models.BooksVM;
 
 namespace MDLibrary.MVC.Controllers
 {
     public class BookDetailsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        
+        private readonly IBookServices bookService;
+        private readonly IAuthorService authorService;
 
-        public BookDetailsController(ApplicationDbContext context)
+        public BookDetailsController(IBookServices bookService, IAuthorService authorService)
         {
-            _context = context;
+            this.bookService = bookService;
+            this.authorService = authorService;
         }
 
         // GET: BookDetails
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BookDetails.Include(b => b.Author);
-            return View(await applicationDbContext.ToListAsync());
+            var vm = new BookIndexVm(); //Create a viewmodel object
+            vm.Books = bookService.ShowAllBookDetails(); //Get all available books to show
+            return View(vm); //Send the VM object to the view
         }
 
-        // GET: BookDetails/Details/5
+      /*  // GET: BookDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,12 +50,13 @@ namespace MDLibrary.MVC.Controllers
 
             return View(bookDetails);
         }
-
+        */
         // GET: BookDetails/Create
         public IActionResult Create()
         {
-            ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "ID");
-            return View();
+            var vm = new CreateBookVm(); //Create a VM object
+            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name");
+            return View(vm);
         }
 
         // POST: BookDetails/Create
@@ -57,19 +64,24 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,ISBN,Titel,AuthorID,Details")] BookDetails bookDetails)
+        public async Task<IActionResult> Create(CreateBookVm vm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(bookDetails);
-                await _context.SaveChangesAsync();
+                var newBook = new BookDetails();
+                newBook.AuthorID = vm.AuthorID;
+                newBook.ISBN = vm.ISBN;
+                newBook.Titel = vm.Title;
+                newBook.Details = vm.Details;
+
+                bookService.AddNewBookDetails(newBook);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "ID", bookDetails.AuthorID);
-            return View(bookDetails);
+            return RedirectToAction("Error", "Home", "");
         }
 
-        // GET: BookDetails/Edit/5
+       /* // GET: BookDetails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -155,6 +167,6 @@ namespace MDLibrary.MVC.Controllers
         private bool BookDetailsExists(int id)
         {
             return _context.BookDetails.Any(e => e.ID == id);
-        }
-    }
+        } */
+    } 
 }

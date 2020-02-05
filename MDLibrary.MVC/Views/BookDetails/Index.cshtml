@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MDLibrary.Domain.BookDetails>
+﻿@model MDLibrary.MVC.Models.BooksVM.BookIndexVm;
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ISBN)
+                ISBN
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Titel)
+                Titel
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                Author
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Details)
+                Details
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Books) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ISBN)

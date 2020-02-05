@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MDLibrary.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using MDLibrary.Application.Interfaces;
+using MDLibrary.Infrastructure.Service;
 
 namespace MDLibrary.MVC
 {
@@ -26,6 +28,12 @@ namespace MDLibrary.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IBookServices, BookService>();
+            services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<ILoanService, LoanService>();
+            services.AddScoped<IMemberService, MemberService>();
+
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MDLibrary"),
