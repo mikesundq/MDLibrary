@@ -17,6 +17,10 @@
     <ProjectReference Include="..\MDLibrary.Infrastructure\MDLibrary.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\MemberVM\" />
+  </ItemGroup>
+
 
 
 </Project>
