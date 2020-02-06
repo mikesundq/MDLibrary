@@ -97,20 +97,19 @@ namespace MDLibrary.Tests
         [Fact]
         public void ShowNumberOfBooks_ListWithTwoBooksOfCorrectId_CountNumberTwo()
         {
-          /*  var testBookService = new BookService(null)
-            {
-                ListOfBooks =
-                {
-                    new BookCopy() {BookDetailsID = 2},
-                    new BookCopy() {BookDetailsID = 2},
-                    new BookCopy() {BookDetailsID = 3},
-                }
-            }; */
-
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ShowNumberOfBooks")
+                .Options;
+            var context = new ApplicationDbContext(options);
             var expectedCountNr = 2;
+            Seed(context);
+            var testBookSerice = new BookServices(context);
 
-            var actualCountNr = 1; //testBookService.ShowNumberOfBooks(2);
+            //Act
+            var actualCountNr = testBookSerice.ShowNumberOfBooks(1);
 
+            //Assert
             Assert.Equal(expectedCountNr, actualCountNr);
             
         }

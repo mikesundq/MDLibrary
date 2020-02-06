@@ -50,8 +50,7 @@ namespace MDLibrary.Infrastructure.Service
 
         public int ShowNumberOfBooks(int id)
         {
-            //var listOfBooksWithCorrectId = context.Book.Include(x => x.BookDetailsID).FindAll(b => b.BookDetailsID == id);
-            return 1; //listOfBooksWithCorrectId.Count;
+            return context.Book.Where(b => b.BookDetailsID == id).ToList().Count;
         }
     }
 }
