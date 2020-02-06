@@ -11,6 +11,8 @@ namespace MDLibrary.Application.Interfaces
 
         public void AddMoreCopiesOfBook(BookCopy book);
         public int ShowNumberOfBooks(int id);
+
+        public void DeleteBookDetailsByID(int id);
         public IList<BookDetails> ShowAllAvailableBooks();
 
         public IList<BookDetails> ShowAllBooksByAuthor(int id);

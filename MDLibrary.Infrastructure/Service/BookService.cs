@@ -32,6 +32,12 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
+        public void DeleteBookDetailsByID(int id)
+        {
+            var bookDetails = context.BookDetails.Find(id);
+            context.BookDetails.Remove(bookDetails);
+            context.SaveChanges();
+        }
 
         public IList<BookDetails> ShowAllAvailableBooks()
         {
