@@ -155,6 +155,23 @@ namespace MDLibrary.Tests
             }
         }
 
+        [Fact]
+        public void GetBookDetailsById_SeedKnownData_CorrectBookDetail()
+        {
+            //arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("GetBookDetailsById").Options;
+            var context = new ApplicationDbContext(options);
+            Seed(context);
+            var testBookService = new BookServices(context);
+            var expectedBookDetail = new BookDetails { ID = 1, AuthorID = 1, ISBN = "1234567891012", Titel = "Bok Titel 1" };
+            //Act
+            var actualBookDetail = new BookDetails();
+            //var actualBookDetail = testBookService.GetBookDetailsById(1);
+            //Assert
+            Assert.Equal(expectedBookDetail, actualBookDetail);
+        }
+
         private void Seed(ApplicationDbContext context)
         {
             var authors = new[]
