@@ -45,7 +45,7 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<BookDetails> ShowAllBooksByAuthor(int id)
         {
-            return null; //context.BookDetails.Include(x => x.AuthorID == id);//FindAll(b => b.AuthorID == id);
+            return context.BookDetails.Where(b => b.AuthorID == id).ToList();     
         } 
 
         public int ShowNumberOfBooks(int id)

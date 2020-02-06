@@ -71,43 +71,26 @@ namespace MDLibrary.Tests
             //Assert
             Assert.Equal(expectedResult, actualResult);
         }
+
         [Fact]
         public void ShowAllBooksByAuthor_AddAListOfBooksByAuthorsAndTryToGeTTheCorrectBack_ReturnsCountOfTwo()
         {
             //Arrange
-            var testBookService = new BookServices(null);
-            /*  var testBookDetails1 = new BookDetails()
-              { 
-                  ID = 1,
-                  Titel = "C# for dummies",
-                  Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                  AuthorID = 1,
-                  ISBN = "123456"
-              };
-              testBookService.ListOfBookDetails.Add(testBookDetails1);
-              var testBookDetails2 = new BookDetails()
-              {
-                  ID = 2,
-                  Titel = "C# for dummies",
-                  Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                  AuthorID = 1,
-                  ISBN = "123456"
-              };
-              testBookService.ListOfBookDetails.Add(testBookDetails2);
-              var testBookDetails3 = new BookDetails()
-              {
-                  ID = 3,
-                  Titel = "C# for dummies",
-                  Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                  AuthorID = 2,
-                  ISBN = "123456"
-              };
-              testBookService.ListOfBookDetails.Add(testBookDetails3); */
-              var expectedResult = 2;
-              //Act
-            //  var booksByAuthor = testBookService.ShowAllBooksByAuthor(1);
-              
-            var actualResult = 1; //booksByAuthor.Count;
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ShowAllBooksByAúthor")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            Seed(context);
+
+            var testBookService = new BookServices(context);
+
+            var expectedResult = 2;
+
+            //Act
+            var actualResult = testBookService.ShowAllBooksByAuthor(1).Count;
+
             //Assert
             Assert.Equal(expectedResult, actualResult);
         }
