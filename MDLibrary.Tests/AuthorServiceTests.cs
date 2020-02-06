@@ -91,6 +91,27 @@ namespace MDLibrary.Tests
             Assert.Equal(expectedResult, actualResult);
         }
 
+        [Fact]
+        public void GetAuthorById_ReturnsOneAuthor_CompareNames()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_GetAuthorById")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            Seed(context);
+
+            var testAuthorService = new AuthorService(context);
+            var expectedResult = "Sven Svensson";
+
+            //Act
+            var actualResult = testAuthorService.GetAuthorById(2).Name;
+
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
         private void Seed(ApplicationDbContext context)
         {
             var authors = new[]

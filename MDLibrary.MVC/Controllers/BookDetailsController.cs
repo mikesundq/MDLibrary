@@ -40,14 +40,6 @@ namespace MDLibrary.MVC.Controllers
                 return NotFound();
             }
 
-            /*  var bookDetails = await _context.BookDetails
-                  .Include(b => b.Author)
-                  .FirstOrDefaultAsync(m => m.ID == id);
-              if (bookDetails == null)
-              {
-                  return NotFound();
-              } */
-
             var bookDetails = bookService.GetBookDetailsById(id);
             var displayBookVm = new BookDetailsVm();
             displayBookVm.ID = bookDetails.ID;
