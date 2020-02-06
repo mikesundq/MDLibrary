@@ -166,8 +166,8 @@ namespace MDLibrary.Tests
             var testBookService = new BookServices(context);
             var expectedBookDetail = new BookDetails { ID = 1, AuthorID = 1, ISBN = "1234567891012", Titel = "Bok Titel 1" };
             //Act
-            var actualBookDetail = new BookDetails();
-            //var actualBookDetail = testBookService.GetBookDetailsById(1);
+            //var actualBookDetail = new BookDetails();
+            var actualBookDetail = testBookService.GetBookDetailsById(1);
             //Assert
             Assert.Equal(expectedBookDetail, actualBookDetail);
         }

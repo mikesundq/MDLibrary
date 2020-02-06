@@ -32,25 +32,28 @@ namespace MDLibrary.MVC.Controllers
             return View(vm); //Send the VM object to the view
         }
 
-      /*  // GET: BookDetails/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: BookDetails/Details/5
+        public async Task<IActionResult> Details(int id) //Was int?
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var bookDetails = await _context.BookDetails
-                .Include(b => b.Author)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (bookDetails == null)
-            {
-                return NotFound();
-            }
+            /*  var bookDetails = await _context.BookDetails
+                  .Include(b => b.Author)
+                  .FirstOrDefaultAsync(m => m.ID == id);
+              if (bookDetails == null)
+              {
+                  return NotFound();
+              } */
 
+            var bookDetails = bookService.GetBookDetailsById(id);
+           // var displayBookVm = new EditBookVm();
+            
             return View(bookDetails);
         }
-        */
+        
         // GET: BookDetails/Create
         public IActionResult Create()
         {
@@ -93,7 +96,8 @@ namespace MDLibrary.MVC.Controllers
             EditBookVm vm = new EditBookVm();
             vm.ISBN = bookDetails.ISBN;
             vm.Titel = bookDetails.Titel;
-            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name");
+            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name", bookDetails.Author);
+            vm.AuthorID = bookDetails.AuthorID;
             vm.Details = bookDetails.Details;
             return View(vm);
            // ViewData["AuthorID"] = new SelectList(authorService.GetAllAuthors(), "ID", "ID", bookDetails.AuthorID);
@@ -136,7 +140,7 @@ namespace MDLibrary.MVC.Controllers
             EditBookVm vm = new EditBookVm();
             vm.ISBN = bookDetails.ISBN;
             vm.Titel = bookDetails.Titel;
-            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name");
+            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name", bookDetails.AuthorID);
             vm.Details = bookDetails.Details;
             return View(vm);
         }
