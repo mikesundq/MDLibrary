@@ -133,7 +133,7 @@ namespace MDLibrary.MVC.Controllers
             ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "ID", bookDetails.AuthorID);
             return View(bookDetails);
         }
-
+        /*
         // GET: BookDetails/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
