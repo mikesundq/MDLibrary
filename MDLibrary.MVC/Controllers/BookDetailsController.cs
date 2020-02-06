@@ -74,7 +74,7 @@ namespace MDLibrary.MVC.Controllers
                 newBook.Titel = vm.Title;
                 newBook.Details = vm.Details;
 
-                bookService.AddNewBookDetails(newBook);
+                await Task.Run(() => bookService.AddNewBookDetails(newBook));
 
                 return RedirectToAction(nameof(Index));
             }
