@@ -156,7 +156,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        public void GetBookDetailsById_SeedKnownData_CorrectBookDetail()
+        public void GetBookDetailsById_SeedKnownData_CorrectBookData()
         {
             //arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -164,12 +164,39 @@ namespace MDLibrary.Tests
             var context = new ApplicationDbContext(options);
             Seed(context);
             var testBookService = new BookServices(context);
-            var expectedBookDetail = new BookDetails { ID = 1, AuthorID = 1, ISBN = "1234567891012", Titel = "Bok Titel 1" };
+
             //Act
-            var actualBookDetail = new BookDetails();
-            //var actualBookDetail = testBookService.GetBookDetailsById(1);
-            //Assert
-            Assert.Equal(expectedBookDetail, actualBookDetail);
+            var testBookDetail = testBookService.GetBookDetailsById(1);
+
+            List<string> expectedBookData = new List<string>
+            {
+                "Test Author 1",
+                "Bok Titel 1",
+                "1"
+            };
+
+            var actualBookData = "";
+            int testNr = 0;
+
+            foreach (var testString in expectedBookData)
+            {
+                switch (testNr)
+                {
+                    case 0:
+                        actualBookData = testBookDetail.Author.Name;
+                        break;
+                    case 1:
+                        actualBookData = testBookDetail.Titel;
+                        break;
+                    case 2:
+                        actualBookData = testBookDetail.ID.ToString();
+                        break;
+                }
+                //Assert
+                Assert.Equal(expectedBookData[testNr], actualBookData);
+                testNr++;
+            }
+            
         }
 
         private void Seed(ApplicationDbContext context)
