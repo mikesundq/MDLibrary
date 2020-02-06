@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using MDLibrary.Application.Interfaces;
 using MDLibrary.Domain;
 using MDLibrary.Infrastructure.Persistence;
@@ -57,6 +58,17 @@ namespace MDLibrary.Infrastructure.Service
         public int ShowNumberOfBooks(int id)
         {
             return context.Book.Where(b => b.BookDetailsID == id).ToList().Count;
+        }
+
+        public BookDetails GetBookDetailsById(int id)
+        {
+           return context.BookDetails.FindAsync(id).Result;
+        }
+
+        public void UpdateBookDetails(BookDetails bookDetails)
+        {
+            context.Update(bookDetails);
+            context.SaveChanges();
         }
     }
 }

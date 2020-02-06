@@ -81,21 +81,22 @@ namespace MDLibrary.MVC.Controllers
             return RedirectToAction("Error", "Home", "");
         }
 
-       /* // GET: BookDetails/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: BookDetails/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var bookDetails = await _context.BookDetails.FindAsync(id);
+            var bookDetails = await Task.Run(()=> bookService.GetBookDetailsById(id)); //bookService.Get //_context.BookDetails.FindAsync(id);
             if (bookDetails == null)
             {
                 return NotFound();
             }
-            ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "ID", bookDetails.AuthorID);
-            return View(bookDetails);
+            EditBookVm vm = new EditBookVm();
+            vm.ISBN = bookDetails.ISBN;
+            vm.Titel = bookDetails.Titel;
+            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name");
+            vm.Details = bookDetails.Details;
+            return View(vm);
+           // ViewData["AuthorID"] = new SelectList(authorService.GetAllAuthors(), "ID", "ID", bookDetails.AuthorID);
         }
 
         // POST: BookDetails/Edit/5
@@ -112,7 +113,7 @@ namespace MDLibrary.MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                /*try
                 {
                     _context.Update(bookDetails);
                     await _context.SaveChangesAsync();
@@ -127,13 +128,19 @@ namespace MDLibrary.MVC.Controllers
                     {
                         throw;
                     }
-                }
+                }*/
+                bookService.UpdateBookDetails(bookDetails);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "ID", bookDetails.AuthorID);
-            return View(bookDetails);
+            EditBookVm vm = new EditBookVm();
+            vm.ISBN = bookDetails.ISBN;
+            vm.Titel = bookDetails.Titel;
+            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name");
+            vm.Details = bookDetails.Details;
+            return View(vm);
         }
-        */
+        
         
         // GET: BookDetails/Delete/5
         public async Task<IActionResult> Delete(int id)
@@ -142,8 +149,6 @@ namespace MDLibrary.MVC.Controllers
             {
                 return NotFound();
             }
-
-
 
             bookService.DeleteBookDetailsByID(id);
 

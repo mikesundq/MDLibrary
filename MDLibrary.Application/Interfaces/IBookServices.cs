@@ -18,5 +18,9 @@ namespace MDLibrary.Application.Interfaces
         public IList<BookDetails> ShowAllBooksByAuthor(int id);
 
         public IList<BookDetails> ShowAllBookDetails();
+
+        public BookDetails GetBookDetailsById(int id);
+
+        public void UpdateBookDetails(BookDetails bookDetails);
     }
 }
