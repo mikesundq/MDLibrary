@@ -118,40 +118,41 @@ namespace MDLibrary.Tests
         public void ShowAllBookDetails_ListOfAllBooksDetals_CountNrThree()
         {
             //Arrange
-            var testBookService = new BookServices(null);
-            /*var testBookDetails1 = new BookDetails()
-            {
-                ID = 1,
-                Titel = "C# for dummies",
-                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                AuthorID = 1,
-                ISBN = "123456"
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ShowAllBookDetails")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            Seed(context);
+
+            var testBookService = new BookServices(context);
+            var bookDetails = new[]
+{
+                new BookDetails { ID = 1, AuthorID = 1, ISBN = "1234567891012", Titel = "Bok Titel 1"},
+                new BookDetails { ID = 2, AuthorID = 1, ISBN = "1234567891013", Titel = "Bok Titel 2"},
+                new BookDetails { ID = 3, AuthorID = 2, ISBN = "1234567891014", Titel = "Bok Titel 3"}
             };
-            testBookService.ListOfBookDetails.Add(testBookDetails1);
-            var testBookDetails2 = new BookDetails()
+
+            List<string> expectedList = new List<string>();
+
+            foreach(var book in bookDetails)
             {
-                ID = 2,
-                Titel = "C# for dummies",
-                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                AuthorID = 1,
-                ISBN = "123456"
-            };
-            testBookService.ListOfBookDetails.Add(testBookDetails2);
-            var testBookDetails3 = new BookDetails()
-            {
-                ID = 3,
-                Titel = "C# for dummies",
-                Details = "Learn to write programs using C#. The perfect book for the perfect dummy.",
-                AuthorID = 2,
-                ISBN = "123456"
-            };
-            testBookService.ListOfBookDetails.Add(testBookDetails3); */
-            var expectedCountNr = 3;
+                expectedList.Add(book.Titel);
+            }
+
             //Act
-            var actualCountNr = 1; // testBookService.ShowAllBookDetails().Count;
+            List<BookDetails> actualList = new List<BookDetails>(); 
+            actualList = testBookService.ShowAllBookDetails().ToList();
+
 
             //Assert
-            Assert.Equal(expectedCountNr, actualCountNr);
+            int i = 0;
+            foreach(var book in actualList)
+            {
+                Assert.Equal(expectedList[i], book.Titel);
+                i++;
+            }
         }
 
         private void Seed(ApplicationDbContext context)
