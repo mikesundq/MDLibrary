@@ -133,26 +133,24 @@ namespace MDLibrary.MVC.Controllers
             ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "ID", bookDetails.AuthorID);
             return View(bookDetails);
         }
-        /*
+        */
+        
         // GET: BookDetails/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var bookDetails = await _context.BookDetails
-                .Include(b => b.Author)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (bookDetails == null)
-            {
-                return NotFound();
-            }
 
-            return View(bookDetails);
+
+            bookService.DeleteBookDetailsByID(id);
+
+
+            return RedirectToAction(nameof(Index));
         }
-
+        /*
         // POST: BookDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -163,7 +161,7 @@ namespace MDLibrary.MVC.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        *//*
         private bool BookDetailsExists(int id)
         {
             return _context.BookDetails.Any(e => e.ID == id);
