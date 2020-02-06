@@ -49,9 +49,14 @@ namespace MDLibrary.MVC.Controllers
               } */
 
             var bookDetails = bookService.GetBookDetailsById(id);
-           // var displayBookVm = new EditBookVm();
-            
-            return View(bookDetails);
+            var displayBookVm = new BookDetailsVm();
+            displayBookVm.ID = bookDetails.ID;
+            displayBookVm.Author = authorService.GetAuthorById(bookDetails.AuthorID).Name;
+            displayBookVm.AuthorID = bookDetails.AuthorID;
+            displayBookVm.Titel = bookDetails.Titel;
+            displayBookVm.ISBN = bookDetails.ISBN;
+            displayBookVm.Details = bookDetails.Details;
+            return View(displayBookVm);
         }
         
         // GET: BookDetails/Create

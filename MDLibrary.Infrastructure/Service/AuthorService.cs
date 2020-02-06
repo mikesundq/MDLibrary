@@ -32,6 +32,11 @@ namespace MDLibrary.Infrastructure.Service
             //return Authors;
         }
 
+        public Author GetAuthorById(int id)
+        {
+            return context.Author.Find(id);
+        }
+
         public void RemoveAuthor(int id)
         {
             var author = context.Author.Find(id);
@@ -39,5 +44,7 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
             //Authors.RemoveAll(a => a.ID == id);
         }
+
+
     }
 }

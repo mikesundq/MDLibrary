@@ -11,5 +11,6 @@ namespace MDLibrary.Application.Interfaces
         public void RemoveAuthor(int id);
         public IList<Author> GetAllAuthors();
 
+        public Author GetAuthorById(int id);
     }
 }
