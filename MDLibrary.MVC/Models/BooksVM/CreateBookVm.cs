@@ -15,9 +15,12 @@ namespace MDLibrary.MVC.Models.BooksVM
         public string ISBN { get; set; }
         [Required]
         public string Title { get; set; }
-        [Required]
         public SelectList Authors { get; set; }
-        public int AuthorID { get; set; }
+        [Required]
+        public int AuthorID { get; set;  }
         public string Details { get; set; }
+
+
+
     }
 }
