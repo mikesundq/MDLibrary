@@ -4,6 +4,9 @@ using System.Text;
 using Xunit;
 using MDLibrary.Domain;
 using MDLibrary.Infrastructure.Service;
+using Microsoft.EntityFrameworkCore;
+using MDLibrary.Infrastructure.Persistence;
+using System.Linq;
 
 namespace MDLibrary.Tests
 {
@@ -12,81 +15,86 @@ namespace MDLibrary.Tests
         [Fact]
         public void LoanOutBook_AddOneLoanToEmptyList_CountNrOne()
         {
-            var testLoanService = new LoanService();
-            var expectedCountNr = 1;
-            var testLoan = new Loan();
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_LoanOutBook")
+                .Options;
 
-            testLoanService.LoanOutBook(testLoan);
+            var context = new ApplicationDbContext(options);
 
-            var actualCountNr = testLoanService.Loans.Count;
+            var testLoanService = new LoanService(context);
+            var expectedResult = 1;
 
-            Assert.Equal(expectedCountNr, actualCountNr);
+            //Act
+            testLoanService.LoanOutBook(new Loan() { ID = 1, BookCopyID = 1, MemberID = 1 });
+            var actualResult = context.Loan.Find(1).BookCopyID;
+
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
         public void LoanService_ReturnOneBook_CountNrZeroOnLoanList()
         {
             //Arrange
-            var testLoanService = new LoanService();
-            var testLoan = new Loan
-            {
-                ID = 1
-            };
-            testLoanService.Loans.Add(testLoan);
 
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ReturnOneBook")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            var testLoanService = new LoanService(context);
+
+            context.Loan.Add(new Loan { ID = 1, BookCopyID = 1, MemberID = 1 });
             var expectedResult = 0;
 
             //Act
-            testLoanService.ReturnBook(testLoan.ID);
-            var actualResult = testLoanService.Loans.Count;
+            testLoanService.ReturnBook(1);
+            var actualResult = context.Loan.ToList().Count;
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
         }
-        [Theory]
-        [InlineData(1,12)]
-        [InlineData(2,20)]
-        public void ShowAllBooksLoanedByMember_ListWithTwoLoansFromMember_CorrectBookID(int testNr, int expectedBookID)
+
+        [Fact]
+        public void ShowAllBooksLoanedByMember_ListWithTwoLoansFromMember_CorrectBookIDs()
         {
             //Arrange
-            //var testBookService = new BookService()
-            //{
-            //    ListOfBooks =
-            //    {
-            //        new BookCopy() {ID = 23},
-            //        new BookCopy() {ID = 12},
-            //        new BookCopy() {ID = 20},
-            //    }
-            //};
-            var testLoanService = new LoanService()
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ShowAllBooksLoanedByMember")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            BookCopy[] bookCopies =
             {
-                Loans =
-                {
-                    new Loan() {MemberID = 1, ID = 1, BookCopyID = 23},
-                    new Loan() {MemberID = 2, ID = 2, BookCopyID = 12},
-                    new Loan() {MemberID = 2, ID = 3, BookCopyID = 20},
-                }
+                new BookCopy() { ID = 1, BookDetailsID = 1 },
+                new BookCopy() { ID = 2, BookDetailsID = 2 },
+                new BookCopy() { ID = 3, BookDetailsID = 3 }
+            };
+            Loan[] loans =
+            {
+                new Loan() {ID = 1, MemberID = 1, BookCopyID = bookCopies[0].ID },
+                new Loan() {ID = 2, MemberID = 2, BookCopyID = bookCopies[1].ID },
+                new Loan() {ID = 3, MemberID = 2, BookCopyID = bookCopies[2].ID }
             };
 
-            int actualBookID;
-            var listOfBookSFromMember = testLoanService.ShowAllBooksLoanedByMember(2);
+            context.Loan.AddRange(loans);
+            context.SaveChanges();
+
+            var testLoanService = new LoanService(context);
+
+            var expectedResultOne = 2;
+            var expectedResultTwo = 3;
 
             //Act
-            switch (testNr)
-            {
-                case 1:
-                    actualBookID = listOfBookSFromMember[0];
-                    break;
-                case 2:
-                    actualBookID = listOfBookSFromMember[1];
-                    break;
-                default:
-                    actualBookID = 0;
-                    break;
-            }
+            var actualResult = testLoanService.ShowAllBooksLoanedByMember(2);
 
             //Assert
-            Assert.Equal(expectedBookID, actualBookID);
+            Assert.Equal(expectedResultOne, actualResult[0].BookCopyID);
+            Assert.Equal(expectedResultTwo, actualResult[1].BookCopyID);
+
         }
     }
 }
