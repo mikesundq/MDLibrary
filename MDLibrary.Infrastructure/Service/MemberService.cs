@@ -28,14 +28,8 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<Member> GetAllMembers()
         {
-
             return context.Member.OrderBy(m => m.Name).ToList();
-
         }
-
-        public Task<object> ToListAsync()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

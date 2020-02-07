@@ -48,12 +48,15 @@ namespace MDLibrary.MVC.Controllers
 
             return View(member);
         }
-
+        */
         // GET: Members/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new CreateMemberVm();
+            return View(vm);
         }
+        
+        /*
 
         // POST: Members/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -70,7 +73,7 @@ namespace MDLibrary.MVC.Controllers
             }
             return View(member);
         }
-
+        /*
         // GET: Members/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
