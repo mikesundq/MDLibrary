@@ -60,6 +60,43 @@ namespace MDLibrary.Tests
             }
         }
 
+        [Fact]
+        public void GetMemberById_GetMemberWithId3_CorrectMember()
+        {
+            //arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("Member_GetMemberById").Options;
+            var context = new ApplicationDbContext(options);
+            SeedMockData(context);
+            var testMemberService = new MemberService(context);
+            var expectedMember = new Member { Name = "TestD Mem333", SSN = "8003033333" };
+            //act
+            var actualMember = testMemberService.GetMemberById(3);
+
+            //assert
+            Assert.Equal(expectedMember.Name, actualMember.Name);
+
+        }
+        [Fact]
+        public void RemoveMemberById_RemoveOneMember_CorrectCount()
+        {
+            //arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("Member_RemoveMemberById").Options;
+            var context = new ApplicationDbContext(options);
+            SeedMockData(context);
+            var testMemberService = new MemberService(context);
+            var expectedCountNr = 3;
+            //act
+            testMemberService.RemoveMemberById(2);
+            var actualCountNr = context.Member.ToList().Count;
+            //assert
+            Assert.Equal(expectedCountNr, actualCountNr);
+
+        }
+
+
+
         private void SeedMockData(ApplicationDbContext context)
         {
             var members = new[]
