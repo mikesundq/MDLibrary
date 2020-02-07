@@ -18,8 +18,11 @@ namespace MDLibrary.MVC.Models.LoanVM
         [Required]
         [DisplayName("Title")]
         public SelectList BookCopyName { get; set; }
+        public int BookCopyID { get; set; }
         [Required]
         [DisplayName("Member")]
         public SelectList MemberName { get; set; }
+
+        public int MemberID { get; set; }
     }
 }
