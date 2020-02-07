@@ -95,7 +95,32 @@ namespace MDLibrary.Tests
 
         }
 
+        //public void EditMember(Member member)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
+        [Fact]
+        public void EditMember_ChangeNameOfMember_CorrectName()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .EnableSensitiveDataLogging()
+                .UseInMemoryDatabase("Member_EditMember").Options;
+            
+            var context = new ApplicationDbContext(options);
+            SeedMockData(context);
+            var testMemberService = new MemberService(context);
+            var expectedName = "Changed Name";
+            
+            var testMember = new Member { ID = 1, Name = expectedName, SSN = "8001011111" };
+            //act
+            testMemberService.EditMember(testMember);
+            var actualName = "";//context.Member.Where(m => m.ID == 1).First().Name;
+            //assert
+            Assert.Equal(expectedName, actualName);
+
+
+        }
 
         private void SeedMockData(ApplicationDbContext context)
         {

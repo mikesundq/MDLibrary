@@ -26,6 +26,12 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
+        public void EditMember(Member member)
+        {
+            context.Member.Update(member);
+            context.SaveChanges();
+        }
+
         public IList<Member> GetAllMembers()
         {
             return context.Member.OrderBy(m => m.Name).ToList();
