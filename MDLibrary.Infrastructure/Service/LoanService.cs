@@ -1,39 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MDLibrary.Application.Interfaces;
 using MDLibrary.Domain;
+using MDLibrary.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace MDLibrary.Infrastructure.Service
 {
     public class LoanService : ILoanService
     {
-        public List<Loan> Loans = new List<Loan>();
+       // public List<Loan> Loans = new List<Loan>();
+
+        private readonly ApplicationDbContext context;
+        public LoanService(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
 
         public void LoanOutBook(Loan loan)
         {
-            Loans.Add(loan);
+            context.Add(loan);
+            context.SaveChanges();
         }
 
         public void ReturnBook(int loanID)
         {
-            Loans.RemoveAll(l => l.ID == loanID);
+            var loanToRemove = context.Loan.Find(loanID);
+            context.Remove(loanToRemove);
+            context.SaveChanges();
         }
 
-        public IList<int> ShowAllBooksLoanedByMember(int memberID)
+        public IList<Loan> ShowAllBooksLoanedByMember(int memberID)
         {
-            //Get all loans from this member
-            List<Loan> listOfLoanWithCorrectBooks = Loans.FindAll(l => l.MemberID == memberID);
+            var bookLoans = context.Loan
+                .Where(x => x.MemberID == memberID).ToList();
 
-            //Get all bookIDs from the loan list above
-            List<int> listOfBookIDsToReturn = new List<int>();
-            foreach(var loan in listOfLoanWithCorrectBooks)
-            {
-                listOfBookIDsToReturn.Add(loan.BookCopyID);
-            }
+            return bookLoans;
+            /*  //Get all loans from this member
+              List<Loan> listOfLoanWithCorrectBooks = context.Loan //.FindAll(l => l.MemberID == memberID);
 
-            //Return list of IDs
-            return listOfBookIDsToReturn;
+              //Get all bookIDs from the loan list above
+              List<int> listOfBookIDsToReturn = new List<int>();
+              foreach(var loan in listOfLoanWithCorrectBooks)
+              {
+                  listOfBookIDsToReturn.Add(loan.BookCopyID);
+              }
+
+              //Return list of IDs
+              return listOfBookIDsToReturn; 
+            return null;*/
         }
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
