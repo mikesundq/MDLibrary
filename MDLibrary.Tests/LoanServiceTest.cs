@@ -96,5 +96,34 @@ namespace MDLibrary.Tests
             Assert.Equal(expectedResultTwo, actualResult[1].BookCopyID);
 
         }
+
+        [Fact]
+        public void GetAllLoans_GetAllLoansFromList_CountTwoLoans()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_GetAllLoans")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            Loan[] loans =
+            {
+                new Loan() { ID = 1, BookCopyID = 2, MemberID = 2},
+                new Loan() { ID = 2, BookCopyID = 5, MemberID = 5}
+            };
+
+            context.Loan.AddRange(loans);
+            context.SaveChanges();
+
+            var testLoanService = new LoanService(context);
+            var expectedResult = 2;
+
+            //Act
+            var actualResult = testLoanService.GetAllLoans().Count;
+
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
     }
 }

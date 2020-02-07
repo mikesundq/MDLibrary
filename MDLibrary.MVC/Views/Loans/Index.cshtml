@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MDLibrary.Domain.Loan>
+﻿@model MDLibrary.MVC.Models.LoanVM.LoanIndexVm
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TimeOfLoan)
+                Loan date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeToReturnBook)
+               Book return date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookCopy)
+                Book
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Member)
+                Member
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Loans) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TimeOfLoan)
@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.TimeToReturnBook)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookCopy.ID)
+                @Html.DisplayFor(modelItem => item.BookCopy.BookDetailsID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Member.ID)

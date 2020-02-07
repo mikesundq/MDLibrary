@@ -19,6 +19,12 @@ namespace MDLibrary.Infrastructure.Service
             this.context = context;
         }
 
+        public IList<Loan> GetAllLoans()
+        {
+            //return context.Loan.Include(b => b.BookCopy).ToList();
+            return context.Loan.ToList();
+        }
+
         public void LoanOutBook(Loan loan)
         {
             context.Add(loan);
@@ -38,19 +44,6 @@ namespace MDLibrary.Infrastructure.Service
                 .Where(x => x.MemberID == memberID).ToList();
 
             return bookLoans;
-            /*  //Get all loans from this member
-              List<Loan> listOfLoanWithCorrectBooks = context.Loan //.FindAll(l => l.MemberID == memberID);
-
-              //Get all bookIDs from the loan list above
-              List<int> listOfBookIDsToReturn = new List<int>();
-              foreach(var loan in listOfLoanWithCorrectBooks)
-              {
-                  listOfBookIDsToReturn.Add(loan.BookCopyID);
-              }
-
-              //Return list of IDs
-              return listOfBookIDsToReturn; 
-            return null;*/
         }
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
