@@ -30,6 +30,17 @@ namespace MDLibrary.Infrastructure.Service
         {
             return context.Member.OrderBy(m => m.Name).ToList();
         }
-       
+
+        public Member GetMemberById(int id)
+        {
+            return context.Member.Find(id);
+        }
+
+        public void RemoveMemberById(int id)
+        {
+            var member = context.Member.Find(id);
+            context.Member.Remove(member);
+            context.SaveChanges();
+        }
     }
 }

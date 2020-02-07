@@ -56,22 +56,25 @@ namespace MDLibrary.MVC.Controllers
             return View(vm);
         }
         
-        /*
+        
 
         // POST: Members/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SSN,Name")] Member member)
+        public async Task<IActionResult> Create(CreateMemberVm vm)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(member);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(member);
+            if (!ModelState.IsValid)
+                return View(vm);
+
+            var newMembertoAdd = new Member();
+            newMembertoAdd.Name = vm.Name;
+            newMembertoAdd.SSN = vm.SSN;
+            memberService.AddNewMember(newMembertoAdd);
+            
+            return RedirectToAction(nameof(Index));
+            
         }
         /*
         // GET: Members/Edit/5
@@ -124,21 +127,21 @@ namespace MDLibrary.MVC.Controllers
             }
             return View(member);
         }
-
+        */
         // GET: Members/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (member == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            
+            var member = memberService.GetMemberById(id);
+            
+            //if (member == null)
+            //{
+            //    return NotFound();
+            //}
 
             return View(member);
         }
@@ -148,15 +151,9 @@ namespace MDLibrary.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var member = await _context.Member.FindAsync(id);
-            _context.Member.Remove(member);
-            await _context.SaveChangesAsync();
+            memberService.RemoveMemberById(id);
             return RedirectToAction(nameof(Index));
         }
-
-        private bool MemberExists(int id)
-        {
-            return _context.Member.Any(e => e.ID == id);
-        } */
+       
     }
 }

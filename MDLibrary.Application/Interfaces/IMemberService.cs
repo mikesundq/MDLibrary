@@ -11,5 +11,8 @@ namespace MDLibrary.Application.Interfaces
         public void AddNewMember(Member member);
         
         public IList<Member> GetAllMembers();
+
+        public Member GetMemberById(int id);
+        public void RemoveMemberById(int id);
     }
 }
