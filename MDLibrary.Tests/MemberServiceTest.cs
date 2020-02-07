@@ -103,6 +103,7 @@ namespace MDLibrary.Tests
         [Fact]
         public void EditMember_ChangeNameOfMember_CorrectName()
         {
+            //arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .EnableSensitiveDataLogging()
                 .UseInMemoryDatabase("Member_EditMember").Options;
@@ -111,11 +112,11 @@ namespace MDLibrary.Tests
             SeedMockData(context);
             var testMemberService = new MemberService(context);
             var expectedName = "Changed Name";
-            
-            var testMember = new Member { ID = 1, Name = expectedName, SSN = "8001011111" };
+            var testMember = context.Member.Where(m => m.ID == 1).First();
+            testMember.Name = expectedName;
             //act
             testMemberService.EditMember(testMember);
-            var actualName = "";//context.Member.Where(m => m.ID == 1).First().Name;
+            var actualName = context.Member.Where(m => m.ID == 1).First().Name;
             //assert
             Assert.Equal(expectedName, actualName);
 
