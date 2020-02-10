@@ -119,17 +119,12 @@ namespace MDLibrary.MVC.Controllers
         // GET: Members/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-            
+
             var member = memberService.GetMemberById(id);
-            
-            //if (member == null)
-            //{
-            //    return NotFound();
-            //}
+            if (member == null)
+            {
+                return NotFound();
+            }
 
             return View(member);
         }
