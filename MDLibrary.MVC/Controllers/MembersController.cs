@@ -30,25 +30,29 @@ namespace MDLibrary.MVC.Controllers
         }
 
 
-        /*
+        
         // GET: Members/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (member == null)
-            {
-                return NotFound();
-            }
+            var member = memberService.GetMemberById(id);
 
-            return View(member);
+            var vm = new DetailsMemberVm();
+
+            vm.ID = member.ID;
+            vm.Name = member.Name;
+            if (member.Loans != null)
+                vm.Loans = member.Loans;
+            
+
+
+            return View(vm);
         }
-        */
+        
         // GET: Members/Create
         public IActionResult Create()
         {
@@ -85,11 +89,11 @@ namespace MDLibrary.MVC.Controllers
             {
                 return NotFound();
             }
-            var editMemberVm = new EditMemberVm();
-            editMemberVm.Name = memberToEdit.Name;
-            editMemberVm.SSN = memberToEdit.SSN;
+            var vm = new EditMemberVm();
+            vm.Name = memberToEdit.Name;
+            vm.SSN = memberToEdit.SSN;
 
-            return View(editMemberVm);
+            return View(vm);
         }
         
         // POST: Members/Edit/5
@@ -97,18 +101,15 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID, SSN,Name")] Member member)
+        public async Task<IActionResult> Edit(int id, [Bind("ID, SSN,Name")] EditMemberVm vm)
         {
 
-
-            if (id != member.ID)
-                return NotFound();
-
             if (!ModelState.IsValid)
-                return View(member);
+                return View(vm);
 
-
-
+            var member = memberService.GetMemberById(id);
+            member.SSN = vm.SSN;
+            member.Name = vm.Name;
             memberService.EditMember(member);
 
 
