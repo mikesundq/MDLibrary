@@ -32,11 +32,11 @@
             <td>
                 @Html.DisplayFor(modelItem => loan.TimeToReturnBook)
             </td>
-            @*<td>
-                <a asp-action="Edit" asp-route-id="@loan.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@loan.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@loan.ID">Delete</a>
-            </td>*@
+            <td>
+                <a asp-controller="Loan" asp-action="Edit" asp-route-id="@loan.ID">Edit</a> |
+                <a asp-controller="Loan" asp-action="Details" asp-route-id="@loan.ID">Details</a> |
+                <a asp-controller="Loan" asp-action="Delete" asp-route-id="@loan.ID">Delete</a>
+            </td>
         </tr>
         }
     </tbody>
