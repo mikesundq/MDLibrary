@@ -14,10 +14,14 @@ namespace MDLibrary.MVC.Controllers
 {
     public class MembersController : Controller
     {
+        private readonly IBookServices bookServices;
+        private readonly ILoanService loanService;
         private readonly IMemberService memberService;
 
-        public MembersController(IMemberService memberService)
+        public MembersController(IMemberService memberService, ILoanService loanService, IBookServices bookServices)
         {
+            this.bookServices = bookServices;
+            this.loanService = loanService;
             this.memberService = memberService;
         }
 
@@ -34,12 +38,17 @@ namespace MDLibrary.MVC.Controllers
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var member = memberService.GetMemberById(id);
+            if (member == null)
+                return NotFound();
+
+            member.Loans = loanService.ShowAllBooksLoanedByMember(member.ID);
+
+            //foreach (var loan in member.Loans)
+            //{
+            //    loan.BookCopy = bookServices
+            //}
 
             var vm = new DetailsMemberVm();
 

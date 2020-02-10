@@ -70,5 +70,10 @@ namespace MDLibrary.Infrastructure.Service
             context.Update(bookDetails);
             context.SaveChanges();
         }
+
+        public BookCopy GetBookCopyById(int id)
+        {
+            return context.Book.Find(id);
+        }
     }
 }
