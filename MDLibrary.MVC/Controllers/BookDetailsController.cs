@@ -151,23 +151,21 @@ namespace MDLibrary.MVC.Controllers
                 return NotFound();
             }
 
-            bookService.DeleteBookDetailsByID(id);
-
-
-            return RedirectToAction(nameof(Index));
+            var bookDetails = bookService.GetBookDetailsById(id);
+            bookDetails.Author = authorService.GetAuthorById(bookDetails.AuthorID);
+            return View(bookDetails);
+          
         }
-        /*
+        
         // POST: BookDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bookDetails = await _context.BookDetails.FindAsync(id);
-            _context.BookDetails.Remove(bookDetails);
-            await _context.SaveChangesAsync();
+            bookService.DeleteBookDetailsByID(id);
             return RedirectToAction(nameof(Index));
         }
-        *//*
+        /*
         private bool BookDetailsExists(int id)
         {
             return _context.BookDetails.Any(e => e.ID == id);
