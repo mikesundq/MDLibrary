@@ -47,8 +47,6 @@ namespace MDLibrary.MVC.Controllers
             vm.Name = member.Name;
             if (member.Loans != null)
                 vm.Loans = member.Loans;
-            
-
 
             return View(vm);
         }

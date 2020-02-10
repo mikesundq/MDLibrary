@@ -58,11 +58,11 @@ namespace MDLibrary.Infrastructure.Persistence
                 new Member { ID = 1, Name = "Mikael Sundqvist", SSN = "800424-1234" },
                 new Member { ID = 2, Name = "Daniel Ny", SSN = "800419-1234"}
             );
-            //modelBuilder.Entity<Loan>().HasData
-            //(
-            //    new Loan { ID = 1, TimeOfLoan = Convert.ToDateTime("2020-01-21"), TimeToReturnBook = Convert.ToDateTime("2020-02-04"), BookCopyID = 2, MemberID = 1 },
-            //    new Loan { ID = 2, TimeOfLoan = Convert.ToDateTime("2021-02-06"), TimeToReturnBook = Convert.ToDateTime("2021-02-20"), BookCopyID = 3, MemberID = 2 }
-            //);
+            modelBuilder.Entity<Loan>().HasData
+            (
+                new Loan { ID = 1, TimeOfLoan = Convert.ToDateTime("2020-01-21"), TimeToReturnBook = Convert.ToDateTime("2020-02-04"), BookCopyID = 2, MemberID = 1 },
+                new Loan { ID = 2, TimeOfLoan = Convert.ToDateTime("2021-02-06"), TimeToReturnBook = Convert.ToDateTime("2021-02-20"), BookCopyID = 3, MemberID = 2 }
+            );
 
         }
 
