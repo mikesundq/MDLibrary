@@ -7,27 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MDLibrary.Domain;
 using MDLibrary.Infrastructure.Persistence;
+using MDLibrary.MVC.Models.LoanVM;
+using MDLibrary.Infrastructure.Service;
+using MDLibrary.Application.Interfaces;
 
 namespace MDLibrary.MVC.Controllers
 {
     public class LoansController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IMemberService memberService;
+        private readonly ILoanService loanService;
 
-        public LoansController(ApplicationDbContext context)
+        public LoansController(ILoanService loanService, IMemberService memberService)
         {
-            _context = context;
+            this.memberService = memberService;
+            this.loanService = loanService;
         }
 
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Loan.Include(l => l.BookCopy).Include(l => l.Member);
-            return View(await applicationDbContext.ToListAsync());
+            var loan = loanService.GetAllLoans(); 
+            var vm = new LoanIndexVm();
+            vm.Loans = loan;
+            return View(vm);
         }
 
         // GET: Loans/Details/5
-        public async Task<IActionResult> Details(int? id)
+      /*  public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -44,14 +51,16 @@ namespace MDLibrary.MVC.Controllers
             }
 
             return View(loan);
-        }
+        } */
 
         // GET: Loans/Create
         public IActionResult Create()
         {
-            ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID");
-            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID");
-            return View();
+            var vm = new CreateLoanVm();
+            
+            //ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID");
+            //ViewData["MemberID"] = new SelectList(_context.Member, "ID", "Name");
+            return View(vm);
         }
 
         // POST: Loans/Create
@@ -59,20 +68,30 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
+        public async Task<IActionResult> Create(CreateLoanVm vm) //([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(loan);
-                await _context.SaveChangesAsync();
+                var loan = new Loan();
+                loan.BookCopyID = vm.BookCopyID;
+                loan.MemberID = vm.MemberID;
+                loan.TimeOfLoan = vm.TimeOfLoan;
+                loan.TimeToReturnBook = Convert.ToDateTime(vm.TimeToReturnBook);
+
+                loanService.LoanOutBook(loan);
+
                 return RedirectToAction(nameof(Index));
+                //_context.Add(loan);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
             }
-            ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID", loan.BookCopyID);
-            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID", loan.MemberID);
-            return View(loan);
+            //ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID", loan.BookCopyID);
+            //ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID", loan.MemberID);
+            //return View(loan);
+            return RedirectToAction("Error", "Home", "");
         }
 
-        // GET: Loans/Edit/5
+       /* // GET: Loans/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -156,11 +175,11 @@ namespace MDLibrary.MVC.Controllers
             _context.Loan.Remove(loan);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+        } 
 
         private bool LoanExists(int id)
         {
             return _context.Loan.Any(e => e.ID == id);
-        }
+        } */
     }
 }

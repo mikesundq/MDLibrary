@@ -12,6 +12,8 @@ namespace MDLibrary.Application.Interfaces
         public IList<BookCopy> ShowAllBooksOnLoan();
         public IList<Loan> ShowAllBooksLoanedByMember(int memberID);
         public IList<BookCopy> ShowAllBooksNotOnLoan();
+
+        public IList<Loan> GetAllLoans();
         
     }
 }
