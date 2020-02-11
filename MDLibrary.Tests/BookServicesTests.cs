@@ -199,6 +199,32 @@ namespace MDLibrary.Tests
             
         }
 
+        [Fact]
+        public void ÉditBook_EditBookRecord_BookRecordShouldBeEdited()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_EditBook")
+                .Options;
+
+            var context = new ApplicationDbContext(options);
+
+            Seed(context);
+
+            var testBookService = new BookServices(context);
+
+            var bookToChange = context.BookDetails.Where(x => x.ID == 1).First();
+            bookToChange.Titel = "This was changed";
+
+                //Assert
+                testBookService.UpdateBookDetails(bookToChange);
+
+            var actualResult = context.BookDetails.Where(x => x.ID == 1).First().Titel;
+            //Act
+            Assert.Equal("This was changed", actualResult);
+        }
+
+
         private void Seed(ApplicationDbContext context)
         {
             var authors = new[]
