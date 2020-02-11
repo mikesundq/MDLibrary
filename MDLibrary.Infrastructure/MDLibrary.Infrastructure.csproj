@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200211141100_firstOnSecond.cs" />
-    <Compile Remove="Migrations\20200211141100_firstOnSecond.Designer.cs" />
+    <Compile Remove="Migrations\20200211135517_manyBooksInLoan.cs" />
+    <Compile Remove="Migrations\20200211135517_manyBooksInLoan.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
