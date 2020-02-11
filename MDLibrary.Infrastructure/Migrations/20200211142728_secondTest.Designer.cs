@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MDLibrary.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200211092002_test")]
-    partial class test
+    [Migration("20200211142728_secondTest")]
+    partial class secondTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,33 +59,16 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.Property<int>("BookDetailsID")
                         .HasColumnType("int");
 
+                    b.Property<int>("LoanID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("BookDetailsID");
 
-                    b.ToTable("BookCopy");
+                    b.HasIndex("LoanID");
 
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            BookDetailsID = 1
-                        },
-                        new
-                        {
-                            ID = 2,
-                            BookDetailsID = 1
-                        },
-                        new
-                        {
-                            ID = 3,
-                            BookDetailsID = 2
-                        },
-                        new
-                        {
-                            ID = 4,
-                            BookDetailsID = 3
-                        });
+                    b.ToTable("BookCopy");
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.BookDetails", b =>
@@ -148,9 +131,6 @@ namespace MDLibrary.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BookCopyID")
-                        .HasColumnType("int");
-
                     b.Property<int>("MemberID")
                         .HasColumnType("int");
 
@@ -162,29 +142,9 @@ namespace MDLibrary.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BookCopyID");
-
                     b.HasIndex("MemberID");
 
                     b.ToTable("Loan");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            BookCopyID = 2,
-                            MemberID = 1,
-                            TimeOfLoan = new DateTime(2020, 1, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TimeToReturnBook = new DateTime(2020, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            ID = 2,
-                            BookCopyID = 3,
-                            MemberID = 2,
-                            TimeOfLoan = new DateTime(2021, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TimeToReturnBook = new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.Member", b =>
@@ -227,6 +187,12 @@ namespace MDLibrary.Infrastructure.Migrations
                         .HasForeignKey("BookDetailsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("MDLibrary.Domain.Loan", "Loan")
+                        .WithMany("BookCopies")
+                        .HasForeignKey("LoanID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.BookDetails", b =>
@@ -240,12 +206,6 @@ namespace MDLibrary.Infrastructure.Migrations
 
             modelBuilder.Entity("MDLibrary.Domain.Loan", b =>
                 {
-                    b.HasOne("MDLibrary.Domain.BookCopy", "BookCopy")
-                        .WithMany("Loans")
-                        .HasForeignKey("BookCopyID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MDLibrary.Domain.Member", "Member")
                         .WithMany("Loans")
                         .HasForeignKey("MemberID")

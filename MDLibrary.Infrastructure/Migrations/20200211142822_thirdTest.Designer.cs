@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MDLibrary.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200204141315_first")]
-    partial class first
+    [Migration("20200211142822_thirdTest")]
+    partial class thirdTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,18 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Author");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Thomas Årnfelt"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Johan Hagesund"
+                        });
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.BookCopy", b =>
@@ -47,11 +59,16 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.Property<int>("BookDetailsID")
                         .HasColumnType("int");
 
+                    b.Property<int>("LoanID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("BookDetailsID");
 
-                    b.ToTable("Book");
+                    b.HasIndex("LoanID");
+
+                    b.ToTable("BookCopy");
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.BookDetails", b =>
@@ -79,6 +96,32 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.HasIndex("AuthorID");
 
                     b.ToTable("BookDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            AuthorID = 1,
+                            Details = "Incidenten i Böhmen är Linköpingsförfattaren Thomas Årnfelts debutroman. I den blandas historia med vidskepelse och ockultism på ett sätt som passar den tidigmoderna världen före upplysningen.",
+                            ISBN = "9789198138795",
+                            Titel = "Incidenten i Böhmen"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            AuthorID = 2,
+                            Details = "Historien om Linköpings Hockey Club börjar inte den 4 augusti 1976. LHC bildades visserligen den dagen men spelartruppen, utrustningen, platsen i seriesystemet och traditionen var densamma som i BK Kenty som man bröt sig ut från.",
+                            ISBN = "9789198075526",
+                            Titel = "Linköpings Hockey Club och den förändrade självbilden"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            AuthorID = 1,
+                            Details = "Den som söker är en psykologisk spänningsroman där Johan följer tips som leder honom till makabra brottsplatser och ger hans karriär en skjuts framåt. Men vad är det egentligen som händer och vem är det som tipsar? Vilka mörka krafter är det som har satts i rörelse? Är det verkligen ok att gå över lik för att nå sina drömmars mål?",
+                            ISBN = "9789198428506",
+                            Titel = "Den som söker"
+                        });
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.Loan", b =>
@@ -87,9 +130,6 @@ namespace MDLibrary.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BookCopyID")
-                        .HasColumnType("int");
 
                     b.Property<int>("MemberID")
                         .HasColumnType("int");
@@ -102,11 +142,25 @@ namespace MDLibrary.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BookCopyID");
-
                     b.HasIndex("MemberID");
 
                     b.ToTable("Loan");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            MemberID = 1,
+                            TimeOfLoan = new DateTime(2020, 1, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TimeToReturnBook = new DateTime(2020, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ID = 2,
+                            MemberID = 2,
+                            TimeOfLoan = new DateTime(2021, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TimeToReturnBook = new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.Member", b =>
@@ -126,6 +180,20 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Member");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Mikael Sundqvist",
+                            SSN = "8004241234"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Daniel Ny",
+                            SSN = "8004191234"
+                        });
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.BookCopy", b =>
@@ -133,6 +201,12 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.HasOne("MDLibrary.Domain.BookDetails", "BookDetails")
                         .WithMany("BookCopies")
                         .HasForeignKey("BookDetailsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MDLibrary.Domain.Loan", "Loan")
+                        .WithMany("BookCopies")
+                        .HasForeignKey("LoanID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -148,12 +222,6 @@ namespace MDLibrary.Infrastructure.Migrations
 
             modelBuilder.Entity("MDLibrary.Domain.Loan", b =>
                 {
-                    b.HasOne("MDLibrary.Domain.BookCopy", "BookCopy")
-                        .WithMany("Loans")
-                        .HasForeignKey("BookCopyID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MDLibrary.Domain.Member", "Member")
                         .WithMany("Loans")
                         .HasForeignKey("MemberID")

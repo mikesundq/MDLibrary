@@ -63,8 +63,8 @@ namespace MDLibrary.Infrastructure.Persistence
                 new BookCopy { ID = 1, BookDetailsID = 1, LoanID = 1 },
                 new BookCopy { ID = 2, BookDetailsID = 1},
                 new BookCopy { ID = 3, BookDetailsID = 2, LoanID = 2},
-                new BookCopy { ID = 4, BookDetailsID = 3}
-            );
+                new BookCopy { ID = 4, BookDetailsID = 3} 
+            ); 
 
         }
        

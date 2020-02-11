@@ -2,7 +2,7 @@
 
 namespace MDLibrary.Infrastructure.Migrations
 {
-    public partial class Seed_Data : Migration
+    public partial class secondTest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,8 +20,8 @@ namespace MDLibrary.Infrastructure.Migrations
                 columns: new[] { "ID", "Name", "SSN" },
                 values: new object[,]
                 {
-                    { 1, "Mikael Sundqvist", "800424-1234" },
-                    { 2, "Daniel Ny", "800419-1234" }
+                    { 1, "Mikael Sundqvist", "8004241234" },
+                    { 2, "Daniel Ny", "8004191234" }
                 });
 
             migrationBuilder.InsertData(
@@ -38,52 +38,11 @@ namespace MDLibrary.Infrastructure.Migrations
                 table: "BookDetails",
                 columns: new[] { "ID", "AuthorID", "Details", "ISBN", "Titel" },
                 values: new object[] { 2, 2, "Historien om Linköpings Hockey Club börjar inte den 4 augusti 1976. LHC bildades visserligen den dagen men spelartruppen, utrustningen, platsen i seriesystemet och traditionen var densamma som i BK Kenty som man bröt sig ut från.", "9789198075526", "Linköpings Hockey Club och den förändrade självbilden" });
-
-            migrationBuilder.InsertData(
-                table: "Book",
-                columns: new[] { "ID", "BookDetailsID" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 2, 1 },
-                    { 4, 3 },
-                    { 3, 2 }
-                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "Book",
-                keyColumn: "ID",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Book",
-                keyColumn: "ID",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "Book",
-                keyColumn: "ID",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "Book",
-                keyColumn: "ID",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Member",
-                keyColumn: "ID",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Member",
-                keyColumn: "ID",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
                 table: "BookDetails",
                 keyColumn: "ID",
                 keyValue: 1);
@@ -97,6 +56,16 @@ namespace MDLibrary.Infrastructure.Migrations
                 table: "BookDetails",
                 keyColumn: "ID",
                 keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Member",
+                keyColumn: "ID",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Member",
+                keyColumn: "ID",
+                keyValue: 2);
 
             migrationBuilder.DeleteData(
                 table: "Author",

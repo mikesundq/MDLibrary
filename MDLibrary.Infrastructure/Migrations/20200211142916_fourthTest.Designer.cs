@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MDLibrary.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200205073740_Seed_Data")]
-    partial class Seed_Data
+    [Migration("20200211142916_fourthTest")]
+    partial class fourthTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,32 +59,41 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.Property<int>("BookDetailsID")
                         .HasColumnType("int");
 
+                    b.Property<int>("LoanID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("BookDetailsID");
 
-                    b.ToTable("Book");
+                    b.HasIndex("LoanID");
+
+                    b.ToTable("BookCopy");
 
                     b.HasData(
                         new
                         {
                             ID = 1,
-                            BookDetailsID = 1
+                            BookDetailsID = 1,
+                            LoanID = 1
                         },
                         new
                         {
                             ID = 2,
-                            BookDetailsID = 1
+                            BookDetailsID = 1,
+                            LoanID = 0
                         },
                         new
                         {
                             ID = 3,
-                            BookDetailsID = 2
+                            BookDetailsID = 2,
+                            LoanID = 2
                         },
                         new
                         {
                             ID = 4,
-                            BookDetailsID = 3
+                            BookDetailsID = 3,
+                            LoanID = 0
                         });
                 });
 
@@ -148,9 +157,6 @@ namespace MDLibrary.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BookCopyID")
-                        .HasColumnType("int");
-
                     b.Property<int>("MemberID")
                         .HasColumnType("int");
 
@@ -162,11 +168,25 @@ namespace MDLibrary.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BookCopyID");
-
                     b.HasIndex("MemberID");
 
                     b.ToTable("Loan");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            MemberID = 1,
+                            TimeOfLoan = new DateTime(2020, 1, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TimeToReturnBook = new DateTime(2020, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ID = 2,
+                            MemberID = 2,
+                            TimeOfLoan = new DateTime(2021, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TimeToReturnBook = new DateTime(2021, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("MDLibrary.Domain.Member", b =>
@@ -192,13 +212,13 @@ namespace MDLibrary.Infrastructure.Migrations
                         {
                             ID = 1,
                             Name = "Mikael Sundqvist",
-                            SSN = "800424-1234"
+                            SSN = "8004241234"
                         },
                         new
                         {
                             ID = 2,
                             Name = "Daniel Ny",
-                            SSN = "800419-1234"
+                            SSN = "8004191234"
                         });
                 });
 
@@ -207,6 +227,12 @@ namespace MDLibrary.Infrastructure.Migrations
                     b.HasOne("MDLibrary.Domain.BookDetails", "BookDetails")
                         .WithMany("BookCopies")
                         .HasForeignKey("BookDetailsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MDLibrary.Domain.Loan", "Loan")
+                        .WithMany("BookCopies")
+                        .HasForeignKey("LoanID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -222,12 +248,6 @@ namespace MDLibrary.Infrastructure.Migrations
 
             modelBuilder.Entity("MDLibrary.Domain.Loan", b =>
                 {
-                    b.HasOne("MDLibrary.Domain.BookCopy", "BookCopy")
-                        .WithMany("Loans")
-                        .HasForeignKey("BookCopyID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MDLibrary.Domain.Member", "Member")
                         .WithMany("Loans")
                         .HasForeignKey("MemberID")
