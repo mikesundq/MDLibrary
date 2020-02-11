@@ -15,11 +15,13 @@ namespace MDLibrary.MVC.Controllers
 {
     public class LoansController : Controller
     {
+        private readonly IBookServices bookService;
         private readonly IMemberService memberService;
         private readonly ILoanService loanService;
 
-        public LoansController(ILoanService loanService, IMemberService memberService)
+        public LoansController(ILoanService loanService, IMemberService memberService, IBookServices bookService)
         {
+            this.bookService = bookService;
             this.memberService = memberService;
             this.loanService = loanService;
         }
@@ -27,9 +29,9 @@ namespace MDLibrary.MVC.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            var loan = loanService.GetAllLoans(); 
+            var loans = loanService.GetAllLoans();
             var vm = new LoanIndexVm();
-            vm.Loans = loan;
+            vm.Loans = loans;
             return View(vm);
         }
 
@@ -57,7 +59,8 @@ namespace MDLibrary.MVC.Controllers
         public IActionResult Create()
         {
             var vm = new CreateLoanVm();
-            
+           
+            //vm.TimeOfLoan = new DateTime();
             //ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID");
             //ViewData["MemberID"] = new SelectList(_context.Member, "ID", "Name");
             return View(vm);

@@ -105,41 +105,21 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,ISBN,Titel,AuthorID,Details")] BookDetails bookDetails)
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Titel,AuthorID,Details")] EditBookVm vm)
         {
-            if (id != bookDetails.ID)
-            {
-                return NotFound();
-            }
+            
+            if (!ModelState.IsValid)
+                return View(vm);
 
-            if (ModelState.IsValid)
-            {
-                /*try
-                {
-                    _context.Update(bookDetails);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookDetailsExists(bookDetails.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }*/
-                bookService.UpdateBookDetails(bookDetails);
+            var bookDetails = bookService.GetBookDetailsById(id);
 
-                return RedirectToAction(nameof(Index));
-            }
-            EditBookVm vm = new EditBookVm();
-            vm.ISBN = bookDetails.ISBN;
-            vm.Titel = bookDetails.Titel;
-            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name", bookDetails.AuthorID);
-            vm.Details = bookDetails.Details;
-            return View(vm);
+            bookDetails.ISBN = vm.ISBN;
+            bookDetails.Titel = vm.Titel;
+            bookDetails.AuthorID = vm.AuthorID;
+            bookService.UpdateBookDetails(bookDetails);
+
+            return RedirectToAction(nameof(Index));
+            
         }
         
         
@@ -151,23 +131,21 @@ namespace MDLibrary.MVC.Controllers
                 return NotFound();
             }
 
-            bookService.DeleteBookDetailsByID(id);
-
-
-            return RedirectToAction(nameof(Index));
+            var bookDetails = bookService.GetBookDetailsById(id);
+            bookDetails.Author = authorService.GetAuthorById(bookDetails.AuthorID);
+            return View(bookDetails);
+          
         }
-        /*
+        
         // POST: BookDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bookDetails = await _context.BookDetails.FindAsync(id);
-            _context.BookDetails.Remove(bookDetails);
-            await _context.SaveChangesAsync();
+            bookService.DeleteBookDetailsByID(id);
             return RedirectToAction(nameof(Index));
         }
-        *//*
+        /*
         private bool BookDetailsExists(int id)
         {
             return _context.BookDetails.Any(e => e.ID == id);

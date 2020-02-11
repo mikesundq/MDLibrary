@@ -109,8 +109,8 @@ namespace MDLibrary.Tests
 
             Loan[] loans =
             {
-                new Loan() { ID = 1, BookCopyID = 2, MemberID = 2},
-                new Loan() { ID = 2, BookCopyID = 5, MemberID = 5}
+                new Loan() { ID = 1, BookCopy = new BookCopy {BookDetails = new BookDetails{Titel = "test1" } }, Member = new Member{ Name = "mr.Test"} },
+                new Loan() { ID = 2, BookCopy = new BookCopy {BookDetails = new BookDetails{Titel = "test2" } }, Member = new Member{ Name = "ms.Test"} }
             };
 
             context.Loan.AddRange(loans);

@@ -4,14 +4,16 @@ using MDLibrary.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MDLibrary.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200210151215_someloans")]
+    partial class someloans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +63,7 @@ namespace MDLibrary.Infrastructure.Migrations
 
                     b.HasIndex("BookDetailsID");
 
-                    b.ToTable("BookCopy");
+                    b.ToTable("Book");
 
                     b.HasData(
                         new
@@ -208,13 +210,13 @@ namespace MDLibrary.Infrastructure.Migrations
                         {
                             ID = 1,
                             Name = "Mikael Sundqvist",
-                            SSN = "8004241234"
+                            SSN = "800424-1234"
                         },
                         new
                         {
                             ID = 2,
                             Name = "Daniel Ny",
-                            SSN = "8004191234"
+                            SSN = "800419-1234"
                         });
                 });
 

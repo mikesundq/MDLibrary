@@ -66,7 +66,7 @@ namespace MDLibrary.Tests
 
             testBookService.AddMoreCopiesOfBook(testBook);
 
-            var actualResult = context.Book.ToList().Count;
+            var actualResult = context.BookCopy.ToList().Count;
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
@@ -223,6 +223,24 @@ namespace MDLibrary.Tests
             //Act
             Assert.Equal("This was changed", actualResult);
         }
+
+
+        public void GetBookCopyById_FetchBookCopyID3_GetCorrectBookDetailsId()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_GetBookCopyById").Options;
+            var context = new ApplicationDbContext(options);
+            Seed(context);
+            var expectedBookDetailsID = 2;
+            var bookService = new BookServices(context);
+            //Act
+            var testBookCopy = bookService.GetBookCopyById(3);
+            var acctualBookDetailsID = testBookCopy.BookDetailsID;
+            //Assert
+            Assert.Equal(expectedBookDetailsID, acctualBookDetailsID);
+        }
+
 
 
         private void Seed(ApplicationDbContext context)

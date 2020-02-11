@@ -60,6 +60,69 @@ namespace MDLibrary.Tests
             }
         }
 
+        [Fact]
+        public void GetMemberById_GetMemberWithId3_CorrectMember()
+        {
+            //arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("Member_GetMemberById").Options;
+            var context = new ApplicationDbContext(options);
+            SeedMockData(context);
+            var testMemberService = new MemberService(context);
+            var expectedMember = new Member { Name = "TestD Mem333", SSN = "8003033333" };
+            //act
+            var actualMember = testMemberService.GetMemberById(3);
+
+            //assert
+            Assert.Equal(expectedMember.Name, actualMember.Name);
+
+        }
+        [Fact]
+        public void RemoveMemberById_RemoveOneMember_CorrectCount()
+        {
+            //arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("Member_RemoveMemberById").Options;
+            var context = new ApplicationDbContext(options);
+            SeedMockData(context);
+            var testMemberService = new MemberService(context);
+            var expectedCountNr = 3;
+            //act
+            testMemberService.RemoveMemberById(2);
+            var actualCountNr = context.Member.ToList().Count;
+            //assert
+            Assert.Equal(expectedCountNr, actualCountNr);
+
+        }
+
+        //public void EditMember(Member member)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        [Fact]
+        public void EditMember_ChangeNameOfMember_CorrectName()
+        {
+            //arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .EnableSensitiveDataLogging()
+                .UseInMemoryDatabase("Member_EditMember").Options;
+            
+            var context = new ApplicationDbContext(options);
+            SeedMockData(context);
+            var testMemberService = new MemberService(context);
+            var expectedName = "Changed Name";
+            var testMember = context.Member.Where(m => m.ID == 1).First();
+            testMember.Name = expectedName;
+            //act
+            testMemberService.EditMember(testMember);
+            var actualName = context.Member.Where(m => m.ID == 1).First().Name;
+            //assert
+            Assert.Equal(expectedName, actualName);
+
+
+        }
+
         private void SeedMockData(ApplicationDbContext context)
         {
             var members = new[]

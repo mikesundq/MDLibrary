@@ -22,5 +22,7 @@ namespace MDLibrary.Application.Interfaces
         public BookDetails GetBookDetailsById(int id);
 
         public void UpdateBookDetails(BookDetails bookDetails);
+
+        public BookCopy GetBookCopyById(int id);
     }
 }

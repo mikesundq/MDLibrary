@@ -15,7 +15,7 @@ namespace MDLibrary.Infrastructure.Persistence
 
         public DbSet<Author> Author { get; set; }
         public DbSet<BookDetails> BookDetails { get; set; }
-        public DbSet<BookCopy> Book { get; set; }
+        public DbSet<BookCopy> BookCopy { get; set; }
         public DbSet<Member> Member { get; set; }
         public DbSet<Loan> Loan { get; set; }
 
@@ -55,14 +55,14 @@ namespace MDLibrary.Infrastructure.Persistence
             );
             modelBuilder.Entity<Member>().HasData
             (
-                new Member { ID = 1, Name = "Mikael Sundqvist", SSN = "800424-1234" },
-                new Member { ID = 2, Name = "Daniel Ny", SSN = "800419-1234"}
+                new Member { ID = 1, Name = "Mikael Sundqvist", SSN = "8004241234" },
+                new Member { ID = 2, Name = "Daniel Ny", SSN = "8004191234"}
             );
-            //modelBuilder.Entity<Loan>().HasData
-            //(
-            //    new Loan { ID = 1, TimeOfLoan = Convert.ToDateTime("2020-01-21"), TimeToReturnBook = Convert.ToDateTime("2020-02-04"), BookCopyID = 2, MemberID = 1 },
-            //    new Loan { ID = 2, TimeOfLoan = Convert.ToDateTime("2021-02-06"), TimeToReturnBook = Convert.ToDateTime("2021-02-20"), BookCopyID = 3, MemberID = 2 }
-            //);
+            modelBuilder.Entity<Loan>().HasData
+            (
+                new Loan { ID = 1, TimeOfLoan = Convert.ToDateTime("2020-01-21"), TimeToReturnBook = Convert.ToDateTime("2020-02-04"), BookCopyID = 2, MemberID = 1 },
+                new Loan { ID = 2, TimeOfLoan = Convert.ToDateTime("2021-02-06"), TimeToReturnBook = Convert.ToDateTime("2021-02-20"), BookCopyID = 3, MemberID = 2 }
+            );
 
         }
 
@@ -81,6 +81,10 @@ namespace MDLibrary.Infrastructure.Persistence
         private void ConfigureMember(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Member>().Property(x => x.SSN).HasMaxLength(12);
+            modelBuilder.Entity<Member>()
+                .HasMany(m => m.Loans)
+                .WithOne(l => l.Member)
+                .HasForeignKey(l => l.MemberID);
         }
 
         private void ConfigureBookCopy(ModelBuilder modelBuilder)

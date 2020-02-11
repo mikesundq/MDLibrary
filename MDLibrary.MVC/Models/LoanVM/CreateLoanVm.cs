@@ -12,17 +12,16 @@ namespace MDLibrary.MVC.Models.LoanVM
     {
         [Required]
         [DisplayName("Loan date")]
-        public DateTime TimeOfLoan { get; set; }
+        public DateTime TimeOfLoan { get; }
         [DisplayName("Date to return book")]
         public string TimeToReturnBook { get; set; }
-        [Required]
         [DisplayName("Title")]
         public SelectList BookCopyName { get; set; }
-        public int BookCopyID { get; set; }
         [Required]
+        public int BookCopyID { get; set; }
         [DisplayName("Member")]
         public SelectList MemberName { get; set; }
-
+        [Required]
         public int MemberID { get; set; }
     }
 }

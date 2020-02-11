@@ -23,7 +23,7 @@ namespace MDLibrary.Infrastructure.Service
         }
         public void AddMoreCopiesOfBook(BookCopy book)
         {
-            context.Book.Add(book);
+            context.BookCopy.Add(book);
             context.SaveChanges();
         }
 
@@ -57,11 +57,12 @@ namespace MDLibrary.Infrastructure.Service
 
         public int ShowNumberOfBooks(int id)
         {
-            return context.Book.Where(b => b.BookDetailsID == id).ToList().Count;
+            return context.BookCopy.Where(b => b.BookDetailsID == id).ToList().Count;
         }
 
         public BookDetails GetBookDetailsById(int id)
         {
+            //check how this works..
            return context.BookDetails.FindAsync(id).Result;
         }
 
@@ -69,6 +70,12 @@ namespace MDLibrary.Infrastructure.Service
         {
             context.Update(bookDetails);
             context.SaveChanges();
+        }
+
+        public BookCopy GetBookCopyById(int id)
+        {
+            //return context.Book.FindAsync(id).Result;
+            return context.BookCopy.Find(id);
         }
     }
 }
