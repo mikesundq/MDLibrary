@@ -66,7 +66,7 @@ namespace MDLibrary.Tests
 
             testBookService.AddMoreCopiesOfBook(testBook);
 
-            var actualResult = context.Book.ToList().Count;
+            var actualResult = context.BookCopy.ToList().Count;
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
@@ -200,7 +200,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        private void GetBookCopyById_FetchBookCopyID3_GetCorrectBookDetailsId()
+        public void GetBookCopyById_FetchBookCopyID3_GetCorrectBookDetailsId()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()

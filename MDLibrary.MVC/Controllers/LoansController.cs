@@ -59,7 +59,8 @@ namespace MDLibrary.MVC.Controllers
         public IActionResult Create()
         {
             var vm = new CreateLoanVm();
-            
+           
+            //vm.TimeOfLoan = new DateTime();
             //ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID");
             //ViewData["MemberID"] = new SelectList(_context.Member, "ID", "Name");
             return View(vm);
