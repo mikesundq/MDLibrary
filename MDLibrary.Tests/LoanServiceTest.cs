@@ -12,124 +12,118 @@ namespace MDLibrary.Tests
 {
     public class LoanServiceTest
     {
+        [Fact]
+        public void LoanOutBook_AddOneLoanToEmptyList_CountNrOne()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_LoanOutBook")
+                .Options;
 
-        ////////////////////////////
-        //this must be rewritten!!!
-        /////////////////////////////
+            var context = new ApplicationDbContext(options);
 
+            var testLoanService = new LoanService(context);
+            var expectedResult = 1;
 
-        //[Fact]
-        //public void LoanOutBook_AddOneLoanToEmptyList_CountNrOne()
-        //{
-        //    //Arrange
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("MDLibrary_LoanOutBook")
-        //        .Options;
+            //Act
+            testLoanService.LoanOutBook(new Loan() { ID = 1, BookCopyID = 1, MemberID = 1 });
+            var actualResult = context.Loan.Find(1).BookCopyID;
 
-        //    var context = new ApplicationDbContext(options);
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
 
-        //    var testLoanService = new LoanService(context);
-        //    var expectedResult = 1;
+        [Fact]
+        public void LoanService_ReturnOneBook_CountNrZeroOnLoanList()
+        {
+            //Arrange
 
-        //    //Act
-        //    testLoanService.LoanOutBook(new Loan() { ID = 1, BookCopyID = 1, MemberID = 1 });
-        //    var actualResult = context.Loan.Find(1).BookCopyID;
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ReturnOneBook")
+                .Options;
 
-        //    //Assert
-        //    Assert.Equal(expectedResult, actualResult);
-        //}
+            var context = new ApplicationDbContext(options);
 
-        //[Fact]
-        //public void LoanService_ReturnOneBook_CountNrZeroOnLoanList()
-        //{
-        //    //Arrange
+            var testLoanService = new LoanService(context);
 
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("MDLibrary_ReturnOneBook")
-        //        .Options;
+            context.Loan.Add(new Loan { ID = 1, BookCopyID = 1, MemberID = 1 });
+            var expectedResult = 0;
 
-        //    var context = new ApplicationDbContext(options);
+            //Act
+            testLoanService.ReturnBook(1);
+            var actualResult = context.Loan.ToList().Count;
 
-        //    var testLoanService = new LoanService(context);
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
 
-        //    context.Loan.Add(new Loan { ID = 1, BookCopyID = 1, MemberID = 1 });
-        //    var expectedResult = 0;
+        [Fact]
+        public void ShowAllBooksLoanedByMember_ListWithTwoLoansFromMember_CorrectBookIDs()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_ShowAllBooksLoanedByMember")
+                .Options;
 
-        //    //Act
-        //    testLoanService.ReturnBook(1);
-        //    var actualResult = context.Loan.ToList().Count;
+            var context = new ApplicationDbContext(options);
 
-        //    //Assert
-        //    Assert.Equal(expectedResult, actualResult);
-        //}
+            BookCopy[] bookCopies =
+            {
+                new BookCopy() { ID = 1, BookDetailsID = 1 },
+                new BookCopy() { ID = 2, BookDetailsID = 2 },
+                new BookCopy() { ID = 3, BookDetailsID = 3 }
+            };
+            Loan[] loans =
+            {
+                new Loan() {ID = 1, MemberID = 1, BookCopyID = bookCopies[0].ID },
+                new Loan() {ID = 2, MemberID = 2, BookCopyID = bookCopies[1].ID },
+                new Loan() {ID = 3, MemberID = 2, BookCopyID = bookCopies[2].ID }
+            };
 
-        //[Fact]
-        //public void ShowAllBooksLoanedByMember_ListWithTwoLoansFromMember_CorrectBookIDs()
-        //{
-        //    //Arrange
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("MDLibrary_ShowAllBooksLoanedByMember")
-        //        .Options;
+            context.Loan.AddRange(loans);
+            context.SaveChanges();
 
-        //    var context = new ApplicationDbContext(options);
+            var testLoanService = new LoanService(context);
 
-        //    BookCopy[] bookCopies =
-        //    {
-        //        new BookCopy() { ID = 1, BookDetailsID = 1 },
-        //        new BookCopy() { ID = 2, BookDetailsID = 2 },
-        //        new BookCopy() { ID = 3, BookDetailsID = 3 }
-        //    };
-        //    Loan[] loans =
-        //    {
-        //        new Loan() {ID = 1, MemberID = 1, BookCopyID = bookCopies[0].ID },
-        //        new Loan() {ID = 2, MemberID = 2, BookCopyID = bookCopies[1].ID },
-        //        new Loan() {ID = 3, MemberID = 2, BookCopyID = bookCopies[2].ID }
-        //    };
+            var expectedResultOne = 2;
+            var expectedResultTwo = 3;
 
-        //    context.Loan.AddRange(loans);
-        //    context.SaveChanges();
+            //Act
+            var actualResult = testLoanService.ShowAllBooksLoanedByMember(2);
 
-        //    var testLoanService = new LoanService(context);
+            //Assert
+            Assert.Equal(expectedResultOne, actualResult[0].BookCopyID);
+            Assert.Equal(expectedResultTwo, actualResult[1].BookCopyID);
 
-        //    var expectedResultOne = 2;
-        //    var expectedResultTwo = 3;
+        }
 
-        //    //Act
-        //    var actualResult = testLoanService.ShowAllBooksLoanedByMember(2);
+        [Fact]
+        public void GetAllLoans_GetAllLoansFromList_CountTwoLoans()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_GetAllLoans")
+                .Options;
 
-        //    //Assert
-        //    Assert.Equal(expectedResultOne, actualResult[0].BookCopyID);
-        //    Assert.Equal(expectedResultTwo, actualResult[1].BookCopyID);
+            var context = new ApplicationDbContext(options);
 
-        //}
+            Loan[] loans =
+            {
+                new Loan() { ID = 1, BookCopy = new BookCopy {BookDetails = new BookDetails{Titel = "test1" } }, Member = new Member{ Name = "mr.Test"} },
+                new Loan() { ID = 2, BookCopy = new BookCopy {BookDetails = new BookDetails{Titel = "test2" } }, Member = new Member{ Name = "ms.Test"} }
+            };
 
-        //[Fact]
-        //public void GetAllLoans_GetAllLoansFromList_CountTwoLoans()
-        //{
-        //    //Arrange
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("MDLibrary_GetAllLoans")
-        //        .Options;
+            context.Loan.AddRange(loans);
+            context.SaveChanges();
 
-        //    var context = new ApplicationDbContext(options);
+            var testLoanService = new LoanService(context);
+            var expectedResult = 2;
 
-        //    Loan[] loans =
-        //    {
-        //        new Loan() { ID = 1, BookCopy = new BookCopy {BookDetails = new BookDetails{Titel = "test1" } }, Member = new Member{ Name = "mr.Test"} },
-        //        new Loan() { ID = 2, BookCopy = new BookCopy {BookDetails = new BookDetails{Titel = "test2" } }, Member = new Member{ Name = "ms.Test"} }
-        //    };
+            //Act
+            var actualResult = testLoanService.GetAllLoans().Count;
 
-        //    context.Loan.AddRange(loans);
-        //    context.SaveChanges();
-
-        //    var testLoanService = new LoanService(context);
-        //    var expectedResult = 2;
-
-        //    //Act
-        //    var actualResult = testLoanService.GetAllLoans().Count;
-
-        //    //Assert
-        //    Assert.Equal(expectedResult, actualResult);
-        //}
+            //Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
     }
 }

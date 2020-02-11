@@ -22,7 +22,7 @@ namespace MDLibrary.Infrastructure.Service
         public IList<Loan> GetAllLoans()
         {
             return context.Loan
-                .Include(l => l.BookCopies)
+                .Include(l => l.BookCopy.BookDetails)
                 .Include(l => l.Member)
                 .ToList();
             //return context.Loan.ToList();
@@ -45,7 +45,7 @@ namespace MDLibrary.Infrastructure.Service
         {
             var bookLoans = context.Loan
                 .Include(x => x.Member)
-                .Include(x => x.BookCopies)
+                .Include(x => x.BookCopy)
                 .Where(x => x.MemberID == memberID).ToList();
 
             return bookLoans;

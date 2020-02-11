@@ -73,13 +73,10 @@ namespace MDLibrary.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateLoanVm vm) //([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
         {
-
-            //This must be changed!!
-
             if (ModelState.IsValid)
             {
                 var loan = new Loan();
-                //loan.BookCopyID = vm.BookCopyID;
+                loan.BookCopyID = vm.BookCopyID;
                 loan.MemberID = vm.MemberID;
                 loan.TimeOfLoan = vm.TimeOfLoan;
                 loan.TimeToReturnBook = Convert.ToDateTime(vm.TimeToReturnBook);
