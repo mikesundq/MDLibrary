@@ -93,6 +93,9 @@ namespace MDLibrary.Infrastructure.Persistence
 
         private void ConfigureBookCopy(ModelBuilder modelBuilder)
         {
+            /////////////////////////////////////////////////////////////////
+            //Had to manually change migration to change LoanID to nullable!!!
+            ///////////////////////////////////////////////////////////////
             modelBuilder.Entity<BookCopy>()
                 .HasOne(b => b.BookDetails)
                 .WithMany(b => b.BookCopies)

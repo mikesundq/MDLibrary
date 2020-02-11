@@ -2,7 +2,7 @@
 
 namespace MDLibrary.Infrastructure.Migrations
 {
-    public partial class manyBooksInLoan : Migration
+    public partial class test2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,8 +21,7 @@ namespace MDLibrary.Infrastructure.Migrations
             migrationBuilder.AddColumn<int>(
                 name: "LoanID",
                 table: "BookCopy",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.UpdateData(
                 table: "BookCopy",
