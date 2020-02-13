@@ -12,7 +12,7 @@ namespace MDLibrary.Tests
 {
     public class LoanServiceTest
     {
-        [Fact]
+       /* [Fact]
         public void LoanOutBook_AddOneLoanToEmptyList_CountNrOne()
         {
             //Arrange
@@ -124,6 +124,6 @@ namespace MDLibrary.Tests
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
-        }
+        } */
     }
 }
