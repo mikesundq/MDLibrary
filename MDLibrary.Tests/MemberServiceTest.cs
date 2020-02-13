@@ -95,10 +95,6 @@ namespace MDLibrary.Tests
 
         }
 
-        //public void EditMember(Member member)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         [Fact]
         public void EditMember_ChangeNameOfMember_CorrectName()

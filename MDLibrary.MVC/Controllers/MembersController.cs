@@ -46,13 +46,13 @@ namespace MDLibrary.MVC.Controllers
 
 
 
-            member.Loans = loanService.ShowAllBooksLoanedByMember(member.ID);
+            //member.Loans = loanService.ShowAllBooksLoanedByMember(member.ID);
 
-            foreach (var loan in member.Loans)
-            {
-                loan.BookCopy = bookServices.GetBookCopyById(loan.BookCopyID);
-                loan.BookCopy.BookDetails = bookServices.GetBookDetailsById(loan.BookCopy.BookDetailsID);
-            }
+            //foreach (var loan in member.Loans)
+            //{
+            //    loan.BookCopy = bookServices.GetBookCopyById(loan.BookCopyID);
+            //    loan.BookCopy.BookDetails = bookServices.GetBookDetailsById(loan.BookCopy.BookDetailsID);
+            //}
 
             var vm = new DetailsMemberVm();
 
