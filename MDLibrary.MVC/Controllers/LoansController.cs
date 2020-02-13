@@ -76,7 +76,7 @@ namespace MDLibrary.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var loan = new Loan();
-                loan.BookCopyID = vm.BookCopyID;
+               // loan.BookCopyID = vm.BookCopyID;
                 loan.MemberID = vm.MemberID;
                 loan.TimeOfLoan = vm.TimeOfLoan;
                 loan.TimeToReturnBook = Convert.ToDateTime(vm.TimeToReturnBook);
