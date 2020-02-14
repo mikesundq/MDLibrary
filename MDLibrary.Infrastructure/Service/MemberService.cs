@@ -41,11 +41,14 @@ namespace MDLibrary.Infrastructure.Service
 
         public Member GetMemberById(int id)
         {
+            //try to get loans.bookcopies...
+            
+
             return context.Member
                 .Include(m => m.Loans)
                 .FirstOrDefault(m => m.ID == id);
-                
-            //return context.Member.Find(id);
+
+            //return context.Member.FindAsync(id).Result;
         }
 
         public void RemoveMemberById(int id)

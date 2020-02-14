@@ -9,7 +9,7 @@
     <thead>
         <tr>
             <th>
-                Book
+                Number of Books
             </th>
             <th>
                 Time of loan
@@ -24,7 +24,7 @@
         {
         <tr>
             <td>
-                @*@Html.DisplayFor(modelItem => loan.BookCopy.BookDetails.Titel)*@
+                @Html.DisplayFor(modelItem => loan.BookCopies.Count)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => loan.TimeOfLoan)

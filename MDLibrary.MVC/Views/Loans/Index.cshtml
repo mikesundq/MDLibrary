@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                Loan date
+               Loan date
             </th>
             <th>
-               Book return date
+               Books return date
             </th>
             <th>
-                Book
+                Number of Books
             </th>
             <th>
                 Member
@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.TimeToReturnBook)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BookCopies)
+                @Html.DisplayFor(modelItem => item.BookCopies.Count)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Member.Name)
