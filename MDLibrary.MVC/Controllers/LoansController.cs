@@ -30,8 +30,11 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var loans = loanService.GetAllLoans();
+            var bookCopies = loanService.GetAllBooksOnLoan();
+            
             var vm = new LoanIndexVm();
             vm.Loans = loans;
+            vm.BookCopy = bookCopies;
             return View(vm);
         }
 

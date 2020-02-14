@@ -11,7 +11,7 @@ namespace MDLibrary.Infrastructure.Service
 {
     public class LoanService : ILoanService
     {
-       // public List<Loan> Loans = new List<Loan>();
+        // public List<Loan> Loans = new List<Loan>();
 
         private readonly ApplicationDbContext context;
         public LoanService(ApplicationDbContext context)
@@ -21,10 +21,10 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<Loan> GetAllLoans()
         {
-          /*  return context.Loan
-                .Include(l => l.BookCopies)
-                .Include(l => l.Member)
-                .ToList(); */
+            /*  return context.Loan
+                  .Include(l => l.BookCopies)
+                  .Include(l => l.Member)
+                  .ToList(); */
             return context.Loan.ToList();
         }
 
@@ -48,14 +48,20 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
-        public IList<Loan> ShowAllBooksLoanedByMember(int memberID)
+        public IList<Loan> ShowAllLoansByMember(int memberID)
         {
             var bookLoans = context.Loan
-              //  .Include(x => x.Member)
-              //  .Include(x => x.BookCopies)
+                //  .Include(x => x.Member)
+                //  .Include(x => x.BookCopies)
                 .Where(x => x.MemberID == memberID).ToList();
 
             return bookLoans;
+        }
+
+        public IList<BookCopy> GetBookCopiesFromLoan(int loanID)
+        {
+            return context.BookCopy
+                .Where(bc => bc.LoanID == loanID).ToList();
         }
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
@@ -63,9 +69,11 @@ namespace MDLibrary.Infrastructure.Service
             throw new NotImplementedException();
         }
 
-        public IList<BookCopy> ShowAllBooksOnLoan()
+        public IList<BookCopy> GetAllBooksOnLoan()
         {
-            throw new NotImplementedException();
+            return context.BookCopy
+                .Where(bc => bc.LoanID != null)
+                .ToList();
         }
     }
 }
