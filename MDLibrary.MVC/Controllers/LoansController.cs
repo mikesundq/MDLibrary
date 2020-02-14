@@ -31,10 +31,11 @@ namespace MDLibrary.MVC.Controllers
         {
             var loans = loanService.GetAllLoans();
             var bookCopies = loanService.GetAllBooksOnLoan();
-            
+            var memberCopies = memberService.GetAllMembers();
             var vm = new LoanIndexVm();
             vm.Loans = loans;
             vm.BookCopy = bookCopies;
+            vm.MemberCopy = memberCopies;
             return View(vm);
         }
 

@@ -10,7 +10,6 @@ namespace MDLibrary.MVC.Models.LoanVM
     {
         public IList<Loan> Loans { get; set; } = new List<Loan>();
         public IList<BookCopy> BookCopy { get; set; } = new List<BookCopy>();
-
-        public int NrOfBooksInLoan { get; set; }
+        public IList<Member> MemberCopy { get; set; } = new List<Member>();
     }
 }
