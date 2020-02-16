@@ -43,9 +43,6 @@ namespace MDLibrary.MVC.Controllers
             if (member == null)
                 return NotFound();
 
-
-
-
             //member.Loans = loanService.ShowAllBooksLoanedByMember(member.ID);
 
             foreach (var loan in member.Loans)
@@ -54,11 +51,8 @@ namespace MDLibrary.MVC.Controllers
                 loan.BookCopies = updateLoan.BookCopies;
             }
 
+            //var bookDetails = bookServices
             var vm = new DetailsMemberVm();
-
-
-            
-
             vm.ID = member.ID;
             vm.Name = member.Name;
             if (member.Loans != null)

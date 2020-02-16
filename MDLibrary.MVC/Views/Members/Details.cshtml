@@ -24,7 +24,7 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => loan.BookCopies.Count)
+                @Html.DisplayFor(modelItem => loan.BookCopies[0].BookDetails.Titel)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => loan.TimeOfLoan)

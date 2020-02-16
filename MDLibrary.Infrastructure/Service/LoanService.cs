@@ -75,5 +75,15 @@ namespace MDLibrary.Infrastructure.Service
                 .Where(bc => bc.LoanID != null)
                 .ToList();
         }
+
+        public (IList<BookDetails>, IList<Loan>) GetLoanAndDetails(int id)
+        {
+            var loan = context.Loan
+                .Where(l => l.ID == id).ToList();
+
+            var bookDetails = context.BookDetails
+                .Where(bc => bc. == id).ToList();
+
+        }
     }
 }
