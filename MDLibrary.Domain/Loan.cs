@@ -13,6 +13,6 @@ namespace MDLibrary.Domain
         //public BookCopy BookCopy { get; set; }
         public IList<BookCopy> BookCopies { get; set; }
         public int MemberID { get; set; }
-        public Member Member { get; set; }
+        public int BookCopyID { get; set; }
     }
 }
