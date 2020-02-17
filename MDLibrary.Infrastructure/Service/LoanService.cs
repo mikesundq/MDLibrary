@@ -35,6 +35,7 @@ namespace MDLibrary.Infrastructure.Service
                 .Include(l => l.LoanBooks)
                 .ThenInclude(l => l.BookCopy)
                 .ThenInclude(l => l.BookDetails)
+                .Include(l => l.Member)
                 .FirstOrDefault(l => l.ID == id);
         }
 
@@ -51,7 +52,7 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
-        public IList<Loan> ShowAllBooksLoanedByMember(int memberID)
+        public IList<Loan> ShowAllLoansByMember(int memberID)
         {
             var bookLoans = context.Loan
               .Include(l => l.LoanBooks)

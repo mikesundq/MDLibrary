@@ -98,7 +98,7 @@ namespace MDLibrary.Tests
             //var expectedResultTwo = 2;
 
             //Act
-            var bookLoansByMember = testLoanService.ShowAllBooksLoanedByMember(2);
+            var bookLoansByMember = testLoanService.ShowAllLoansByMember(2);
             var actualResult = bookLoansByMember[0].LoanBooks.Count();
 
             //Assert
