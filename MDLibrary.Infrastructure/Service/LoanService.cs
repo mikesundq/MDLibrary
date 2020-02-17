@@ -21,24 +21,20 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<Loan> GetAllLoans()
         {
-            /*  return context.Loan
-                  .Include(l => l.BookCopies)
-                  .Include(l => l.Member)
-                  .ToList(); */
-
             return context.Loan
                 .Include(l => l.LoanBooks)
                 .ThenInclude(l => l.BookCopy)
                 .ThenInclude(l =>  l.BookDetails)
                 .Include(l => l.Member)
                 .ToList();
-            //return context.Loan.ToList();
         }
 
         public Loan GetLoanById(int id)
         {
             return context.Loan
-                .Include(l => l.BookCopies)
+                .Include(l => l.LoanBooks)
+                .ThenInclude(l => l.BookCopy)
+                .ThenInclude(l => l.BookDetails)
                 .FirstOrDefault(l => l.ID == id);
         }
 
@@ -58,9 +54,10 @@ namespace MDLibrary.Infrastructure.Service
         public IList<Loan> ShowAllBooksLoanedByMember(int memberID)
         {
             var bookLoans = context.Loan
-              //  .Include(x => x.Member)
-              //  .Include(x => x.BookCopies)
-                .Where(x => x.MemberID == memberID).ToList();
+              .Include(l => l.LoanBooks)
+              .ThenInclude(l => l.BookCopy)
+              .ThenInclude(l => l.BookDetails)
+              .Where(x => x.MemberID == memberID).ToList();
 
             return bookLoans;
         }
