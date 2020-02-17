@@ -9,7 +9,6 @@ namespace MDLibrary.Domain
         public int ID { get; set; }
         public int BookDetailsID { get; set; }
         public BookDetails BookDetails { get; set; }
-        public int LoanID { get; set; }
-        public Loan Loan { get; set; }
+        
     }
 }

@@ -21,11 +21,18 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<Loan> GetAllLoans()
         {
-          /*  return context.Loan
-                .Include(l => l.BookCopies)
+            /*  return context.Loan
+                  .Include(l => l.BookCopies)
+                  .Include(l => l.Member)
+                  .ToList(); */
+
+            return context.Loan
+                .Include(l => l.LoanBooks)
+                .ThenInclude(l => l.BookCopy)
+                .ThenInclude(l =>  l.BookDetails)
                 .Include(l => l.Member)
-                .ToList(); */
-            return context.Loan.ToList();
+                .ToList();
+            //return context.Loan.ToList();
         }
 
         public Loan GetLoanById(int id)
