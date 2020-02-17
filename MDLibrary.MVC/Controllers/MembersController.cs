@@ -38,31 +38,25 @@ namespace MDLibrary.MVC.Controllers
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int id)
         {
+            var vm = new DetailsMemberVm();
 
             var member = memberService.GetMemberById(id);
             if (member == null)
                 return NotFound();
 
+            vm.ID = member.ID;
+            vm.Name = member.Name;
 
-
+            if (member.Loans != null)
+                vm.Loans = loanService.ShowAllLoansByMember(vm.ID);
 
             //member.Loans = loanService.ShowAllBooksLoanedByMember(member.ID);
 
-            foreach (var loan in member.Loans)
-            {
-                var updateLoan = loanService.GetLoanById(loan.ID);
-                loan.BookCopies = updateLoan.BookCopies;
-            }
-
-            var vm = new DetailsMemberVm();
-
-
-            
-
-            vm.ID = member.ID;
-            vm.Name = member.Name;
-            if (member.Loans != null)
-                vm.Loans = member.Loans;
+            //foreach (var loan in member.Loans)
+            //{
+            //    var updateLoan = loanService.GetLoanById(loan.ID);
+            //    loan.BookCopies = updateLoan.BookCopies;
+            //}
 
             return View(vm);
         }

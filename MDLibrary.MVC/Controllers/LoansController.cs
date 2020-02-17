@@ -40,24 +40,25 @@ namespace MDLibrary.MVC.Controllers
         }
 
         // GET: Loans/Details/5
-      /*  public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var loan = await _context.Loan
-                .Include(l => l.BookCopy)
-                .Include(l => l.Member)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var loan = loanService.GetLoanById(id);
             if (loan == null)
             {
                 return NotFound();
             }
 
-            return View(loan);
-        } */
+            var vm = new DetailsLoanVm();
+            vm.LoanBooks = loan.LoanBooks;
+            vm.ID = loan.ID;
+            vm.Member = loan.Member;
+            vm.MemberID = loan.MemberID;
+            vm.TimeOfLoan = loan.TimeOfLoan;
+            vm.TimeToReturnBook = loan.TimeToReturnBook;
+            
+            return View(vm);
+        } 
 
         // GET: Loans/Create
         public IActionResult Create()

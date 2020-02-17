@@ -10,14 +10,15 @@ namespace MDLibrary.Infrastructure.Persistence
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
-            
+
         }
-        
+
         public DbSet<Author> Author { get; set; }
         public DbSet<BookDetails> BookDetails { get; set; }
         public DbSet<BookCopy> BookCopy { get; set; }
         public DbSet<Member> Member { get; set; }
         public DbSet<Loan> Loan { get; set; }
+        public DbSet<LoanBook> LoanBook {get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,13 +27,17 @@ namespace MDLibrary.Infrastructure.Persistence
             ConfigureBookCopy(modelBuilder);
             ConfigureMember(modelBuilder);
             ConfigureLoan(modelBuilder);
-
+            ConfigureLoanBook(modelBuilder);
             SeedDatabase(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
 
-       
+        private void ConfigureLoanBook(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LoanBook>()
+                .HasKey(l => new { l.LoanID, l.BookCopyID });
+        }
 
         private void SeedDatabase(ModelBuilder modelBuilder)
         {
@@ -60,11 +65,17 @@ namespace MDLibrary.Infrastructure.Persistence
 
             modelBuilder.Entity<BookCopy>().HasData
             (
-                new BookCopy { ID = 1, BookDetailsID = 1, LoanID = 1 },
+                new BookCopy { ID = 1, BookDetailsID = 1},
                 new BookCopy { ID = 2, BookDetailsID = 1},
-                new BookCopy { ID = 3, BookDetailsID = 2, LoanID = 2},
+                new BookCopy { ID = 3, BookDetailsID = 2},
                 new BookCopy { ID = 4, BookDetailsID = 3}
             );
+
+            modelBuilder.Entity<LoanBook>().HasData(
+                new LoanBook { LoanID = 1, BookCopyID = 1 },
+                new LoanBook { LoanID = 2, BookCopyID = 3 },
+                new LoanBook { LoanID = 2, BookCopyID = 2 }
+                );
 
         }
        
@@ -73,12 +84,12 @@ namespace MDLibrary.Infrastructure.Persistence
             modelBuilder.Entity<Loan>()
                 .HasOne(l => l.Member)
                 .WithMany(m => m.Loans)
-                .HasForeignKey(l => l.MemberID)
-                .IsRequired();
+                .HasForeignKey(l => l.MemberID);
             modelBuilder.Entity<Loan>()
-                .HasMany(l => l.BookCopies)
-                .WithOne(bc => bc.Loan)
-                .HasForeignKey(bc => bc.LoanID);
+                .HasMany(l => l.LoanBooks)
+                .WithOne(lb => lb.Loan)
+                .HasForeignKey(lb => lb.LoanID);
+            
         }
 
 
@@ -93,17 +104,10 @@ namespace MDLibrary.Infrastructure.Persistence
 
         private void ConfigureBookCopy(ModelBuilder modelBuilder)
         {
-            /////////////////////////////////////////////////////////////////
-            //Had to manually change migration to change LoanID to nullable!!!
-            ///////////////////////////////////////////////////////////////
             modelBuilder.Entity<BookCopy>()
                 .HasOne(b => b.BookDetails)
                 .WithMany(b => b.BookCopies)
                 .HasForeignKey(b => b.BookDetailsID);
-            modelBuilder.Entity<BookCopy>()
-                .HasOne(b => b.Loan)
-                .WithMany(l => l.BookCopies)
-                .HasForeignKey(b => b.LoanID);
         }
 
         private void ConfigureBookDetails(ModelBuilder modelBuilder)

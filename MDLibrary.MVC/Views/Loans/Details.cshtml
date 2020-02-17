@@ -1,4 +1,4 @@
-﻿@model MDLibrary.Domain.Loan
+﻿@model MDLibrary.MVC.Models.LoanVM.DetailsLoanVm
 
 @{
     ViewData["Title"] = "Details";
@@ -10,30 +10,41 @@
     <h4>Loan</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            Member
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Member.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TimeOfLoan)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TimeOfLoan)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TimeToReturnBook)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TimeToReturnBook)
         </dd>
-        @*<dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookCopy)
+        <dt class="col-sm-2">
+            Number of books
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookCopy.ID)
-        </dd>*@
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Member)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Member.ID)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LoanBooks.Count)
         </dd>
+        @foreach (var item in Model.LoanBooks)
+        {
+            <dd class="col-sm-10">
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookCopy.BookDetails.Titel)
+                </td>
+                <td>
+                    <a asp-action="ReturnBook" asp-route-id="@item.BookCopyID">Return book</a>
+                </td>
+            </dd>
+        }
     </dl>
 </div>
 <div>
