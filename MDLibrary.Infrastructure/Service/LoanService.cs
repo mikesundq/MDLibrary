@@ -11,7 +11,7 @@ namespace MDLibrary.Infrastructure.Service
 {
     public class LoanService : ILoanService
     {
-       // public List<Loan> Loans = new List<Loan>();
+        // public List<Loan> Loans = new List<Loan>();
 
         private readonly ApplicationDbContext context;
         public LoanService(ApplicationDbContext context)
@@ -64,14 +64,22 @@ namespace MDLibrary.Infrastructure.Service
             return bookLoans;
         }
 
+        public IList<BookCopy> GetBookCopiesFromLoan(int loanID)
+        {
+            return context.BookCopy
+                .Where(bc => bc.LoanID == loanID).ToList();
+        }
+
         public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
             throw new NotImplementedException();
         }
 
-        public IList<BookCopy> ShowAllBooksOnLoan()
+        public IList<BookCopy> GetAllBooksOnLoan()
         {
-            throw new NotImplementedException();
+            return context.BookCopy
+                .Where(bc => bc.LoanID != null)
+                .ToList();
         }
     }
 }
