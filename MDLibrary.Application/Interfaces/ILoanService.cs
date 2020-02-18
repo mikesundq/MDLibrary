@@ -8,8 +8,8 @@ namespace MDLibrary.Application.Interfaces
     public interface ILoanService
     {
         public void LoanOutBook(Loan loan);
-        public void ReturnBook(int loanID);
-        public IList<BookCopy> GetAllBooksOnLoan();
+        public void ReturnOneBook(int bookCopyID);
+        public IList<BookCopy> ShowAllBooksOnLoan();
         public IList<Loan> ShowAllLoansByMember(int memberID);
         public IList<BookCopy> ShowAllBooksNotOnLoan();
 
