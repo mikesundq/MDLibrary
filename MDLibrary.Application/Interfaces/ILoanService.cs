@@ -17,7 +17,6 @@ namespace MDLibrary.Application.Interfaces
 
         public Loan GetLoanById(int id);
 
-        public IList<BookCopy> GetBookCopiesFromLoan(int loanID);
 
     }
 }

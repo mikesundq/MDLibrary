@@ -25,7 +25,7 @@ namespace MDLibrary.Infrastructure.Service
                 .Include(l => l.LoanBooks)
                 .ThenInclude(l => l.BookCopy)
                 .ThenInclude(l =>  l.BookDetails)
-                .Include(l => l.Member)
+                .Include(l => l.MemberID)
                 .ToList();
         }
 
@@ -35,7 +35,7 @@ namespace MDLibrary.Infrastructure.Service
                 .Include(l => l.LoanBooks)
                 .ThenInclude(l => l.BookCopy)
                 .ThenInclude(l => l.BookDetails)
-                .Include(l => l.Member)
+                .Include(l => l.MemberID)
                 .FirstOrDefault(l => l.ID == id);
         }
 
@@ -64,22 +64,9 @@ namespace MDLibrary.Infrastructure.Service
             return bookLoans;
         }
 
-        public IList<BookCopy> GetBookCopiesFromLoan(int loanID)
-        {
-            return context.BookCopy
-                .Where(bc => bc.LoanID == loanID).ToList();
-        }
-
         public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
             throw new NotImplementedException();
-        }
-
-        public IList<BookCopy> GetAllBooksOnLoan()
-        {
-            return context.BookCopy
-                .Where(bc => bc.LoanID != null)
-                .ToList();
         }
 
         public (IList<BookDetails>, IList<Loan>) GetLoanAndDetails(int id)
@@ -92,6 +79,11 @@ namespace MDLibrary.Infrastructure.Service
             var bookDetails = context.BookDetails
                 .Where(bc => bc == id).ToList();*/
 
+            throw new NotImplementedException();
+        }
+
+        public IList<BookCopy> ShowAllBooksOnLoan()
+        {
             throw new NotImplementedException();
         }
     }
