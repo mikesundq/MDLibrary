@@ -63,23 +63,16 @@ namespace MDLibrary.Infrastructure.Service
 
             return bookLoans;
         }
-
-        public IList<BookCopy> GetBookCopiesFromLoan(int loanID)
-        {
-            return context.BookCopy
-                .Where(bc => bc.LoanID == loanID).ToList();
-        }
+       
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
             throw new NotImplementedException();
         }
 
-        public IList<BookCopy> GetAllBooksOnLoan()
+        public IList<BookCopy> ShowAllBooksOnLoan()
         {
-            return context.BookCopy
-                .Where(bc => bc.LoanID != null)
-                .ToList();
+            throw new NotImplementedException();
         }
     }
 }
