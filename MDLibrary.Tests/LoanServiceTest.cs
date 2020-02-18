@@ -158,55 +158,6 @@ namespace MDLibrary.Tests
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Fact]
-        public void GetBookCopiesFromLoan_GetBookCopiesLoanedOut()
-        {
-            //Arrange
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("MDLibrary_GetBookCopiesFromLoan")
-                .Options;
-
-            var context = new ApplicationDbContext(options);
-
-            Loan[] loans =
-            {
-                new Loan() {ID = 1, MemberID = 1},
-                new Loan() {ID = 2, MemberID = 2},
-                new Loan() {ID = 3, MemberID = 2}
-            };
-
-            BookCopy[] bookCopies =
-            {
-                new BookCopy() { ID = 1, BookDetailsID = 1, LoanID = 1 },
-                new BookCopy() { ID = 2, BookDetailsID = 2, LoanID = 1 },
-                new BookCopy() { ID = 3, BookDetailsID = 3, LoanID = 2 }
-            };
-
-            context.Loan.AddRange(loans);
-            context.BookCopy.AddRange(bookCopies);
-            context.SaveChanges();
-
-            var testLoanService = new LoanService(context);
-
-            var expectedMemberID = 1;
-            var expectedBookDetailsID = 1;
-
-            //Act
-            var loanForTest = context.Loan
-                .Where(l => l.MemberID == 1).First();
-            var actualMemberID = loanForTest.MemberID;
-
-            var actualBookCopies = testLoanService.GetBookCopiesFromLoan(1);
-
-            var actualBookDetailID = actualBookCopies[0].BookDetailsID;
-
-            
-
-            //Assert
-            Assert.Equal(expectedMemberID, actualMemberID);
-            Assert.Equal(expectedBookDetailsID, actualBookDetailID);
-        }
-
 
         [Fact]
         public void GetMemberAndBooksFromLoan_GetCombinedData_MatchMemberIDAndCountOfTwoBooks()
@@ -254,43 +205,6 @@ namespace MDLibrary.Tests
             //Assert.Equal(expectedLoanCount, actualBookCopiesCount);
         }
 
-        [Fact]
-        public void GetAllBooksOnLoan_ReturnAListOfLoans_ReturnThree()
-        {
-            //Arrange
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("MDLibrary_GetBookCopiesFromLoan")
-                .Options;
-
-            var context = new ApplicationDbContext(options);
-
-            Loan[] loans =
-            {
-                new Loan() {ID = 1, MemberID = 1},
-                new Loan() {ID = 2, MemberID = 2},
-                new Loan() {ID = 3, MemberID = 2}
-            };
-
-            BookCopy[] bookCopies =
-            {
-                new BookCopy() { ID = 1, BookDetailsID = 1, LoanID = 1 },
-                new BookCopy() { ID = 2, BookDetailsID = 2, LoanID = 1 },
-                new BookCopy() { ID = 3, BookDetailsID = 3, LoanID = 2 }
-            };
-
-            context.Loan.AddRange(loans);
-            context.BookCopy.AddRange(bookCopies);
-            context.SaveChanges();
-
-            var testLoanService = new LoanService(context);
-
-            var expectedCount = 3;
-
-            //Act
-            var actualCount = testLoanService.GetAllBooksOnLoan().Count;
-
-            //Assert
-            Assert.Equal(expectedCount, actualCount);
-        }
+       
     }
 }

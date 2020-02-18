@@ -25,7 +25,7 @@ namespace MDLibrary.Infrastructure.Service
                 .Include(l => l.LoanBooks)
                 .ThenInclude(l => l.BookCopy)
                 .ThenInclude(l =>  l.BookDetails)
-                .Include(l => l.MemberID)
+                .Include(l => l.Member)
                 .ToList();
         }
 

@@ -14,6 +14,6 @@ namespace MDLibrary.Domain
         public IList<LoanBook> LoanBooks { get; set; }
         public IList<BookCopy> BookCopies { get; set; }
         public int MemberID { get; set; }
-        public int BookCopyID { get; set; }
+        public Member Member { get; set; }
     }
 }
