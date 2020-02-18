@@ -45,11 +45,12 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
-        public void ReturnBook(int loanID)
+        public void ReturnOneBook(int bookCopyID)
         {
-            var loanToRemove = context.Loan.Find(loanID);
-            context.Remove(loanToRemove);
+            var loanBookToReturn = context.LoanBook.FirstOrDefault(l => l.BookCopyID == bookCopyID);
+            context.Remove(loanBookToReturn);
             context.SaveChanges();
+           
         }
 
         public IList<Loan> ShowAllLoansByMember(int memberID)

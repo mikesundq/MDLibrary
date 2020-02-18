@@ -39,7 +39,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        public void LoanService_ReturnOneBook_CountNrZeroOnLoanList()
+        public void LoanService_ReturnOneBook_CountNrOneOnLoanList()
         {
             //Arrange
 
@@ -50,16 +50,15 @@ namespace MDLibrary.Tests
             var context = new ApplicationDbContext(options);
 
             var testLoanService = new LoanService(context);
-
-            context.Member.Add(new Member { ID = 1 });
-            context.Loan.Add(new Loan { ID = 1, MemberID = 1 });
+            
+            context.LoanBook.AddRange(new LoanBook { BookCopyID = 1 }, new LoanBook { BookCopyID = 2 });
             context.SaveChanges();
             
-            var expectedResult = 0;
+            var expectedResult = 1;
 
             //Act
-            testLoanService.ReturnBook(1);
-            var actualResult = context.Loan.ToList().Count;
+            testLoanService.ReturnOneBook(1);
+            var actualResult = context.LoanBook.ToList().Count;
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
