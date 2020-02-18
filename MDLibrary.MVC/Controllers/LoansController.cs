@@ -29,6 +29,7 @@ namespace MDLibrary.MVC.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
+            
             var loans = loanService.GetAllLoans();
             var vm = new LoanIndexVm();
             vm.Loans = loans;
@@ -98,95 +99,109 @@ namespace MDLibrary.MVC.Controllers
             return RedirectToAction("Error", "Home", "");
         }
 
-       /* // GET: Loans/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        /* // GET: Loans/Edit/5
+         public async Task<IActionResult> Edit(int? id)
+         {
+             if (id == null)
+             {
+                 return NotFound();
+             }
 
-            var loan = await _context.Loan.FindAsync(id);
-            if (loan == null)
-            {
-                return NotFound();
-            }
-            ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID", loan.BookCopyID);
-            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID", loan.MemberID);
-            return View(loan);
+             var loan = await _context.Loan.FindAsync(id);
+             if (loan == null)
+             {
+                 return NotFound();
+             }
+             ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID", loan.BookCopyID);
+             ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID", loan.MemberID);
+             return View(loan);
+         }
+
+         // POST: Loans/Edit/5
+         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Edit(int id, [Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
+         {
+             if (id != loan.ID)
+             {
+                 return NotFound();
+             }
+
+             if (ModelState.IsValid)
+             {
+                 try
+                 {
+                     _context.Update(loan);
+                     await _context.SaveChangesAsync();
+                 }
+                 catch (DbUpdateConcurrencyException)
+                 {
+                     if (!LoanExists(loan.ID))
+                     {
+                         return NotFound();
+                     }
+                     else
+                     {
+                         throw;
+                     }
+                 }
+                 return RedirectToAction(nameof(Index));
+             }
+             ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID", loan.BookCopyID);
+             ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID", loan.MemberID);
+             return View(loan);
+         }
+
+         // GET: Loans/Delete/5
+         public async Task<IActionResult> Delete(int? id)
+         {
+             if (id == null)
+             {
+                 return NotFound();
+             }
+
+             var loan = await _context.Loan
+                 .Include(l => l.BookCopy)
+                 .Include(l => l.Member)
+                 .FirstOrDefaultAsync(m => m.ID == id);
+             if (loan == null)
+             {
+                 return NotFound();
+             }
+
+             return View(loan);
+         }
+
+         // POST: Loans/Delete/5
+         [HttpPost, ActionName("Delete")]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> DeleteConfirmed(int id)
+         {
+             var loan = await _context.Loan.FindAsync(id);
+             _context.Loan.Remove(loan);
+             await _context.SaveChangesAsync();
+             return RedirectToAction(nameof(Index));
+         } 
+
+         private bool LoanExists(int id)
+         {
+             return _context.Loan.Any(e => e.ID == id);
+         } */
+
+        [Route("{controller}/{action}/{bookCopyID}/{loanID}")]
+        //Get ReturnBook
+        public async Task<IActionResult> ReturnBook(int bookCopyID, int loanID)
+        {
+            //if (bookCopyID == 0)
+            //    return NotFound();
+
+            loanService.ReturnOneBook(bookCopyID);
+
+            //return  LocalRedirect($"")
+            return RedirectToAction(nameof(Details), new { id = loanID });
         }
 
-        // POST: Loans/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
-        {
-            if (id != loan.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(loan);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LoanExists(loan.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID", loan.BookCopyID);
-            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID", loan.MemberID);
-            return View(loan);
-        }
-
-        // GET: Loans/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var loan = await _context.Loan
-                .Include(l => l.BookCopy)
-                .Include(l => l.Member)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (loan == null)
-            {
-                return NotFound();
-            }
-
-            return View(loan);
-        }
-
-        // POST: Loans/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var loan = await _context.Loan.FindAsync(id);
-            _context.Loan.Remove(loan);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        } 
-
-        private bool LoanExists(int id)
-        {
-            return _context.Loan.Any(e => e.ID == id);
-        } */
     }
 }

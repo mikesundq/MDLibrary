@@ -67,12 +67,37 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
-            throw new NotImplementedException();
+            var books = context.BookCopy.ToList();
+            var loans = ShowAllBooksOnLoan();
+            //var loans = context.LoanBook
+            //   .Include(l => l.BookCopy)
+            //   .Select(l => l.BookCopy)
+            //   .ToList();
+            foreach (var loan in loans)
+                books.Remove(loan);
+
+            return books;
+
         }
 
         public IList<BookCopy> ShowAllBooksOnLoan()
         {
-            throw new NotImplementedException();
+            return context.LoanBook
+               .Include(l => l.BookCopy)
+               .Select(l => l.BookCopy)
+               .ToList();
+               
+        }
+
+        public void ReturnAllBooks(int loanID)
+        {
+
+            foreach (var item in context.LoanBook.Where(l => l.LoanID == loanID))
+            {
+                context.LoanBook.Remove(item);
+            }
+            context.SaveChanges();
+
         }
     }
 }

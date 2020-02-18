@@ -200,7 +200,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        public void ÉditBook_EditBookRecord_BookRecordShouldBeEdited()
+        public void EditBook_EditBookRecord_BookRecordShouldBeEdited()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()

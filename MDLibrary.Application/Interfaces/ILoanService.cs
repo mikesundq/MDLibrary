@@ -15,6 +15,8 @@ namespace MDLibrary.Application.Interfaces
         public IList<Loan> GetAllLoans();
         public Loan GetLoanById(int id);
 
+        public void ReturnAllBooks(int loanID);
+
 
     }
 }

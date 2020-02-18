@@ -120,31 +120,13 @@ namespace MDLibrary.Tests
                 new Loan() {ID = 2, MemberID = 2},
                 new Loan() {ID = 3, MemberID = 2}
             };
-
-            //LoanBook[] loanBooks =
-            //{
-            //    new LoanBook {LoanID = 2},
-            //    new LoanBook {LoanID = 3},
-
-            //};
-            //BookCopy[] bookCopies =
-            //{
-            //    new BookCopy{BookDetailsID = 1},
-            //    new BookCopy{BookDetailsID = 2}
-            //};
-            //BookDetails[] bookDetails =
-            //{
-            //    new BookDetails {ID = 1},
-            //    new BookDetails {ID = 2}
-            //};
+          
             Member[] members =
             {
                 new Member{ID=2}
             };
             context.Member.AddRange(members);
-            //context.BookDetails.AddRange(bookDetails);
-            //context.BookCopy.AddRange(bookCopies);
-            //context.LoanBook.AddRange(loanBooks);
+            
             context.Loan.AddRange(loans);
             context.SaveChanges();
 
@@ -207,7 +189,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        public void GetAllBooksOnLoan_ReturnAListOfLoans_ReturnThree()
+        public void ShowAllBooksOnLoan_ReturnAListOfBookCopies_ReturnThree()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -216,21 +198,21 @@ namespace MDLibrary.Tests
 
             var context = new ApplicationDbContext(options);
 
-            Loan[] loans =
+            LoanBook[] loans =
             {
-                new Loan() {ID = 1, MemberID = 1},
-                new Loan() {ID = 2, MemberID = 2},
-                new Loan() {ID = 3, MemberID = 2}
+                new LoanBook() {BookCopyID = 1},
+                new LoanBook() {BookCopyID = 2},
+                new LoanBook() {BookCopyID = 3}
             };
 
             BookCopy[] bookCopies =
             {
-                new BookCopy() { ID = 1, BookDetailsID = 1},
-                new BookCopy() { ID = 2, BookDetailsID = 2},
-                new BookCopy() { ID = 3, BookDetailsID = 3}
+                new BookCopy() { ID = 1},
+                new BookCopy() { ID = 2},
+                new BookCopy() { ID = 3}
             };
 
-            context.Loan.AddRange(loans);
+            context.LoanBook.AddRange(loans);
             context.BookCopy.AddRange(bookCopies);
             context.SaveChanges();
 
@@ -242,6 +224,63 @@ namespace MDLibrary.Tests
             var actualCount = testLoanService.ShowAllBooksOnLoan().Count;
 
             //Assert
+            Assert.Equal(expectedCount, actualCount);
+        }
+
+        [Fact]
+        public void ReturnAllBooks_ReturnAllBooksInLoan_CountZero()
+        {
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("ReturnAllBooksInLoan").Options;
+
+            var context = new ApplicationDbContext(options);
+
+            context.LoanBook.AddRange(
+                new LoanBook { BookCopyID = 3, LoanID = 1}, 
+                new LoanBook { BookCopyID = 2, LoanID = 1}, 
+                new LoanBook { BookCopyID = 1, LoanID = 1});
+
+            context.SaveChanges();
+
+            var expectedCount = 0;
+
+            var testLoanService = new LoanService(context);
+
+            testLoanService.ReturnAllBooks(1);
+
+            var actualCount = context.LoanBook.Count();
+
+            Assert.Equal(expectedCount, actualCount);
+
+        }
+
+        [Fact]
+        public void ShowAllBooksNotOnLoan_ReturnListOfBookCopies_ReturnCorrectCount()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("ShowAllBooksNotOnLoan").Options;
+
+            var context = new ApplicationDbContext(options);
+
+            context.BookCopy.AddRange(
+                new BookCopy { ID = 1 },
+                new BookCopy { ID = 2 },
+                new BookCopy { ID = 3 },
+                new BookCopy { ID = 4 }
+                );
+            context.LoanBook.AddRange(
+                new LoanBook { BookCopyID = 1},
+                new LoanBook { BookCopyID = 2}
+                );
+            context.SaveChanges();
+
+            var testLoanService = new LoanService(context);
+
+            var expectedCount = 2;
+
+            var actualCount = testLoanService.ShowAllBooksNotOnLoan().Count;
+
             Assert.Equal(expectedCount, actualCount);
         }
     }
