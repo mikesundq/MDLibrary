@@ -228,7 +228,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        public void ReturnAllBooks_ReturnAllBooksInLoan_CountZero()
+        public void ReturnAllBooks_ReturnAllBooksInLoanById_CountOne()
         {
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -239,11 +239,13 @@ namespace MDLibrary.Tests
             context.LoanBook.AddRange(
                 new LoanBook { BookCopyID = 3, LoanID = 1}, 
                 new LoanBook { BookCopyID = 2, LoanID = 1}, 
-                new LoanBook { BookCopyID = 1, LoanID = 1});
+                new LoanBook { BookCopyID = 1, LoanID = 1},
+                new LoanBook { BookCopyID = 4, LoanID = 2}
+                );
 
             context.SaveChanges();
 
-            var expectedCount = 0;
+            var expectedCount = 1;
 
             var testLoanService = new LoanService(context);
 
@@ -262,13 +264,15 @@ namespace MDLibrary.Tests
                 .UseInMemoryDatabase("ShowAllBooksNotOnLoan").Options;
 
             var context = new ApplicationDbContext(options);
-
+            //books in library
             context.BookCopy.AddRange(
                 new BookCopy { ID = 1 },
                 new BookCopy { ID = 2 },
                 new BookCopy { ID = 3 },
-                new BookCopy { ID = 4 }
+                new BookCopy { ID = 4 },
+                new BookCopy { ID = 5 }
                 );
+            //books on loan
             context.LoanBook.AddRange(
                 new LoanBook { BookCopyID = 1},
                 new LoanBook { BookCopyID = 2}
@@ -277,7 +281,7 @@ namespace MDLibrary.Tests
 
             var testLoanService = new LoanService(context);
 
-            var expectedCount = 2;
+            var expectedCount = 3;
 
             var actualCount = testLoanService.ShowAllBooksNotOnLoan().Count;
 

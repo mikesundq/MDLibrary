@@ -191,7 +191,8 @@ namespace MDLibrary.MVC.Controllers
          } */
 
         [Route("{controller}/{action}/{bookCopyID}/{loanID}")]
-        //Get ReturnBook
+        //GET Loans/ReturnBook/bookCopyID/loanID
+        //return one book from loan
         public async Task<IActionResult> ReturnBook(int bookCopyID, int loanID)
         {
             //if (bookCopyID == 0)
@@ -201,6 +202,15 @@ namespace MDLibrary.MVC.Controllers
 
             //return  LocalRedirect($"")
             return RedirectToAction(nameof(Details), new { id = loanID });
+        }
+        //GET Loans/ReturnBooks/loanID
+        //returns all books in loan by id
+
+        public async Task<IActionResult> ReturnBooks(int id)
+        {
+            loanService.ReturnAllBooks(id);
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
     }

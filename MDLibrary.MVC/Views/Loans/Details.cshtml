@@ -28,24 +28,19 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TimeToReturnBook)
         </dd>
-        <dt class="col-sm-2">
-            Number of books
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LoanBooks.Count)
-        </dd>
         @foreach (var item in Model.LoanBooks)
         {
-    <dd class="col-sm-10">
-        <td>
-            @Html.DisplayFor(modelItem => item.BookCopy.BookDetails.Titel)
-        </td>
-        <td>
-            <a asp-action="ReturnBook" asp-route-bookCopyID="@item.BookCopyID" asp-route-loanID="@item.LoanID">Return book</a>
-            @*<a href="/Loans/ReturnBook/@item.BookCopyID/@item.LoanID">return book</a>*@
-        </td>
-    </dd>
+            <dd class="col-sm-10">
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookCopy.BookDetails.Titel)
+                    <a asp-action="ReturnBook" asp-route-bookCopyID="@item.BookCopyID" asp-route-loanID="@item.LoanID">Return book</a>
+                    @*<a href="/Loans/ReturnBook/@item.BookCopyID/@item.LoanID">return book</a>*@
+                </td>
+            </dd>
         }
+        <dd class="col-sm-10">
+            <a class="btn btn-primary" asp-action="ReturnBooks" asp-route-id="@Model.ID">Return all books</a>
+        </dd>
     </dl>
 </div>
 <div>
