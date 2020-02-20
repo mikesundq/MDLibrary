@@ -1,0 +1,56 @@
+﻿@model MDLibrary.MVC.Models.AuthorVM.DetailsAuthorVm
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Author</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WrittenBooks)
+        </dt>
+    </dl>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ISBN
+            </th>
+            <th>
+                Titel
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.WrittenBooks)
+        {
+            <tr>
+                <td>
+                    @book.ISBN
+                </td>
+                <td>
+                    @book.Titel
+                </td>
+                <td>
+                    <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@book.ID">Details</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

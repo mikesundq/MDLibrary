@@ -44,7 +44,5 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
             //Authors.RemoveAll(a => a.ID == id);
         }
-
-
     }
 }

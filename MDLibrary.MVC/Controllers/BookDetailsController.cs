@@ -35,10 +35,6 @@ namespace MDLibrary.MVC.Controllers
         // GET: BookDetails/Details/5
         public async Task<IActionResult> Details(int id) //Was int?
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var bookDetails = bookService.GetBookDetailsById(id);
             var displayBookVm = new BookDetailsVm();
