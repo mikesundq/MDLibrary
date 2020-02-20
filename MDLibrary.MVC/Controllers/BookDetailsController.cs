@@ -17,11 +17,13 @@ namespace MDLibrary.MVC.Controllers
         
         private readonly IBookServices bookService;
         private readonly IAuthorService authorService;
+        private readonly ILoanService loanService;
 
-        public BookDetailsController(IBookServices bookService, IAuthorService authorService)
+        public BookDetailsController(IBookServices bookService, IAuthorService authorService, ILoanService loanService)
         {
             this.bookService = bookService;
             this.authorService = authorService;
+            this.loanService = loanService;
         }
 
         // GET: BookDetails
@@ -30,6 +32,33 @@ namespace MDLibrary.MVC.Controllers
             var vm = new BookIndexVm(); //Create a viewmodel object
             vm.Books = bookService.ShowAllBookDetails(); //Get all available books to show
             return View(vm); //Send the VM object to the view
+        }
+
+        // GET: BookDetails
+        public async Task<IActionResult> IndexAvalibleBooks()
+        {
+            var vm = new BookCopyIndexVm(); //Create a viewmodel object
+            vm.BookCopies = loanService.ShowAllBooksNotOnLoan(); //Get all available books to show
+            return View(vm); //Send the VM object to the view
+        }
+
+        public async Task<IActionResult> IndexBooksOnLoan()
+        {
+            var vm = new BookCopyIndexVm(); //Create a viewmodel object
+            vm.BookCopies = loanService.ShowAllBooksOnLoan(); //Get all available books to show
+            return View(vm); //Send the VM object to the view
+        }
+
+        
+        public async Task<IActionResult> AddOneMoreBookCopy(int id)
+        {
+            var newBook = new BookCopy();
+            newBook.BookDetailsID = id;
+
+            bookService.AddMoreCopiesOfBook(newBook);
+
+            return RedirectToAction(nameof(Details), new { id });
+
         }
 
         // GET: BookDetails/Details/5
@@ -44,6 +73,7 @@ namespace MDLibrary.MVC.Controllers
             displayBookVm.Titel = bookDetails.Titel;
             displayBookVm.ISBN = bookDetails.ISBN;
             displayBookVm.Details = bookDetails.Details;
+            displayBookVm.BookCopies = bookDetails.BookCopies.ToList();
             return View(displayBookVm);
         }
         
@@ -141,10 +171,6 @@ namespace MDLibrary.MVC.Controllers
             bookService.DeleteBookDetailsByID(id);
             return RedirectToAction(nameof(Index));
         }
-        /*
-        private bool BookDetailsExists(int id)
-        {
-            return _context.BookDetails.Any(e => e.ID == id);
-        } */
+
     } 
 }

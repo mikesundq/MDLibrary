@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using MDLibrary.Domain;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,5 +21,6 @@ namespace MDLibrary.MVC.Models.BooksVM
         [Required]
         public int AuthorID { get; set; }
         public string Details { get; set; }
+        public IList<BookCopy> BookCopies { get; set; }
     }
 }

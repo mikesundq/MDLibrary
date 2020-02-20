@@ -63,7 +63,11 @@ namespace MDLibrary.Infrastructure.Service
         public BookDetails GetBookDetailsById(int id)
         {
             //check how this works..
-           return context.BookDetails.FindAsync(id).Result;
+            //return context.BookDetails.Include(b => b.BookCopies).
+            //context.BookDetails.Include    
+            return context.BookDetails.Include(b => b.BookCopies).FirstOrDefault(b => b.ID == id);     
+
+           //return context.BookDetails.FindAsync(id).Result;
         }
 
         public void UpdateBookDetails(BookDetails bookDetails)

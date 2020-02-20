@@ -207,13 +207,16 @@ namespace MDLibrary.Tests
 
             BookCopy[] bookCopies =
             {
-                new BookCopy() { ID = 1},
-                new BookCopy() { ID = 2},
-                new BookCopy() { ID = 3}
+                new BookCopy() { ID = 1, BookDetailsID = 1},
+                new BookCopy() { ID = 2, BookDetailsID = 1},
+                new BookCopy() { ID = 3, BookDetailsID = 1}
             };
+
 
             context.LoanBook.AddRange(loans);
             context.BookCopy.AddRange(bookCopies);
+            context.BookDetails.Add(new BookDetails { ID = 1 });
+            context.Author.Add(new Author { ID = 1 });
             context.SaveChanges();
 
             var testLoanService = new LoanService(context);
@@ -266,17 +269,20 @@ namespace MDLibrary.Tests
             var context = new ApplicationDbContext(options);
             //books in library
             context.BookCopy.AddRange(
-                new BookCopy { ID = 1 },
-                new BookCopy { ID = 2 },
-                new BookCopy { ID = 3 },
-                new BookCopy { ID = 4 },
-                new BookCopy { ID = 5 }
+                new BookCopy { ID = 1, BookDetailsID = 1 },
+                new BookCopy { ID = 2, BookDetailsID = 1 },
+                new BookCopy { ID = 3, BookDetailsID = 1 },
+                new BookCopy { ID = 4, BookDetailsID = 1 },
+                new BookCopy { ID = 5, BookDetailsID = 1 }
                 );
             //books on loan
             context.LoanBook.AddRange(
                 new LoanBook { BookCopyID = 1},
                 new LoanBook { BookCopyID = 2}
                 );
+            //bokkdetails
+            context.BookDetails.Add(new BookDetails { ID = 1, AuthorID = 1 });
+            context.Author.Add(new Author { ID = 1 });
             context.SaveChanges();
 
             var testLoanService = new LoanService(context);

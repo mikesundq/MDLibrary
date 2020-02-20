@@ -67,7 +67,10 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
-            var books = context.BookCopy.ToList();
+            var books = context.BookCopy
+                .Include(b => b.BookDetails)
+                .ThenInclude(bd => bd.Author)
+                .ToList();
             var loans = ShowAllBooksOnLoan();
             //var loans = context.LoanBook
             //   .Include(l => l.BookCopy)
@@ -84,9 +87,10 @@ namespace MDLibrary.Infrastructure.Service
         {
             return context.LoanBook
                .Include(l => l.BookCopy)
+               .ThenInclude(b => b.BookDetails)
+               .ThenInclude(bd => bd.Author)
                .Select(l => l.BookCopy)
                .ToList();
-               
         }
 
         public void ReturnAllBooks(int loanID)

@@ -1,46 +1,49 @@
-﻿@model MDLibrary.MVC.Models.LoanVM.LoanIndexVm
+﻿@model MDLibrary.MVC.Models.BooksVM.BookCopyIndexVm;
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Loans</h1>
+<h1>Library</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
+    <a asp-action="Index">Show all books</a>
+    <a asp-action="IndexAvalibleBooks">Show available books</a>
+    <a asp-action="IndexBooksOnLoan">Show books on Loan</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-               Loan date
+                ISBN
             </th>
             <th>
-               Books return date
+                Titel
             </th>
             <th>
-                Number of Books
+                Author
             </th>
             <th>
-                Member
+                Details
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Loans) {
+@foreach (var item in Model.BookCopies) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeOfLoan)
+                @Html.DisplayFor(modelItem => item.BookDetails.ISBN)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeToReturnBook)
+                @Html.DisplayFor(modelItem => item.BookDetails.Titel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoanBooks.Count)
+                @Html.DisplayFor(modelItem => item.BookDetails.Author.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Member.Name)
+                @Html.DisplayFor(modelItem => item.BookDetails.Details)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
