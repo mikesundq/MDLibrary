@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using MDLibrary.Domain;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,15 +13,14 @@ namespace MDLibrary.MVC.Models.LoanVM
     {
         [Required]
         [DisplayName("Loan date")]
-        public DateTime TimeOfLoan { get; }
-        [DisplayName("Date to return book")]
+        public DateTime TimeOfLoan { get; set; } = DateTime.Today;
+        [Display(Name = "Time of loan")]
+        public string DisplayDate { get; set; } = DateTime.Today.ToString("yyyy-mm-dd");
+        [DisplayName("Date to return loan")]
         public string TimeToReturnBook { get; set; }
-        [DisplayName("Title")]
-        public SelectList BookCopyName { get; set; }
-        [Required]
-        public int BookCopyID { get; set; }
-        [DisplayName("Member")]
-        public SelectList MemberName { get; set; }
+        [DisplayName("Books")]
+        public IList<BookDetails> Books { get; set; }
+        public SelectList Members { get; set; }
         [Required]
         public int MemberID { get; set; }
     }

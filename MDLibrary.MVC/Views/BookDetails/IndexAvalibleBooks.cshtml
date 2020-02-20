@@ -16,6 +16,9 @@
     <thead>
         <tr>
             <th>
+                Select book
+            </th>
+            <th>
                 ISBN
             </th>
             <th>
@@ -31,26 +34,35 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.BookCopies) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookDetails.ISBN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookDetails.Titel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookDetails.Author.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookDetails.Details)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.BookCopies)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="loanBooks" value="@item.ID" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookDetails.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookDetails.Titel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookDetails.Author.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookDetails.Details)
+                </td>
+                <td>
+
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<dd class="col-sm-10">
+    <a class="btn btn-primary" asp-controller="Loan" asp-action="Create" asp-route-bookChecked="loanBooks">Loan checked books</a>
+</dd>

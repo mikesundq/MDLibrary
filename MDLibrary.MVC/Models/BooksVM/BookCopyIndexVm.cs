@@ -9,5 +9,6 @@ namespace MDLibrary.MVC.Models.BooksVM
     public class BookCopyIndexVm
     {
         public IList<BookCopy> BookCopies { get; set; } = new List<BookCopy>();
+        
     }
 }

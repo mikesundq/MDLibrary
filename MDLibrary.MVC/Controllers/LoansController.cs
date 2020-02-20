@@ -11,6 +11,7 @@ using MDLibrary.MVC.Models.LoanVM;
 using MDLibrary.Infrastructure.Service;
 using MDLibrary.Application.Interfaces;
 
+
 namespace MDLibrary.MVC.Controllers
 {
     public class LoansController : Controller
@@ -55,16 +56,15 @@ namespace MDLibrary.MVC.Controllers
             vm.TimeToReturnBook = loan.TimeToReturnBook;
             
             return View(vm);
-        } 
-
-        // GET: Loans/Create
+        }
+        [Route("{controller}/{action}/{loanBooks}")]
+        // GET: Loans/Create/loanbooks.int[]
         public IActionResult Create()
         {
             var vm = new CreateLoanVm();
-           
-            //vm.TimeOfLoan = new DateTime();
-            //ViewData["BookCopyID"] = new SelectList(_context.Book, "ID", "ID");
-            //ViewData["MemberID"] = new SelectList(_context.Member, "ID", "Name");
+
+            vm.Members = new SelectList(memberService.GetAllMembers(), "ID", "Name");
+
             return View(vm);
         }
 
@@ -77,7 +77,9 @@ namespace MDLibrary.MVC.Controllers
         {
 
             //This must be changed!!
-
+            //var vm = new CreateLoanVm();
+            //vm.TimeOfLoan = new DateTime();
+            //vm.TimeToReturnBook = 
             if (ModelState.IsValid)
             {
                 var loan = new Loan();
