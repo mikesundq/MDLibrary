@@ -73,9 +73,12 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateLoanVm vm) //([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
+        public async Task<IActionResult> Create(CreateLoanVm vm , int[] loanBooks) //([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
         {
-
+            if (loanBooks.Count() <= 0)
+            {
+                return RedirectToAction("Create");
+            }
             //This must be changed!!
             //var vm = new CreateLoanVm();
             //vm.TimeOfLoan = new DateTime();
@@ -87,10 +90,11 @@ namespace MDLibrary.MVC.Controllers
                 loan.MemberID = vm.MemberID;
                 loan.TimeOfLoan = Convert.ToDateTime(vm.TimeOfLoan);
                 loan.TimeToReturnBook = Convert.ToDateTime(vm.TimeToReturnBook);
-                
-                //Get all checked checkboxes
-                
-                //Get their values
+
+                //Get books from bookids in loanbooks
+
+                loan.BookCopies = bookService.GetBookCopiesById(loanBooks);
+
 
                 //Add bookCopyies to loaned out books
 

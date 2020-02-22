@@ -241,6 +241,28 @@ namespace MDLibrary.Tests
             Assert.Equal(expectedBookDetailsID, acctualBookDetailsID);
         }
 
+        [Fact]
+        public void GetBookCopiesById_FetchBookCopyID134_GetCorrectBookCopiesId()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("MDLibrary_GetBookCopiesByIds").Options;
+            var context = new ApplicationDbContext(options);
+            Seed(context);
+            
+            var bookService = new BookServices(context);
+            int[] expectedBookCopyIDs = { 1, 3, 4 };
+
+            //Act
+            var actualBookCopies = bookService.GetBookCopiesById(expectedBookCopyIDs);
+            
+
+            //Assert
+            Assert.Equal(expectedBookCopyIDs[0], actualBookCopies[0].ID);
+            Assert.Equal(expectedBookCopyIDs[1], actualBookCopies[1].ID);
+            Assert.Equal(expectedBookCopyIDs[2], actualBookCopies[2].ID);
+        }
+
 
 
         private void Seed(ApplicationDbContext context)

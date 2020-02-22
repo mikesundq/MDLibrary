@@ -43,6 +43,20 @@ namespace MDLibrary.Infrastructure.Service
         {
             context.Add(loan);
             context.SaveChanges();
+
+            //Get loan id
+            context.Entry(loan).GetDatabaseValues();
+
+            //foreach bookcopy add LoanBook
+            foreach (var book in loan.BookCopies)
+            {
+                var loanBookToAdd = new LoanBook();
+                loanBookToAdd.BookCopyID = book.ID;
+                loanBookToAdd.LoanID = loan.ID;
+                context.Add(loanBookToAdd);
+            };
+            //Save changes
+            context.SaveChanges();
         }
 
         public void ReturnOneBook(int bookCopyID)

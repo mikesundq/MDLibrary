@@ -215,7 +215,7 @@ namespace MDLibrary.Tests
 
             context.LoanBook.AddRange(loans);
             context.BookCopy.AddRange(bookCopies);
-            context.BookDetails.Add(new BookDetails { ID = 1 });
+            context.BookDetails.Add(new BookDetails { ID = 1, AuthorID = 1 });
             context.Author.Add(new Author { ID = 1 });
             context.SaveChanges();
 

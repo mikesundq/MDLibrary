@@ -81,5 +81,19 @@ namespace MDLibrary.Infrastructure.Service
             //return context.Book.FindAsync(id).Result;
             return context.BookCopy.Find(id);
         }
+
+        public IList<BookCopy> GetBookCopiesById(int[] ids)
+        {
+            var checkedBooks = new List<BookCopy>();
+
+            foreach (var id in ids)
+            {
+                var bookCopyToAdd = context.BookCopy.Find(id);
+
+                checkedBooks.Add(bookCopyToAdd);
+            }
+
+            return checkedBooks;
+        }
     }
 }
