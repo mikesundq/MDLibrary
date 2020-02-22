@@ -35,7 +35,19 @@
                     @Html.DisplayFor(modelItem => item.TimeOfLoan)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TimeToReturnBook)
+                    @if (item.IsReturned == 0 && item.TimeToReturnBook < DateTime.Today)
+                    {
+                        <div style="color:red">@Html.DisplayFor(modelItem => item.TimeToReturnBook)</div>
+                    }
+                    else if (item.IsReturned == 0)
+                    {
+                        <div style="color:blue"> @Html.DisplayFor(modelItem => item.TimeToReturnBook)</div>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.TimeToReturnBook)
+                    }
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LoanBooks.Count)
