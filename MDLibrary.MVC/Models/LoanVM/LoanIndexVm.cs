@@ -11,4 +11,6 @@ namespace MDLibrary.MVC.Models.LoanVM
         public IList<Loan> Loans { get; set; } = new List<Loan>();
        
     }
+
+
 }

@@ -13,5 +13,6 @@ namespace MDLibrary.Domain
         public IList<LoanBook> LoanBooks { get; set; }
         public int MemberID { get; set; }
         public Member Member { get; set; }
+        public int IsReturned { get; set; } //0 = Not Returned, 1 = Returned
     }
 }

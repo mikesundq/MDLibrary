@@ -7,6 +7,27 @@ using MDLibrary.Domain;
 using MDLibrary.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
+/*
+  
+            @if (item.IsReturned == 0)
+            {
+                <style>
+                    color:"Blue"
+                </style>
+            }
+            else if (item.IsReturned == 0 && item.TimeToReturnBook < DateTime.Today)
+            {
+                <style>
+                    color:"Red"
+                </style>
+            }
+            else
+            {
+                <style>
+                    color:"Black"
+                </style>
+            }
+            */
 namespace MDLibrary.Infrastructure.Service
 {
     public class LoanService : ILoanService
@@ -114,8 +135,23 @@ namespace MDLibrary.Infrastructure.Service
             {
                 context.LoanBook.Remove(item);
             }
+            var loanReturned = GetLoanById(loanID);
+            loanReturned.IsReturned = 1;
+            context.Update(loanReturned);
             context.SaveChanges();
 
+        }
+
+        public int CalculateLateFee(DateTime dateToReturnBook)
+        {
+            int lateFee = 0;
+
+            //dateToReturnBook: 2020-02-10. Todays date: 2020-02-20. Today - dateToReturnBook = 10 dgr
+            TimeSpan nrOfDaysLate = DateTime.Today - dateToReturnBook;
+
+            lateFee = 12 * nrOfDaysLate.Days;
+            
+            return lateFee;
         }
     }
 }

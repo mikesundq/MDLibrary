@@ -54,6 +54,11 @@ namespace MDLibrary.MVC.Controllers
             vm.MemberID = loan.MemberID;
             vm.TimeOfLoan = loan.TimeOfLoan;
             vm.TimeToReturnBook = loan.TimeToReturnBook;
+            if (vm.TimeToReturnBook < DateTime.Today)
+            {
+                vm.Latefee = loanService.CalculateLateFee(vm.TimeToReturnBook);
+            }
+           
             
             return View(vm);
         }

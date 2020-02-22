@@ -17,5 +17,6 @@ namespace MDLibrary.MVC.Models.LoanVM
         public IList<LoanBook> LoanBooks { get; set; } = new List<LoanBook>();
         public int MemberID { get; set; }
         public Member Member { get; set; }
+        public int Latefee { get; set; }
     }
 }

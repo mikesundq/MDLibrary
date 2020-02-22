@@ -293,5 +293,29 @@ namespace MDLibrary.Tests
 
             Assert.Equal(expectedCount, actualCount);
         }
+
+        [Fact]
+        public void CalculateLateFee_LoanWithLateBooks_CorrectLateFee()
+        {
+            //Arrange
+            
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase("CalculateLateFeeInLoans").Options;
+            var context = new ApplicationDbContext(options);
+
+            var testLoanSerice = new LoanService(context);
+            
+            var lateDate = DateTime.Today.AddDays(-3);
+
+            var expectedLateFee = 36;
+            //Act
+
+            var actualLateFee = testLoanSerice.CalculateLateFee(lateDate);
+
+            //Assert
+
+            Assert.Equal(expectedLateFee, actualLateFee);
+
+        }
     }
 }
