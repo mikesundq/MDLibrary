@@ -57,14 +57,14 @@ namespace MDLibrary.MVC.Controllers
             
             return View(vm);
         }
-        [Route("{controller}/{action}/{loanBooks}")]
+        //[Route("{controller}/{action}/{loanBooks}")]
         // GET: Loans/Create/loanbooks.int[]
         public IActionResult Create()
         {
             var vm = new CreateLoanVm();
 
             vm.Members = new SelectList(memberService.GetAllMembers(), "ID", "Name");
-
+            vm.AvalibleBooks = loanService.ShowAllBooksNotOnLoan();
             return View(vm);
         }
 
@@ -85,9 +85,16 @@ namespace MDLibrary.MVC.Controllers
                 var loan = new Loan();
                 //loan.BookCopyID = vm.BookCopyID;
                 loan.MemberID = vm.MemberID;
-                loan.TimeOfLoan = vm.TimeOfLoan;
+                loan.TimeOfLoan = Convert.ToDateTime(vm.TimeOfLoan);
                 loan.TimeToReturnBook = Convert.ToDateTime(vm.TimeToReturnBook);
+                
+                //Get all checked checkboxes
+                
+                //Get their values
 
+                //Add bookCopyies to loaned out books
+
+                //Save
                 loanService.LoanOutBook(loan);
 
                 return RedirectToAction(nameof(Index));

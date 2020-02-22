@@ -21,12 +21,62 @@
                 @Html.DisplayFor(model => model.TimeToReturnBook)
             </div>
             <div class="form-group">
-                
+
             </div>
             <div class="form-group">
                 <label asp-for="Members" class="control-label"></label>
                 @Html.DropDownListFor(m => m.MemberID, Model.Members, "Select Member")
             </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Select book
+                        </th>
+                        <th>
+                            ISBN
+                        </th>
+                        <th>
+                            Titel
+                        </th>
+                        <th>
+                            Author
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AvalibleBooks)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="loanBooks" value="@item.ID" />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BookDetails.ISBN)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BookDetails.Titel)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BookDetails.Author.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BookDetails.Details)
+                            </td>
+                            <td>
+
+                                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> 
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
