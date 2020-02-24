@@ -7,27 +7,7 @@ using MDLibrary.Domain;
 using MDLibrary.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-/*
-  
-            @if (item.IsReturned == 0)
-            {
-                <style>
-                    color:"Blue"
-                </style>
-            }
-            else if (item.IsReturned == 0 && item.TimeToReturnBook < DateTime.Today)
-            {
-                <style>
-                    color:"Red"
-                </style>
-            }
-            else
-            {
-                <style>
-                    color:"Black"
-                </style>
-            }
-            */
+
 namespace MDLibrary.Infrastructure.Service
 {
     public class LoanService : ILoanService
@@ -84,6 +64,12 @@ namespace MDLibrary.Infrastructure.Service
         {
             var loanBookToReturn = context.LoanBook.FirstOrDefault(l => l.BookCopyID == bookCopyID);
             context.Remove(loanBookToReturn);
+            var loanToCheck = GetLoanById(loanBookToReturn.LoanID);
+            if (loanToCheck.LoanBooks.Count <= 1)
+            {
+                loanToCheck.IsReturned = 1;
+                context.Update(loanToCheck);
+            }
             context.SaveChanges();
            
         }
