@@ -29,7 +29,7 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var vm = new MemberIndexVm();
-            vm.Members = memberService.GetAllMembers();
+            vm.Members = await Task.Run(() => memberService.GetAllMembers());
             return View(vm); 
         }
 
@@ -40,24 +40,16 @@ namespace MDLibrary.MVC.Controllers
         {
             var vm = new DetailsMemberVm();
 
-            var member = memberService.GetMemberById(id);
+            var member = await Task.Run(() => memberService.GetMemberById(id));
             if (member == null)
                 return NotFound();
 
             vm.ID = member.ID;
             vm.Name = member.Name;
-            vm.CanBeRemoved = memberService.CanRemoveMember(id);
+            vm.CanBeRemoved = await Task.Run(() => memberService.CanRemoveMember(id));
 
             if (member.Loans != null)
-                vm.Loans = loanService.ShowAllLoansByMember(vm.ID);
-
-            //member.Loans = loanService.ShowAllBooksLoanedByMember(member.ID);
-
-            //foreach (var loan in member.Loans)
-            //{
-            //    var updateLoan = loanService.GetLoanById(loan.ID);
-            //    loan.BookCopies = updateLoan.BookCopies;
-            //}
+                vm.Loans = await Task.Run(() => loanService.ShowAllLoansByMember(vm.ID));
 
             return View(vm);
         }
@@ -84,7 +76,7 @@ namespace MDLibrary.MVC.Controllers
             var newMemberToAdd = new Member();
             newMemberToAdd.Name = vm.Name;
             newMemberToAdd.SSN = vm.SSN;
-            memberService.AddNewMember(newMemberToAdd);
+            await Task.Run(() => memberService.AddNewMember(newMemberToAdd));
             
             return RedirectToAction(nameof(Index));
             
@@ -93,7 +85,7 @@ namespace MDLibrary.MVC.Controllers
         // GET: Members/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var memberToEdit = memberService.GetMemberById(id);
+            var memberToEdit = await Task.Run(() => memberService.GetMemberById(id));
             if (memberToEdit == null)
             {
                 return NotFound();
@@ -116,7 +108,7 @@ namespace MDLibrary.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var member = memberService.GetMemberById(id);
+            var member = await Task.Run(()=> memberService.GetMemberById(id));
             member.SSN = vm.SSN;
             member.Name = vm.Name;
             memberService.EditMember(member);
@@ -129,7 +121,7 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 
-            var member = memberService.GetMemberById(id);
+            var member = await Task.Run(()=> memberService.GetMemberById(id));
             if (member == null)
             {
                 return NotFound();
@@ -143,7 +135,7 @@ namespace MDLibrary.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            memberService.RemoveMemberById(id);
+            await Task.Run(()=> memberService.RemoveMemberById(id));
             return RedirectToAction(nameof(Index));
         }
        

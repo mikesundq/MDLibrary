@@ -11,7 +11,6 @@ using MDLibrary.MVC.Models.LoanVM;
 using MDLibrary.Infrastructure.Service;
 using MDLibrary.Application.Interfaces;
 
-
 namespace MDLibrary.MVC.Controllers
 {
     public class LoansController : Controller
@@ -26,6 +25,15 @@ namespace MDLibrary.MVC.Controllers
             this.memberService = memberService;
             this.loanService = loanService;
         }
+
+        //GET: BooksOnLoan
+        public async Task<IActionResult> BooksOnLoan()
+        {
+            var vm = new LoanBookListVm(); //Create a viewmodel object
+            vm.BookCopies = await Task.Run(() => loanService.GetAllBooksOnLoan()); //Get all available books to show
+            return View(vm); //Send the VM object to the view
+        }
+
 
         // GET: Loans
         public async Task<IActionResult> Index()
@@ -77,7 +85,8 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateLoanVm vm , int[] loanBooks) //([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
+        //Get a int[] with bookcopies checked in view
+        public async Task<IActionResult> Create(CreateLoanVm vm , int[] loanBooks) 
         {
             if (loanBooks.Count() <= 0)
             {

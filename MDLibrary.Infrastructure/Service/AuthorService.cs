@@ -32,7 +32,9 @@ namespace MDLibrary.Infrastructure.Service
 
         public Author GetAuthorById(int id)
         {
-            return context.Author.Find(id);
+            return context.Author
+                .Include(a => a.WrittenBooks)
+                .FirstOrDefault(a => a.ID == id);
         }
 
         public void RemoveAuthor(int id)

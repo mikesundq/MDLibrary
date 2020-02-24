@@ -17,5 +17,6 @@ namespace MDLibrary.Application.Interfaces
         public void ReturnAllBooks(int loanID);
         public int CalculateLateFee(DateTime dateToReturnBook);
         List<BookCopy> GetAndReturnBookCopiesById(int id);
+        public IList<LoanBook> GetAllBooksOnLoan();
     }
 }
