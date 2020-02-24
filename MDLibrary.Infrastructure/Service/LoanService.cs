@@ -27,6 +27,8 @@ namespace MDLibrary.Infrastructure.Service
                 .ThenInclude(l => l.BookCopy)
                 .ThenInclude(l =>  l.BookDetails)
                 .Include(l => l.Member)
+                .OrderBy(l => l.IsReturned)
+                .ThenBy(l => l.TimeToReturnBook)
                 .ToList();
         }
 
