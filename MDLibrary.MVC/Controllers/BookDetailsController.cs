@@ -30,7 +30,7 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var vm = new BookIndexVm(); //Create a viewmodel object
-            vm.Books = bookService.ShowAllBookDetails(); //Get all available books to show
+            vm.Books = await Task.Run(() =>  bookService.ShowAllBookDetails()); //Get all available books to show
             return View(vm); //Send the VM object to the view
         }
 
@@ -38,14 +38,14 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> IndexAvalibleBooks()
         {
             var vm = new BookCopyIndexVm(); //Create a viewmodel object
-            vm.BookCopies = loanService.ShowAllBooksNotOnLoan(); //Get all available books to show
+            vm.BookCopies = await Task.Run(() => loanService.ShowAllBooksNotOnLoan()); //Get all available books to show
             return View(vm); //Send the VM object to the view
         }
 
         public async Task<IActionResult> IndexBooksOnLoan()
         {
             var vm = new BookCopyIndexVm(); //Create a viewmodel object
-            vm.BookCopies = loanService.ShowAllBooksOnLoan(); //Get all available books to show
+            vm.BookCopies = await Task.Run(() => loanService.ShowAllBooksOnLoan()); //Get all available books to show
             return View(vm); //Send the VM object to the view
         }
 
@@ -55,7 +55,7 @@ namespace MDLibrary.MVC.Controllers
             var newBook = new BookCopy();
             newBook.BookDetailsID = id;
 
-            bookService.AddMoreCopiesOfBook(newBook);
+            await Task.Run(() => bookService.AddMoreCopiesOfBook(newBook));
 
             return RedirectToAction(nameof(Details), new { id });
 
@@ -64,10 +64,10 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> RemoveAllBookCopies(int id)
         {
             //Get all bookcopies by bookdetailID and return if needed
-            List<BookCopy> bookCopies = loanService.GetAndReturnBookCopiesById(id);
+            List<BookCopy> bookCopies = await Task.Run(()=> loanService.GetAndReturnBookCopiesById(id));
 
             //Remove all copies
-            bookService.DeleteBookCopiesByID(bookCopies);
+            await Task.Run(() => bookService.DeleteBookCopiesByID(bookCopies));
 
             return RedirectToAction(nameof(Details), new { id });
 
@@ -77,7 +77,7 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> Details(int id) //Was int?
         {
 
-            var bookDetails = bookService.GetBookDetailsById(id);
+            var bookDetails = await Task.Run(()=> bookService.GetBookDetailsById(id));
             var displayBookVm = new BookDetailsVm();
             displayBookVm.ID = bookDetails.ID;
             displayBookVm.Author = authorService.GetAuthorById(bookDetails.AuthorID).Name;
@@ -132,7 +132,7 @@ namespace MDLibrary.MVC.Controllers
             EditBookVm vm = new EditBookVm();
             vm.ISBN = bookDetails.ISBN;
             vm.Titel = bookDetails.Titel;
-            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name", bookDetails.Author);
+            vm.Authors = new SelectList(await Task.Run(() => authorService.GetAllAuthors()), "ID", "Name", bookDetails.Author);
             vm.AuthorID = bookDetails.AuthorID;
             vm.Details = bookDetails.Details;
             return View(vm);
@@ -150,12 +150,12 @@ namespace MDLibrary.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var bookDetails = bookService.GetBookDetailsById(id);
+            var bookDetails = await Task.Run(()=> bookService.GetBookDetailsById(id));
 
             bookDetails.ISBN = vm.ISBN;
             bookDetails.Titel = vm.Titel;
             bookDetails.AuthorID = vm.AuthorID;
-            bookService.UpdateBookDetails(bookDetails);
+            await Task.Run(() => bookService.UpdateBookDetails(bookDetails));
 
             return RedirectToAction(nameof(Index));
             
@@ -165,13 +165,8 @@ namespace MDLibrary.MVC.Controllers
         // GET: BookDetails/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var bookDetails = bookService.GetBookDetailsById(id);
-            bookDetails.Author = authorService.GetAuthorById(bookDetails.AuthorID);
+            var bookDetails = await Task.Run(()=> bookService.GetBookDetailsById(id));
             return View(bookDetails);
           
         }
@@ -181,7 +176,7 @@ namespace MDLibrary.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            bookService.DeleteBookDetailsByID(id);
+            await Task.Run(() => bookService.DeleteBookDetailsByID(id));
             return RedirectToAction(nameof(Index));
         }
 
