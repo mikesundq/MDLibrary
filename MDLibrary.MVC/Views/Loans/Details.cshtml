@@ -44,7 +44,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.BookCopy.BookDetails.Titel)
                     <a asp-action="ReturnBook" asp-route-bookCopyID="@item.BookCopyID" asp-route-loanID="@item.LoanID">Return book</a>
-                    @*<a href="/Loans/ReturnBook/@item.BookCopyID/@item.LoanID">return book</a>*@
                 </td>
             </tr>
         }
