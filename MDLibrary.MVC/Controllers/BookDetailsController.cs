@@ -67,7 +67,7 @@ namespace MDLibrary.MVC.Controllers
             List<BookCopy> bookCopies = await Task.Run(()=> loanService.GetAndReturnBookCopiesById(id));
 
             //Remove all copies
-            bookService.DeleteBookCopiesByID(bookCopies);
+            await Task.Run(() => bookService.DeleteBookCopiesByID(bookCopies));
 
             return RedirectToAction(nameof(Details), new { id });
 
@@ -132,7 +132,7 @@ namespace MDLibrary.MVC.Controllers
             EditBookVm vm = new EditBookVm();
             vm.ISBN = bookDetails.ISBN;
             vm.Titel = bookDetails.Titel;
-            vm.Authors = new SelectList(authorService.GetAllAuthors(), "ID", "Name", bookDetails.Author);
+            vm.Authors = new SelectList(await Task.Run(() => authorService.GetAllAuthors()), "ID", "Name", bookDetails.Author);
             vm.AuthorID = bookDetails.AuthorID;
             vm.Details = bookDetails.Details;
             return View(vm);
@@ -155,7 +155,7 @@ namespace MDLibrary.MVC.Controllers
             bookDetails.ISBN = vm.ISBN;
             bookDetails.Titel = vm.Titel;
             bookDetails.AuthorID = vm.AuthorID;
-            bookService.UpdateBookDetails(bookDetails);
+            await Task.Run(() => bookService.UpdateBookDetails(bookDetails));
 
             return RedirectToAction(nameof(Index));
             
