@@ -12,8 +12,6 @@ namespace MDLibrary.Infrastructure.Service
 {
     public class LoanService : ILoanService
     {
-        // public List<Loan> Loans = new List<Loan>();
-
         private readonly ApplicationDbContext context;
         public LoanService(ApplicationDbContext context)
         {
@@ -50,7 +48,7 @@ namespace MDLibrary.Infrastructure.Service
             //Get loan id
             context.Entry(loan).GetDatabaseValues();
 
-            //foreach bookcopy add LoanBook
+            //Create LoanBook and add bookID and loanID before adding to database.
             foreach (var book in loan.BookCopies)
             {
                 var loanBookToAdd = new LoanBook();
@@ -58,6 +56,7 @@ namespace MDLibrary.Infrastructure.Service
                 loanBookToAdd.LoanID = loan.ID;
                 context.Add(loanBookToAdd);
             };
+
             //Save changes
             context.SaveChanges();
         }
@@ -117,23 +116,22 @@ namespace MDLibrary.Infrastructure.Service
 
         public void ReturnAllBooks(int loanID)
         {
-
             foreach (var item in context.LoanBook.Where(l => l.LoanID == loanID))
             {
                 context.LoanBook.Remove(item);
             }
+
             var loanReturned = GetLoanById(loanID);
             loanReturned.IsReturned = 1;
             context.Update(loanReturned);
             context.SaveChanges();
-
         }
 
         public int CalculateLateFee(DateTime dateToReturnBook)
         {
             int lateFee = 0;
 
-            //dateToReturnBook: 2020-02-10. Todays date: 2020-02-20. Today - dateToReturnBook = 10 dgr
+            //Example: dateToReturnBook: 2020-02-10. Todays date: 2020-02-20. Today - dateToReturnBook = 10 dgr
             TimeSpan nrOfDaysLate = DateTime.Today - dateToReturnBook;
 
             lateFee = 12 * nrOfDaysLate.Days;

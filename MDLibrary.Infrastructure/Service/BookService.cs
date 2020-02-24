@@ -71,6 +71,11 @@ namespace MDLibrary.Infrastructure.Service
             return context.BookCopy.Find(id);
         }
 
+        /// <summary>
+        /// This function is used to return the selected books from the list.
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         public IList<BookCopy> GetBookCopiesById(int[] ids)
         {
             var checkedBooks = new List<BookCopy>();
