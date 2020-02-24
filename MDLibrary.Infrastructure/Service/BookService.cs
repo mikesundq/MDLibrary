@@ -65,7 +65,10 @@ namespace MDLibrary.Infrastructure.Service
             //check how this works..
             //return context.BookDetails.Include(b => b.BookCopies).
             //context.BookDetails.Include    
-            return context.BookDetails.Include(b => b.BookCopies).FirstOrDefault(b => b.ID == id);     
+            return context.BookDetails
+                .Include(b => b.Author)
+                .Include(b => b.BookCopies)
+                .FirstOrDefault(b => b.ID == id);     
 
            //return context.BookDetails.FindAsync(id).Result;
         }
