@@ -12,7 +12,6 @@ namespace MDLibrary.Infrastructure.Service
     public class AuthorService : IAuthorService
     {
         private readonly ApplicationDbContext context;
-        //public List<Author> Authors = new List<Author>();
 
         public AuthorService(ApplicationDbContext context)
         {
@@ -29,7 +28,6 @@ namespace MDLibrary.Infrastructure.Service
         {
 
             return context.Author.ToList();
-            //return Authors;
         }
 
         public Author GetAuthorById(int id)
@@ -56,7 +54,6 @@ namespace MDLibrary.Infrastructure.Service
                 .FirstOrDefault(a => a.ID == id);
 
             return author.WrittenBooks.Count < 1;
-            //return context.Author.Contains()
         }
     }
 }

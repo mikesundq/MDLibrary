@@ -14,9 +14,6 @@ namespace MDLibrary.Infrastructure.Service
     {
         private readonly ApplicationDbContext context;
 
-        //public List<BookDetails> ListOfBookDetails = new List<BookDetails>();
-        //public List<BookCopy> ListOfBooks = new List<BookCopy>();
-
         public BookServices(ApplicationDbContext context)
         {
             this.context = context;
@@ -40,11 +37,6 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
-        public IList<BookDetails> ShowAllAvailableBooks()
-        {
-            throw new NotImplementedException();
-        }
-
         public IList<BookDetails> ShowAllBookDetails()
         {
             return context.BookDetails.Include(x => x.Author).OrderBy(x => x.Titel).ToList();
@@ -61,16 +53,11 @@ namespace MDLibrary.Infrastructure.Service
         }
 
         public BookDetails GetBookDetailsById(int id)
-        {
-            //check how this works..
-            //return context.BookDetails.Include(b => b.BookCopies).
-            //context.BookDetails.Include    
+        {    
             return context.BookDetails
                 .Include(b => b.Author)
                 .Include(b => b.BookCopies)
                 .FirstOrDefault(b => b.ID == id);     
-
-           //return context.BookDetails.FindAsync(id).Result;
         }
 
         public void UpdateBookDetails(BookDetails bookDetails)
@@ -81,7 +68,6 @@ namespace MDLibrary.Infrastructure.Service
 
         public BookCopy GetBookCopyById(int id)
         {
-            //return context.Book.FindAsync(id).Result;
             return context.BookCopy.Find(id);
         }
 
@@ -119,18 +105,5 @@ namespace MDLibrary.Infrastructure.Service
             //Returns true if there is nothing returned
             return !context.LoanBook.Any(lb => lb.BookCopyID == id);
         }
-
-      /*  public void RemoveAllBookCopiesBCID(int id)
-        {
-            //Get all bookcopies by bookdetailID
-            var bookCopyIds = loanService.GetBookCopyIDsOnLoanByBookDetailsId(id);
-
-            //Check to see if any copies of this book is on loan and if so return it
-
-
-            //Remove all copies
-            var bookToBeDeleted = bookService.GetBookCopyById(id);
-            // bookService.DeleteBookCopyByID(bookToBeDeleted);
-        } */
     }
 }

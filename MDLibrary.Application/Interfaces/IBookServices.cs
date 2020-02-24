@@ -14,7 +14,6 @@ namespace MDLibrary.Application.Interfaces
 
         public void DeleteBookDetailsByID(int id);
         public void DeleteBookCopiesByID(List<BookCopy> bookCopies);
-        public IList<BookDetails> ShowAllAvailableBooks();
 
         public IList<BookDetails> ShowAllBooksByAuthor(int id);
 
