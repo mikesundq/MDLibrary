@@ -34,7 +34,7 @@ namespace MDLibrary.MVC.Controllers
             return View(vm); //Send the VM object to the view
         }
 
-        // GET: BookDetails
+        //GET: BookDetails
         public async Task<IActionResult> IndexAvalibleBooks()
         {
             var vm = new BookCopyIndexVm(); //Create a viewmodel object
@@ -42,14 +42,7 @@ namespace MDLibrary.MVC.Controllers
             return View(vm); //Send the VM object to the view
         }
 
-        public async Task<IActionResult> IndexBooksOnLoan()
-        {
-            var vm = new BookCopyIndexVm(); //Create a viewmodel object
-            vm.BookCopies = await Task.Run(() => loanService.ShowAllBooksOnLoan()); //Get all available books to show
-            return View(vm); //Send the VM object to the view
-        }
 
-        
         public async Task<IActionResult> AddOneMoreBookCopy(int id)
         {
             var newBook = new BookCopy();

@@ -11,7 +11,6 @@ using MDLibrary.MVC.Models.LoanVM;
 using MDLibrary.Infrastructure.Service;
 using MDLibrary.Application.Interfaces;
 
-
 namespace MDLibrary.MVC.Controllers
 {
     public class LoansController : Controller
@@ -26,6 +25,15 @@ namespace MDLibrary.MVC.Controllers
             this.memberService = memberService;
             this.loanService = loanService;
         }
+
+        //GET: BooksOnLoan
+        public async Task<IActionResult> BooksOnLoan()
+        {
+            var vm = new BookCopyListVm(); //Create a viewmodel object
+            vm.BookCopies = await Task.Run(() => loanService.ShowAllBooksOnLoan()); //Get all available books to show
+            return View(vm); //Send the VM object to the view
+        }
+
 
         // GET: Loans
         public async Task<IActionResult> Index()

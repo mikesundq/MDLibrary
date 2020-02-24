@@ -1,4 +1,4 @@
-﻿@model MDLibrary.MVC.Models.BooksVM.BookCopyIndexVm;
+﻿@model MDLibrary.MVC.Models.LoanVM.BookCopyListVm
 
 @{
     ViewData["Title"] = "Index";
@@ -7,9 +7,7 @@
 <h1>Library</h1>
 
 <p>
-    <a asp-action="Create">Create New</a> |
-    <a asp-controller="Loans" asp-action="Index">Show loans</a>
-   
+    <a asp-action="Index">Show loans</a>
 </p>
 <table class="table">
     <thead>
@@ -45,9 +43,7 @@
                 @Html.DisplayFor(modelItem => item.BookDetails.Details)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.BookDetails.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookDetails.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookDetails.ID">Delete</a>
+                <a @*asp-action="Details"*@ asp-route-id="@item.BookDetails.ID">Details</a>
             </td>
         </tr>
 }
