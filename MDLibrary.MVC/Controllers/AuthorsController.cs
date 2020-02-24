@@ -28,7 +28,7 @@ namespace MDLibrary.MVC.Controllers
         {
             var vm = new AuthorIndexVm();
 
-            vm.Authors = authorsService.GetAllAuthors();
+            vm.Authors = await Task.Run(() => authorsService.GetAllAuthors());
 
             return View(vm);
         }
@@ -36,14 +36,14 @@ namespace MDLibrary.MVC.Controllers
         // GET: Authors/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var author = authorsService.GetAuthorById(id);
-            var books = bookService.ShowAllBooksByAuthor(id);
+            var author = await Task.Run(() => authorsService.GetAuthorById(id));
+            var books = await Task.Run(() => bookService.ShowAllBooksByAuthor(id));
 
             var vm = new DetailsAuthorVm();
             vm.ID = id;
             vm.Name = author.Name;
             vm.WrittenBooks = books;
-            vm.CanBeRemoved = authorsService.CanRemoveAuthor(id);
+            vm.CanBeRemoved = await Task.Run(() => authorsService.CanRemoveAuthor(id));
             return View(vm);
         }
 
@@ -62,10 +62,9 @@ namespace MDLibrary.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var vm = new CreateAuthorVm();
                 var authorToAdd = new Author();
                 authorToAdd.Name = vm.Name;
-                authorsService.AddAuthor(authorToAdd);
+                await Task.Run(() => authorsService.AddAuthor(authorToAdd));
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -74,7 +73,7 @@ namespace MDLibrary.MVC.Controllers
         // GET: Authors/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var author = authorsService.GetAuthorById(id);
+            var author = await Task.Run(() => authorsService.GetAuthorById(id));
             
             if (author == null)
                 return NotFound();
@@ -95,9 +94,9 @@ namespace MDLibrary.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var author = authorsService.GetAuthorById(id);
+            var author = await Task.Run(() => authorsService.GetAuthorById(id));
             author.Name = vm.Name;
-            authorsService.EditAuthor(author);
+            await Task.Run(() => authorsService.EditAuthor(author));
 
             return RedirectToAction(nameof(Index));
             
@@ -106,9 +105,7 @@ namespace MDLibrary.MVC.Controllers
         // GET: Authors/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-
-
-            var author = authorsService.GetAuthorById(id);
+            var author = await Task.Run(() => authorsService.GetAuthorById(id));
             if (author == null)
             {
                 return NotFound();
@@ -122,7 +119,7 @@ namespace MDLibrary.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            authorsService.RemoveAuthor(id);
+            await Task.Run(() => authorsService.RemoveAuthor(id));
             return RedirectToAction(nameof(Index));
         }
         
