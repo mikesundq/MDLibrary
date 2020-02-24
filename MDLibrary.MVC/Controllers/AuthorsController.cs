@@ -40,8 +40,10 @@ namespace MDLibrary.MVC.Controllers
             var books = bookService.ShowAllBooksByAuthor(id);
 
             var vm = new DetailsAuthorVm();
+            vm.ID = id;
             vm.Name = author.Name;
             vm.WrittenBooks = books;
+            vm.CanBeRemoved = authorsService.CanRemoveAuthor(id);
             return View(vm);
         }
 

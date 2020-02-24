@@ -15,5 +15,7 @@ namespace MDLibrary.MVC.Models.AuthorVM
         public string Name { get; set; }
         [Display(Name = "Books written by author")]
         public IList<BookDetails> WrittenBooks { get; set; }
+
+        public bool CanBeRemoved { get; set; }
     }
 }

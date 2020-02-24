@@ -50,5 +50,13 @@ namespace MDLibrary.Infrastructure.Service
             context.SaveChanges();
         }
 
+        public bool CanRemoveAuthor(int id)
+        {
+            var author = context.Author.Include(a => a.WrittenBooks)
+                .FirstOrDefault(a => a.ID == id);
+
+            return author.WrittenBooks.Count < 1;
+            //return context.Author.Contains()
+        }
     }
 }
