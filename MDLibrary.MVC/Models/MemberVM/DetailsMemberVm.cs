@@ -13,5 +13,7 @@ namespace MDLibrary.MVC.Models.MemberVM
         public int ID { get; set; }
         public string Name { get; set; }
         public IList<Loan> Loans { get; set; } = new List<Loan>();
+
+        public bool CanBeRemoved { get; set; }
     }
 }

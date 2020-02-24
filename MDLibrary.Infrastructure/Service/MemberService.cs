@@ -57,5 +57,14 @@ namespace MDLibrary.Infrastructure.Service
             context.Member.Remove(member);
             context.SaveChanges();
         }
+
+        public bool CanRemoveMember(int id)
+        {
+            var member = context.Member.Include(m => m.Loans)
+                .FirstOrDefault(a => a.ID == id);
+
+            return member.Loans.Count < 1;
+            //return context.Author.Contains()
+        }
     }
 }

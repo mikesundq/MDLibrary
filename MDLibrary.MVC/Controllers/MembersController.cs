@@ -46,6 +46,7 @@ namespace MDLibrary.MVC.Controllers
 
             vm.ID = member.ID;
             vm.Name = member.Name;
+            vm.CanBeRemoved = memberService.CanRemoveMember(id);
 
             if (member.Loans != null)
                 vm.Loans = loanService.ShowAllLoansByMember(vm.ID);
