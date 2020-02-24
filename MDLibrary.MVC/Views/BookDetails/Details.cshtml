@@ -45,8 +45,19 @@
 <dd class="col-sm-10">
 <a class="btn btn-primary" asp-action="AddOneMoreBookCopy" asp-route-id="@Model.ID">Add one more book</a>
 </dd>
+<dd class="col-sm-10">
+    <a class="btn btn-primary" asp-action="RemoveAllBookCopies" asp-route-id="@Model.ID">Remove all copies of this book</a>
+</dd>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Go to Books</a> | 
+    @if (Model.CanBeRemoved)
+    {
+        <a asp-action="Delete" asp-route-id="@Model.ID">Delete</a>
+    }
+    else
+    {
+        <span style="color:red">Remove book copies before removing book details</span>
+    }
+    | <a asp-action="Index">Go to Books</a> |
     <a asp-controller="Authors" asp-action="Details" asp-route-id="@Model.AuthorID">Go to Author</a>
 </div>

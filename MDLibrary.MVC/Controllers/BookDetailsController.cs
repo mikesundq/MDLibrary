@@ -60,6 +60,18 @@ namespace MDLibrary.MVC.Controllers
             return RedirectToAction(nameof(Details), new { id });
 
         }
+        
+        public async Task<IActionResult> RemoveAllBookCopies(int id)
+        {
+            //Get all bookcopies by bookdetailID and return if needed
+            List<BookCopy> bookCopies = loanService.GetAndReturnBookCopiesById(id);
+
+            //Remove all copies
+            bookService.DeleteBookCopiesByID(bookCopies);
+
+            return RedirectToAction(nameof(Details), new { id });
+
+        }
 
         // GET: BookDetails/Details/5
         public async Task<IActionResult> Details(int id) //Was int?
@@ -74,6 +86,7 @@ namespace MDLibrary.MVC.Controllers
             displayBookVm.ISBN = bookDetails.ISBN;
             displayBookVm.Details = bookDetails.Details;
             displayBookVm.BookCopies = bookDetails.BookCopies.ToList();
+            displayBookVm.CanBeRemoved = bookService.CanRemoveBookDetails(id);
             return View(displayBookVm);
         }
         

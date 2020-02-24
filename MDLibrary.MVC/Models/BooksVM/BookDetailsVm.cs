@@ -22,5 +22,7 @@ namespace MDLibrary.MVC.Models.BooksVM
         public int AuthorID { get; set; }
         public string Details { get; set; }
         public IList<BookCopy> BookCopies { get; set; }
+
+        public bool CanBeRemoved { get; set; }
     }
 }

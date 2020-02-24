@@ -63,15 +63,17 @@ namespace MDLibrary.Infrastructure.Service
         public void ReturnOneBook(int bookCopyID)
         {
             var loanBookToReturn = context.LoanBook.FirstOrDefault(l => l.BookCopyID == bookCopyID);
-            context.Remove(loanBookToReturn);
-            var loanToCheck = GetLoanById(loanBookToReturn.LoanID);
-            if (loanToCheck.LoanBooks.Count <= 1)
+            if(loanBookToReturn != null)
             {
-                loanToCheck.IsReturned = 1;
-                context.Update(loanToCheck);
+                context.Remove(loanBookToReturn);
+                var loanToCheck = GetLoanById(loanBookToReturn.LoanID);
+                if (loanToCheck.LoanBooks.Count <= 1)
+                {
+                    loanToCheck.IsReturned = 1;
+                    context.Update(loanToCheck);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
-           
         }
 
         public IList<Loan> ShowAllLoansByMember(int memberID)
@@ -93,10 +95,7 @@ namespace MDLibrary.Infrastructure.Service
                 .ThenInclude(bd => bd.Author)
                 .ToList();
             var loans = ShowAllBooksOnLoan();
-            //var loans = context.LoanBook
-            //   .Include(l => l.BookCopy)
-            //   .Select(l => l.BookCopy)
-            //   .ToList();
+
             foreach (var loan in loans)
                 books.Remove(loan);
 
@@ -138,6 +137,19 @@ namespace MDLibrary.Infrastructure.Service
             lateFee = 12 * nrOfDaysLate.Days;
             
             return lateFee;
+        }
+
+        public List<BookCopy> GetAndReturnBookCopiesById(int id)
+        {
+            var books = context.BookCopy
+                .Where(bc => bc.BookDetailsID == id).ToList();
+
+            foreach(var item in books)
+            {
+                ReturnOneBook(item.ID);
+            }
+
+            return books;
         }
     }
 }

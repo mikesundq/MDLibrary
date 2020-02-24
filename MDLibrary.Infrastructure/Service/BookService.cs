@@ -95,5 +95,39 @@ namespace MDLibrary.Infrastructure.Service
 
             return checkedBooks;
         }
+
+        public bool CanRemoveBookDetails(int id)
+        {
+            var bookDetails = context.BookDetails.Include(bd => bd.BookCopies)
+                .FirstOrDefault(bc => bc.ID == id);
+
+            return bookDetails.BookCopies.ToList().Count < 1;
+        }
+
+        public void DeleteBookCopiesByID(List<BookCopy> bookCopies)
+        {
+            context.BookCopy
+                .RemoveRange(bookCopies);
+            context.SaveChanges();
+        }
+
+        public bool CanRemoveBookCopy(int id)
+        {
+            //Returns true if there is nothing returned
+            return !context.LoanBook.Any(lb => lb.BookCopyID == id);
+        }
+
+      /*  public void RemoveAllBookCopiesBCID(int id)
+        {
+            //Get all bookcopies by bookdetailID
+            var bookCopyIds = loanService.GetBookCopyIDsOnLoanByBookDetailsId(id);
+
+            //Check to see if any copies of this book is on loan and if so return it
+
+
+            //Remove all copies
+            var bookToBeDeleted = bookService.GetBookCopyById(id);
+            // bookService.DeleteBookCopyByID(bookToBeDeleted);
+        } */
     }
 }

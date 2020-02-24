@@ -13,6 +13,7 @@ namespace MDLibrary.Application.Interfaces
         public int ShowNumberOfBooks(int id);
 
         public void DeleteBookDetailsByID(int id);
+        public void DeleteBookCopiesByID(List<BookCopy> bookCopies);
         public IList<BookDetails> ShowAllAvailableBooks();
 
         public IList<BookDetails> ShowAllBooksByAuthor(int id);
@@ -25,5 +26,9 @@ namespace MDLibrary.Application.Interfaces
 
         public BookCopy GetBookCopyById(int id);
         public IList<BookCopy> GetBookCopiesById(int[] ids);
+
+        public bool CanRemoveBookDetails(int id);
+        public bool CanRemoveBookCopy(int id);
+        //void RemoveAllBookCopiesBCID(int id);
     }
 }
