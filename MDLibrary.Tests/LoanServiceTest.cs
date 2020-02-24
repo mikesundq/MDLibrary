@@ -25,14 +25,13 @@ namespace MDLibrary.Tests
             var testLoanService = new LoanService(context);
             var expectedResult = 1;
 
-            //Act
             var newLoan = new Loan() { ID = 1, MemberID = 1 };
+            newLoan.BookCopies = new List<BookCopy> { new BookCopy() { ID = 2 } }; 
+
+            //Act
             testLoanService.LoanOutBook(newLoan);
-            var newLoanBook = new LoanBook() { LoanID = 1, BookCopyID = 2 };
-            context.LoanBook.Add(newLoanBook);
-            context.SaveChanges();
-            var actualResult = context.LoanBook
-                .Where(l => l.LoanID == 1).ToList().Count;
+            var actualResult = context.Loan
+                .Where(l => l.ID == 1).ToList().Count;
 
             //Assert
             Assert.Equal(expectedResult, actualResult);
@@ -50,8 +49,11 @@ namespace MDLibrary.Tests
             var context = new ApplicationDbContext(options);
 
             var testLoanService = new LoanService(context);
-            
-            context.LoanBook.AddRange(new LoanBook { BookCopyID = 1 }, new LoanBook { BookCopyID = 2 });
+
+            context.Member.Add(new Member { ID = 1 });
+            context.Loan.Add(new Loan { ID = 1, MemberID = 1 });
+            context.LoanBook.AddRange(new LoanBook { BookCopyID = 1, LoanID = 1 }, new LoanBook { BookCopyID = 2, LoanID = 1 });
+
             context.SaveChanges();
             
             var expectedResult = 1;
@@ -233,11 +235,14 @@ namespace MDLibrary.Tests
         [Fact]
         public void ReturnAllBooks_ReturnAllBooksInLoanById_CountOne()
         {
-
+            //Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("ReturnAllBooksInLoan").Options;
+                .UseInMemoryDatabase("ReturnAllBooksInLoan")
+                .Options;
 
             var context = new ApplicationDbContext(options);
+            context.Loan.Add(new Loan { ID = 1, MemberID = 1});
+            context.Member.Add(new Member { ID = 1 });
 
             context.LoanBook.AddRange(
                 new LoanBook { BookCopyID = 3, LoanID = 1}, 
@@ -245,17 +250,19 @@ namespace MDLibrary.Tests
                 new LoanBook { BookCopyID = 1, LoanID = 1},
                 new LoanBook { BookCopyID = 4, LoanID = 2}
                 );
-
+            
             context.SaveChanges();
 
             var expectedCount = 1;
 
             var testLoanService = new LoanService(context);
 
+            //Act
             testLoanService.ReturnAllBooks(1);
 
-            var actualCount = context.LoanBook.Count();
+            var actualCount = context.Loan.Where(l => l.IsReturned == 1).ToList().Count;
 
+            //Assert
             Assert.Equal(expectedCount, actualCount);
 
         }
