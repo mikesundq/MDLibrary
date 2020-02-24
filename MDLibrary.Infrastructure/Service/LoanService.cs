@@ -105,6 +105,18 @@ namespace MDLibrary.Infrastructure.Service
 
         }
 
+        public IList<LoanBook> GetAllBooksOnLoan()
+        {
+            return context.LoanBook
+                .Include(l => l.BookCopy)
+                .ThenInclude(bc => bc.BookDetails)
+                .ThenInclude(bd => bd.Author)
+                .Include(l => l.Loan)
+                .ThenInclude(l => l.Member)
+                .ToList();
+        }
+
+
         public IList<BookCopy> ShowAllBooksOnLoan()
         {
             return context.LoanBook

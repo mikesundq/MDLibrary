@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MDLibrary.MVC.Models.LoanVM
 {
-    public class BookCopyListVm
+    public class LoanBookListVm
     {
-        public IList<BookCopy> BookCopies { get; set; } = new List<BookCopy>();
+        public IList<LoanBook> BookCopies { get; set; } = new List<LoanBook>();
         
     }
 }

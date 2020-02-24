@@ -29,8 +29,8 @@ namespace MDLibrary.MVC.Controllers
         //GET: BooksOnLoan
         public async Task<IActionResult> BooksOnLoan()
         {
-            var vm = new BookCopyListVm(); //Create a viewmodel object
-            vm.BookCopies = await Task.Run(() => loanService.ShowAllBooksOnLoan()); //Get all available books to show
+            var vm = new LoanBookListVm(); //Create a viewmodel object
+            vm.BookCopies = await Task.Run(() => loanService.GetAllBooksOnLoan()); //Get all available books to show
             return View(vm); //Send the VM object to the view
         }
 

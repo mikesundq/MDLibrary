@@ -191,7 +191,7 @@ namespace MDLibrary.Tests
         }
 
         [Fact]
-        public void ShowAllBooksOnLoan_ReturnAListOfBookCopies_ReturnThree()
+        public void GetAllBooksOnLoan_ReturnAListOfBookCopies_ReturnThree()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -200,11 +200,11 @@ namespace MDLibrary.Tests
 
             var context = new ApplicationDbContext(options);
 
-            LoanBook[] loans =
+            LoanBook[] loanBooks =
             {
-                new LoanBook() {BookCopyID = 1},
-                new LoanBook() {BookCopyID = 2},
-                new LoanBook() {BookCopyID = 3}
+                new LoanBook() {BookCopyID = 1, LoanID = 1},
+                new LoanBook() {BookCopyID = 2, LoanID = 1},
+                new LoanBook() {BookCopyID = 3, LoanID = 1}
             };
 
             BookCopy[] bookCopies =
@@ -214,8 +214,9 @@ namespace MDLibrary.Tests
                 new BookCopy() { ID = 3, BookDetailsID = 1}
             };
 
-
-            context.LoanBook.AddRange(loans);
+            context.Loan.Add(new Loan { ID = 1, MemberID = 1 });
+            context.Member.Add(new Member { ID = 1 });
+            context.LoanBook.AddRange(loanBooks);
             context.BookCopy.AddRange(bookCopies);
             context.BookDetails.Add(new BookDetails { ID = 1, AuthorID = 1 });
             context.Author.Add(new Author { ID = 1 });
@@ -226,7 +227,7 @@ namespace MDLibrary.Tests
             var expectedCount = 3;
 
             //Act
-            var actualCount = testLoanService.ShowAllBooksOnLoan().Count;
+            var actualCount = testLoanService.GetAllBooksOnLoan().Count;
 
             //Assert
             Assert.Equal(expectedCount, actualCount);
