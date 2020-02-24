@@ -37,12 +37,11 @@ namespace MDLibrary.MVC.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var author = await Task.Run(() => authorsService.GetAuthorById(id));
-            var books = await Task.Run(() => bookService.ShowAllBooksByAuthor(id));
 
             var vm = new DetailsAuthorVm();
             vm.ID = id;
             vm.Name = author.Name;
-            vm.WrittenBooks = books;
+            vm.WrittenBooks = author.WrittenBooks;
             vm.CanBeRemoved = await Task.Run(() => authorsService.CanRemoveAuthor(id));
             return View(vm);
         }

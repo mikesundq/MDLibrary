@@ -77,7 +77,8 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateLoanVm vm , int[] loanBooks) //([Bind("ID,TimeOfLoan,TimeToReturnBook,BookCopyID,MemberID")] Loan loan)
+        //Get a int[] with bookcopies checked in view
+        public async Task<IActionResult> Create(CreateLoanVm vm , int[] loanBooks) 
         {
             if (loanBooks.Count() <= 0)
             {
