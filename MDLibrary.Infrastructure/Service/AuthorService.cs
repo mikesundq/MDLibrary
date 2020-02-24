@@ -42,7 +42,12 @@ namespace MDLibrary.Infrastructure.Service
             var author = context.Author.Find(id);
             context.Author.Remove(author);
             context.SaveChanges();
-            //Authors.RemoveAll(a => a.ID == id);
+        }
+
+        public void EditAuthor(Author author)
+        {
+            context.Author.Update(author);
+            context.SaveChanges();
         }
     }
 }

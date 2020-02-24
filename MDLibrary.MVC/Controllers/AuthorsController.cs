@@ -68,21 +68,19 @@ namespace MDLibrary.MVC.Controllers
             }
             return View(vm);
         }
-        /*
+        
         // GET: Authors/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var author = await _context.Author.FindAsync(id);
+            var author = authorsService.GetAuthorById(id);
+            
             if (author == null)
-            {
                 return NotFound();
-            }
-            return View(author);
+            
+            var vm = new EditAuthorVm();
+            vm.Name = author.Name;
+            
+            return View(vm);
         }
 
         // POST: Authors/Edit/5
@@ -90,36 +88,19 @@ namespace MDLibrary.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Author author)
+        public async Task<IActionResult> Edit(int id, [Bind("Name")] EditAuthorVm vm)
         {
-            if (id != author.ID)
-            {
-                return NotFound();
-            }
+            if (!ModelState.IsValid)
+                return View(vm);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(author);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AuthorExists(author.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(author);
+            var author = authorsService.GetAuthorById(id);
+            author.Name = vm.Name;
+            authorsService.EditAuthor(author);
+
+            return RedirectToAction(nameof(Index));
+            
         }
-
+        /*
         // GET: Authors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
