@@ -67,6 +67,8 @@ namespace MDLibrary.Infrastructure.Service
             if(loanBookToReturn != null)
             {
                 context.Remove(loanBookToReturn);
+
+                //check if loans left..
                 var loanToCheck = GetLoanById(loanBookToReturn.LoanID);
                 if (loanToCheck.LoanBooks.Count <= 1)
                 {
