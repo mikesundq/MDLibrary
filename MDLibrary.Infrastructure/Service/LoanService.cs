@@ -93,14 +93,17 @@ namespace MDLibrary.Infrastructure.Service
 
         public IList<BookCopy> ShowAllBooksNotOnLoan()
         {
+
+            var loans = ShowAllBooksOnLoan();
+
             var books = context.BookCopy
+                .Where(b => !loans.Any(l => l.ID == b.ID))
                 .Include(b => b.BookDetails)
                 .ThenInclude(bd => bd.Author)
                 .ToList();
-            var loans = ShowAllBooksOnLoan();
 
-            foreach (var loan in loans)
-                books.Remove(loan);
+            //foreach (var loan in loans)
+            //    books.Remove(loan);
 
             return books;
 

@@ -23,7 +23,7 @@ namespace MDLibrary.Infrastructure.Service
 
         public void AddNewMember(Member member)
         {
-            context.Member.Add(member);
+            context.Add(member);
             context.SaveChanges();
         }
 
